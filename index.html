@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#080b16" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>드래곤 필드 — HTML RPG 뼈대</title>
+    <link rel="stylesheet" href="styles/reset.css" />
+    <link rel="stylesheet" href="styles/ui.css" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- 화면이 좁으면 stage 를 통째로 축소한다. frame 은 축소된 크기만큼 자리를 잡아 준다. -->
+      <div id="stage-frame">
+      <!-- 캔버스: 맵/캐릭터/전투 스프라이트만 그린다 -->
+      <div id="stage">
+        <canvas id="game-canvas"></canvas>
+
+        <!-- UI 레이어: 캔버스 위에 겹치는 HTML. 캔버스에 UI를 그리지 않는다. -->
+        <div id="ui-layer">
+          <div id="hud"></div>
+          <div id="battle-view" class="battle-view" hidden></div>
+          <div id="dialogue" class="dialogue-root" hidden></div>
+          <div id="quickslots" class="qs-root"></div>
+          <div id="inventory-panel" class="inventory-root" hidden></div>
+          <div id="shop-panel" class="shop-root" hidden></div>
+          <div id="exchange-panel" class="shop-root" hidden></div>
+          <div id="character-panel" class="inventory-root" hidden></div>
+          <div id="quest-panel" class="inventory-root" hidden></div>
+          <div id="settings-panel" class="inventory-root" hidden></div>
+          <div id="waypoint-panel" class="inventory-root" hidden></div>
+          <div id="mail-panel" class="inventory-root" hidden></div>
+          <div id="rank-panel" class="inventory-root" hidden></div>
+          <!-- 운영자 창 — 운영자 계정으로 접속했을 때만 열린다 -->
+          <div id="admin-panel" class="inventory-root" hidden></div>
+          <div id="cast-bar" class="cast-root" hidden></div>
+          <div id="update-banner" class="update-root" hidden></div>
+          <!-- 대성공 같은 순간에 화면 전체가 한 번 번쩍인다 -->
+          <div id="fx-flash" class="fx-flash" hidden></div>
+          <div id="toast-root"></div>
+        </div>
+      </div>
+      </div>
+      <!-- 터치 기기 전용 조작 버튼(스테이지 밖 = 화면 크기 기준) -->
+      <div id="touch-controls" class="tc-root" hidden></div>
+      <p class="footer-hint">
+        포이노 마을 → 동쪽 20단계 필드 · 5·10·15·20단계 보스 · 성문 안 지하감옥
+      </p>
+    </div>
+
+    <!--
+      접속 화면과 부팅 화면은 스테이지(640×480, 화면에 맞춰 축소됨) 밖에 둔다.
+      안에 두면 작은 화면에서 글자가 같이 작아지고 카드가 잘리며,
+      일부 브라우저는 축소된 영역의 클릭 위치를 잘못 짚어 버튼이 안 눌리기도 한다.
+    -->
+    <div id="login" class="login-root" hidden></div>
+    <div id="boot" class="boot">불러오는 중…</div>
+
+    <!--
+      부팅 감시 — 여기서 막히면 화면에 이유가 뜬다.
+      이 파일(index.html)을 파일 탐색기에서 더블클릭해 열면 브라우저가 보안 규칙(CORS) 때문에
+      src/entry.js 를 아예 읽지 못한다. 그러면 "불러오는 중…" 에서 영영 멈추는데,
+      아무 안내가 없으면 "게임이 고장났다"고 오해하게 된다. 그래서 직접 알려 준다.
+      (모듈이 아니라 일반 스크립트여야 파일로 열어도 실행된다)
+    -->
+    <script>
+      (function () {
+        var isFile = location.protocol === 'file:';
+
+        function panel(title, bodyHtml) {
+          var boot = document.getElementById('boot');
+          if (!boot) return;
+          boot.className = 'boot boot--error';
+          boot.innerHTML =
+            '<div class="boot-card"><h2>' + title + '</h2>' + bodyHtml + '</div>';
+        }
+
+        function fileHelp() {
+          panel(
+            '이 방법으로는 열 수 없습니다',
+            '<p>브라우저 보안 규칙 때문에 <b>index.html 을 더블클릭해서 여는 것은 동작하지 않습니다.</b>' +
+              ' 게임 파일이 아니라 브라우저가 막는 것이라 어떤 컴퓨터에서도 똑같습니다.</p>' +
+              '<p class="boot-do"><b>이렇게 하세요 — 둘 중 아무거나</b></p>' +
+              '<ol>' +
+              '<li><b>dist / dragon-field.html</b> 파일을 대신 더블클릭하세요.<br />' +
+              '설치도 서버도 필요 없이 그대로 실행됩니다.</li>' +
+              '<li>Node 가 깔려 있다면 이 폴더에서 <code>node server/server.js</code> 를 실행하고' +
+              ' <code>http://localhost:8787</code> 로 들어가세요.<br />' +
+              '이쪽은 계정이 서버에 저장돼 폰·다른 컴퓨터와 이어집니다.</li>' +
+              '</ol>'
+          );
+        }
+
+        if (isFile) {
+          // 파일로 연 경우는 기다릴 것도 없이 바로 알려 준다.
+          fileHelp();
+          return;
+        }
+
+        // 그 밖의 이유로 못 뜨는 경우(스크립트 오류 등)도 8초 뒤에 알려 준다.
+        var timer = setTimeout(function () {
+          if (document.getElementById('boot')) {
+            panel(
+              '시작하지 못했습니다',
+              '<p>게임을 불러오다 멈췄습니다. 브라우저를 새로고침해 보시고,' +
+                ' 그래도 같다면 아래를 확인하세요.</p>' +
+                '<ul><li>주소가 <code>http://</code> 로 시작하는지</li>' +
+                '<li>브라우저가 너무 오래된 버전은 아닌지</li></ul>'
+            );
+          }
+        }, 8000);
+
+        window.addEventListener('error', function (e) {
+          if (e && e.target && e.target.tagName === 'SCRIPT') {
+            clearTimeout(timer);
+            fileHelp();
+          }
+        }, true);
+
+        window.__bootWatch = { clear: function () { clearTimeout(timer); } };
+      })();
+    </script>
+    <script type="module" src="src/entry.js"></script>
+  </body>
+</html>

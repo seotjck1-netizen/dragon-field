@@ -1,0 +1,224 @@
+{
+  "_읽는법": [
+    "몬스터별 드랍표. 한 줄이 드랍 하나이고, 표 순서대로 굴린다(여러 개가 동시에 나올 수 있다).",
+    "행 형식:  [ \"아이템id\", 확률, 최소개수, 최대개수 ]",
+    "확률은 0~1 (0.25 = 25%). 1 이면 무조건.",
+    "여기 없는 몬스터는 아무것도 떨구지 않는다. 아이템 id 는 items.json 을 따른다.",
+    "표만 고치면 되고 JS 는 건드릴 필요가 없다.  확인: node tools/print-tables.js drops",
+    "",
+    "밸런스 원칙 두 가지:",
+    "  · 필드 몬스터의 희귀/영웅 '장비' 는 아주 낮게 둔다(재료는 강화 경제라 예외).",
+    "  · 보스는 퀘스트로 무기·방어구를 주므로, 드랍은 장신구(반지·목걸이·허리띠) 위주로 둔다."
+  ],
+
+  "열": ["아이템", "확률", "최소", "최대"],
+
+  "표": {
+    "slime": [
+      ["slime_jelly",      0.55, 1, 1],
+      ["herb",             0.25, 1, 2],
+      ["club",             0.03, 1, 1]
+    ],
+
+    "bat": [
+      ["bat_fang",         0.55, 1, 2],
+      ["herb",             0.30, 1, 2],
+      ["slime_jelly",      0.15, 1, 1],
+      ["short_bow",        0.05, 1, 1],
+      ["leather_armor",    0.06, 1, 1]
+    ],
+
+    "mushroom": [
+      ["herb",             0.75, 2, 4],
+      ["magic_stone",      0.10, 1, 1],
+      ["iron_sword",       0.10, 1, 1],
+      ["wooden_sword",     0.12, 1, 1],
+      ["apprentice_staff", 0.08, 1, 1],
+      ["cloth_gloves",     0.12, 1, 1]
+    ],
+
+    "wolf": [
+      ["bat_fang",         0.45, 1, 3],
+      ["herb",             0.50, 1, 3],
+      ["magic_stone",      0.14, 1, 1],
+      ["hunting_bow",      0.10, 1, 1],
+      ["gem_sapphire",     0.01, 1, 1],
+      ["swift_ring",       0.03, 1, 1]
+    ],
+
+    "imp": [
+      ["herb",             0.45, 2, 4],
+      ["magic_stone",      0.22, 1, 2],
+      ["demon_core",       0.42, 3, 3],
+      ["leather_pauldron", 0.10, 1, 1],
+      ["wood_amulet",      0.08, 1, 1],
+      ["knight_armor",     0.013, 1, 1]
+    ],
+
+    "skeleton": [
+      ["magic_stone",      0.30, 1, 2],
+      ["demon_core",       0.16, 1, 1],
+      ["steel_pauldron",   0.027, 1, 1],
+      ["knight_armor",     0.023, 1, 1],
+      ["guard_amulet",     0.01, 1, 1],
+      ["power_ring",       0.01, 1, 1],
+      ["knight_helm",      0.02, 1, 1]
+    ],
+
+    "demon_soldier": [
+      ["demon_core",       0.35, 1, 2],
+      ["magic_stone",      0.35, 1, 3],
+      ["steel_gauntlet",   0.023, 1, 1],
+      ["swift_boots",      0.02, 1, 1],
+      ["flame_sword",      0.017, 1, 1],
+      ["elven_bow",        0.017, 1, 1],
+      ["archmage_staff",   0.017, 1, 1],
+      ["mana_belt",        0.017, 1, 1],
+      ["dragon_mail",      0.013, 1, 1]
+    ],
+
+    "imp_captain": [
+      ["magic_stone",      1.00, 3, 6],
+      ["demon_core",       1.00, 3, 9],
+      ["wood_amulet",      0.50, 1, 1],
+      ["leather_belt",     0.45, 1, 1],
+      ["swift_ring",       0.35, 1, 1],
+      ["guard_amulet",     0.25, 1, 1]
+    ],
+
+    "demon_general": [
+      ["demon_core",       1.00, 3, 6],
+      ["magic_stone",      1.00, 6, 12],
+      ["power_ring",       0.20, 1, 1],
+      ["guard_amulet",     0.20, 1, 1],
+      ["mana_belt",        0.20, 1, 1],
+      ["dragon_ring",      0.02, 1, 1]
+    ],
+
+    "elite_slime": [
+      ["magic_stone",      0.70, 1, 3],
+      ["demon_core",       0.15, 1, 2],
+      ["herb",             0.35, 2, 4]
+    ],
+
+    "elite_bat": [
+      ["magic_stone",      0.75, 1, 3],
+      ["demon_core",       0.18, 1, 3],
+      ["herb",             0.30, 2, 5]
+    ],
+
+    "elite_mushroom": [
+      ["magic_stone",      0.80, 2, 4],
+      ["demon_core",       0.22, 1, 2],
+      ["herb",             0.40, 3, 6]
+    ],
+
+    "elite_wolf": [
+      ["magic_stone",      0.85, 2, 4],
+      ["demon_core",       0.28, 1, 3],
+      ["greater_potion",   0.12, 1, 2],
+      ["gem_ruby",         0.01, 1, 1]
+    ],
+
+    "elite_imp": [
+      ["magic_stone",      0.90, 2, 5],
+      ["demon_core",       0.35, 1, 3],
+      ["greater_potion",   0.15, 1, 2],
+      ["wood_amulet",      0.01, 1, 1]
+    ],
+
+    "elite_skeleton": [
+      ["magic_stone",      0.95, 3, 6],
+      ["demon_core",       0.45, 1, 3],
+      ["greater_potion",   0.20, 1, 2],
+      ["guard_amulet",     0.01, 1, 1],
+      ["rune_gauntlet",    0.01, 1, 1]
+    ],
+
+    "elite_demon_soldier": [
+      ["magic_stone",      1.00, 4, 8],
+      ["demon_core",       0.60, 2, 4],
+      ["greater_potion",   0.25, 1, 3],
+      ["mana_belt",        0.02, 1, 1],
+      ["rune_boots",       0.01, 1, 1],
+      ["rune_belt",        0.01, 1, 1]
+    ],
+
+    "elite_imp_captain": [
+      ["demon_core",       1.00, 4, 8],
+      ["magic_stone",      1.00, 8, 16],
+      ["greater_potion",   1.00, 3, 6],
+      ["rune_amulet",      0.55, 1, 1],
+      ["rune_belt",        0.45, 1, 1],
+      ["power_ring",       0.35, 1, 1],
+      ["guard_amulet",     0.30, 1, 1]
+    ],
+
+    "elite_demon_general": [
+      ["demon_core",       1.00, 10, 18],
+      ["magic_stone",      1.00, 20, 34],
+      ["greater_potion",   1.00, 6, 12],
+      ["dragon_ring",      0.60, 1, 1],
+      ["rune_amulet",      0.50, 1, 1],
+      ["rune_belt",        0.50, 1, 1]
+    ],
+
+    "dungeon_wraith": [
+      ["magic_stone",      0.90, 4, 9],
+      ["demon_core",       0.50, 1, 3],
+      ["greater_potion",   0.35, 1, 2],
+      ["gem_topaz",        0.05, 1, 1],
+      ["gem_onyx",         0.04, 1, 1],
+      ["socket_drill",     0.01, 1, 1]
+    ],
+
+    "dungeon_golem": [
+      ["magic_stone",      1.00, 8, 16],
+      ["demon_core",       0.70, 2, 4],
+      ["greater_potion",   0.50, 1, 3],
+      ["gem_emerald",      0.07, 1, 1],
+      ["gem_sapphire",     0.06, 1, 1],
+      ["gem_ruby",         0.05, 1, 1],
+      ["socket_drill",     0.01, 1, 1]
+    ],
+
+    "dungeon_general": [
+      ["demon_core",       1.00, 12, 20],
+      ["magic_stone",      1.00, 24, 38],
+      ["greater_potion",   1.00, 8, 14],
+      ["dragon_ring",      0.60, 1, 1],
+      ["rune_amulet",      0.50, 1, 1],
+      ["rune_belt",        0.50, 1, 1],
+      ["gem_ruby",         0.12, 1, 1],
+      ["gem_emerald",      0.12, 1, 1],
+      ["gem_onyx",         0.12, 1, 1]
+    ],
+
+    "dungeon_lord": [
+      ["magic_stone",      1.00, 30, 50],
+      ["demon_core",       1.00, 12, 22],
+      ["greater_potion",   1.00, 18, 35],
+      ["gem_amethyst",     0.20, 1, 1],
+      ["gem_diamond",      0.45, 1, 2],
+      ["gem_ruby",         0.50, 1, 2],
+      ["gem_sapphire",     0.50, 1, 2],
+      ["gem_emerald",      0.50, 1, 2],
+      ["gem_onyx",         0.50, 1, 2],
+      ["dragon_ring",      0.35, 1, 1],
+      ["socket_drill",     0.01, 1, 1]
+    ],
+
+    "elder_dragon": [
+      ["gem_ruby",         1.00, 2, 4],
+      ["gem_sapphire",     1.00, 2, 4],
+      ["gem_emerald",      1.00, 2, 4],
+      ["gem_topaz",        1.00, 2, 4],
+      ["gem_amethyst",     1.00, 2, 4],
+      ["gem_onyx",         1.00, 2, 4],
+      ["gem_diamond",      1.00, 2, 4],
+      ["magic_stone",      1.00, 40, 80],
+      ["demon_core",       1.00, 40, 80],
+      ["herb",             1.00, 20, 40]
+    ]
+  }
+}

@@ -1,0 +1,2474 @@
+{
+  "tileset": {
+    "1": {
+      "sprite": "tile_stall_weapon",
+      "solid": true
+    },
+    "2": {
+      "sprite": "tile_stall_armor",
+      "solid": true
+    },
+    "3": {
+      "sprite": "tile_forge_hearth",
+      "solid": true
+    },
+    "4": {
+      "sprite": "tile_forge_anvil",
+      "solid": true
+    },
+    "G": {
+      "sprite": "tile_grass",
+      "solid": false
+    },
+    "P": {
+      "sprite": "tile_path",
+      "solid": false
+    },
+    "T": {
+      "sprite": "tile_tree",
+      "solid": true
+    },
+    "R": {
+      "sprite": "tile_rock",
+      "solid": true
+    },
+    "W": {
+      "sprite": "tile_water",
+      "solid": true
+    },
+    "F": {
+      "sprite": "tile_flower",
+      "solid": false
+    },
+    "B": {
+      "sprite": "tile_brick",
+      "solid": false
+    },
+    "H": {
+      "sprite": "tile_house_wall",
+      "solid": true
+    },
+    "O": {
+      "sprite": "tile_house_roof",
+      "solid": true
+    },
+    "D": {
+      "sprite": "tile_door",
+      "solid": true
+    },
+    "C": {
+      "sprite": "tile_castle_wall",
+      "solid": true
+    },
+    "U": {
+      "sprite": "tile_castle_top",
+      "solid": true
+    },
+    "K": {
+      "sprite": "tile_lair_gate",
+      "solid": false
+    },
+    "L": {
+      "sprite": "tile_castle_floor",
+      "solid": false
+    },
+    "V": {
+      "sprite": "tile_fence",
+      "solid": true
+    },
+    "X": {
+      "sprite": "tile_gate_exit",
+      "solid": false
+    },
+    "S": {
+      "sprite": "tile_signpost",
+      "solid": true
+    },
+    "i": {
+      "sprite": "tile_sign_item",
+      "solid": true
+    },
+    "w": {
+      "sprite": "tile_sign_weapon",
+      "solid": true
+    },
+    "y": {
+      "sprite": "tile_sign_alchemy",
+      "solid": true
+    },
+    "n": {
+      "sprite": "tile_sign_inn",
+      "solid": true
+    },
+    "d": {
+      "sprite": "tile_dungeon_floor",
+      "solid": false
+    },
+    "Z": {
+      "sprite": "tile_dungeon_wall",
+      "solid": true
+    },
+    "s": {
+      "sprite": "tile_stairs_down",
+      "solid": false
+    },
+    "u": {
+      "sprite": "tile_stairs_up",
+      "solid": false
+    },
+    "Q": {
+      "sprite": "tile_waypoint_pad",
+      "solid": false
+    },
+    "a": {
+      "sprite": "tile_waste",
+      "solid": false
+    },
+    "#": {
+      "sprite": "tile_cliff",
+      "solid": true
+    },
+    "=": {
+      "sprite": "tile_cliff_edge",
+      "solid": false
+    },
+    "^": {
+      "sprite": "tile_wind_rock",
+      "solid": true
+    },
+    "A": {
+      "sprite": "tile_ash",
+      "solid": false
+    },
+    "p": {
+      "sprite": "tile_ash_path",
+      "solid": false
+    },
+    "c": {
+      "sprite": "tile_charred",
+      "solid": true
+    },
+    "b": {
+      "sprite": "tile_basalt",
+      "solid": true
+    },
+    "m": {
+      "sprite": "tile_magma",
+      "solid": true
+    },
+    "e": {
+      "sprite": "tile_ember",
+      "solid": false
+    }
+  },
+  "themes": {
+    "volcano": {
+      "G": "A",
+      "P": "p",
+      "T": "c",
+      "R": "b",
+      "W": "m",
+      "F": "e"
+    }
+  },
+  "maps": {
+    "poino": {
+      "name": "포이노 마을",
+      "kind": "town",
+      "bgm": "town",
+      "bgColor": "#1c2f22",
+      "grid": [
+        "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+        "TGGGGGGGGGGGGUUUUUUUUUUUUUUGGGGGGGGGGGGT",
+        "TGGGGGGGGGGGGUUUUUUUUUUUUUUGGGGGGGGGGGGT",
+        "TGGGGGGGGTGGGCCCCCCCCCCCCCCGGGTGGGGGGGGT",
+        "TGGTGGGGGGGGGCCCCCCCCCCCCCCGGGGGGTGGGGGT",
+        "TGGGGGTGGGGGGCCCCCCCCCCCCCCGGGGGGGGGGGGT",
+        "TGGGGGGGGGGGRCCCCCCCCCCCCCCGRGGGGGGGTGGT",
+        "TGGGGGGGGGGGGCCCCCCKKCCCCCCGGGGGGGGGGGGT",
+        "TGGGGGGGGGGGGGGGGGGBBGGGGGGGGGGGGGGGGGGT",
+        "TGGGGGOOOOOOGGGGGGGBBGGGGGGGOOOOOOGGGGGT",
+        "TGGGGGOOOOOOGGGGGGGBBGGGGGGGOOOOOOGGGGGT",
+        "TGGGGGHHDiHHGGGGGGGBBGGGGGGGHHDwHHGGGGGT",
+        "TGGGGGGGPGGGGGFGGGGBBGGGGGFGGGPGGGGRGGGT",
+        "TGGGGGGGPGGGGGGGGGGBBGGGGGGGGGPGGGGGGGGT",
+        "TGGGGGGGPPPPPPPPBBBBBBBBBBPPPPPGGGGGGGGT",
+        "XPPPPPPPPPPPPPPBBBBBBBBBBBPPPPPPPPPPPPPX",
+        "XPPPPPPPPPPPPPPBBBBBQBBBBBPPPPPPPPPPPPPX",
+        "TGGGGGGGGGFGGGGBBBBBBBBBBBGGGGGGGGPGGGGT",
+        "TGGGTGGGGGGGGGGBBBBBBBBBBBGGOOOOOOPGFGGT",
+        "TGGGGGGGGGGGPPPPPGGGGGGGPGGGOOOOOOPGGGGT",
+        "TGGGGGTGGGGGPGGGGFGGGGGGPGGGHHDyHHPGTGGT",
+        "TGGGGGGGGGOOPOOOGGGGGGFGPGGGGGPPPPPGGGGT",
+        "TGGGGGGFGGOOPOOOGGGGGGGGPGGGGGGGGGGFGGGT",
+        "TGGGGGGGGGHHPnHHGGGGGGGGPGGGGGGGGGGGGGGT",
+        "TGGGGGGGGGGGGGGGGGGGGGGGPOOOOOOGGGGGGTGT",
+        "TGGVVVVVVVGGGGGGGGFGGGGGPOOOOOOGGGGGGGGT",
+        "TGGGWWWWWGGGGGGGGGGGGGFGPHHDHHHGGGGGGGGT",
+        "TGGGWWWWWGGGGGGGTGGGGGGGPPPPGGGGGGGGGGGT",
+        "TGGGWWWWWGGGGGGGGGGGTGGGGGGGGGGGGTGGGGGT",
+        "TGGGGGGGTGGGGGGGGGGGGGGTGGGGGGGGGGGGGGGT",
+        "TGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGT",
+        "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"
+      ],
+      "spawns": [],
+      "respawnMs": 0,
+      "npcs": [
+        {
+          "id": "shopkeeper",
+          "x": 8,
+          "y": 12
+        },
+        {
+          "id": "blacksmith",
+          "x": 30,
+          "y": 12
+        },
+        {
+          "id": "alchemist",
+          "x": 30,
+          "y": 21
+        },
+        {
+          "id": "innkeeper",
+          "x": 12,
+          "y": 24
+        },
+        {
+          "id": "villager_kid",
+          "x": 27,
+          "y": 27
+        },
+        {
+          "id": "villager_elder",
+          "x": 23,
+          "y": 22
+        },
+        {
+          "id": "gate_guard",
+          "x": 18,
+          "y": 9
+        },
+        {
+          "id": "quest_board",
+          "x": 35,
+          "y": 14
+        },
+        {
+          "id": "waypoint_stone",
+          "x": 20,
+          "y": 16
+        },
+        {
+          "id": "witch",
+          "x": 6,
+          "y": 18
+        }
+      ],
+      "portals": [
+        {
+          "x": 19,
+          "y": 7,
+          "to": "castle",
+          "toX": 11,
+          "toY": 13,
+          "label": "포이노 성",
+          "requireLevel": 25,
+          "blockedText": "성문 위병: 레벨 25에 이르지 못한 자는 통과할 수 없다."
+        },
+        {
+          "x": 20,
+          "y": 7,
+          "to": "castle",
+          "toX": 12,
+          "toY": 13,
+          "label": "포이노 성",
+          "requireLevel": 25,
+          "blockedText": "성문 위병: 레벨 25에 이르지 못한 자는 통과할 수 없다."
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_1",
+          "toX": 1,
+          "toY": 15,
+          "label": "동쪽 들판"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_1",
+          "toX": 1,
+          "toY": 16,
+          "label": "동쪽 들판"
+        },
+        {
+          "x": 0,
+          "y": 15,
+          "to": "west_cliff",
+          "toX": 38,
+          "toY": 15,
+          "label": "서쪽 절벽"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "west_cliff",
+          "toX": 38,
+          "toY": 16,
+          "label": "서쪽 절벽"
+        }
+      ]
+    },
+    "west_cliff": {
+      "name": "서쪽 절벽 들판",
+      "kind": "field",
+      "bgm": "dragon",
+      "bgColor": "#2a2620",
+      "stage": 0,
+      "power": 1,
+      "levelBonus": 0,
+      "grid": [
+        "########################################",
+        "########################################",
+        "########################################",
+        "#======================================#",
+        "#aaaaaaa###aaaaaaaaaaaaaaaaaaaaaaaaaaaa#",
+        "#aaaaaaa###aaaaaaaaaaaaaaaaaaaaaaaaaaaa#",
+        "#aaaaaaa###aaaaaaaaaaaaa^aaaaaaaaaaaaaa#",
+        "#aaaaaaa###aaaaaaaaaaaaaaaaaaaaaaaaaaaa#",
+        "#aaaaaaa###aaa^aaaaaaaaaaaaaaaaaaaaaaaa#",
+        "#aaaaaaa###aaaaaaaaaaaaaaaaaaaaaaaaaaaa#",
+        "#aaaaaaa===aaaaaaaaaaaaaaaaaaaaaaaaaaaa#",
+        "#aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa#",
+        "#aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa^aaaaa#",
+        "#aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa#",
+        "#aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa#",
+        "KaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaX",
+        "Kaaaaaaaaaaa^aaaaaaaaaaaaaaaaaaaaaaaaaaX",
+        "#aaaaaaaaaaaaaaaaaaaaaaaaaaaaa^aaaaaaaa#",
+        "#aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa#",
+        "#aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa#",
+        "#aaaaa^aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa#",
+        "#aaaaaaaaaaaaaaaaaaaaaaaaaa====aaaaaaaa#",
+        "#aaaaaaaaaaaaaaaaaaaaaaaaaa####aaaaaaaa#",
+        "#aaaaaaaaaaaaaaaaaaaaaaaaaa####aaaaaaaa#",
+        "#aaaaaaaaaaaaaaaaaaaaaaaaaa####aaaaaaaa#",
+        "#aaaaaaaaaaaaaaaaaa^aaaaaaa####aaaaaaaa#",
+        "#aaaaaaaaaaaaaaaaaaaaaaaaaa####aaaaaaaa#",
+        "#aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa#",
+        "#======================================#",
+        "########################################",
+        "########################################",
+        "########################################"
+      ],
+      "monsters": [],
+      "monsterCount": 0,
+      "spawns": [],
+      "boss": null,
+      "respawnMs": 0,
+      "timedBoss": {
+        "monster": "great_dragon",
+        "everyMs": 1800000,
+        "stayMs": 1500000,
+        "omen": "서쪽에서 이상한 기운이 감돈다...",
+        "x": 20,
+        "y": 15,
+        "keepHp": true,
+        "noPenalty": true,
+        "reviveAt": {
+          "map": "poino",
+          "x": 20,
+          "y": 17
+        }
+      },
+      "npcs": [],
+      "portals": [
+        {
+          "x": 39,
+          "y": 15,
+          "to": "poino",
+          "toX": 1,
+          "toY": 15,
+          "label": "포이노 마을"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "poino",
+          "toX": 1,
+          "toY": 16,
+          "label": "포이노 마을"
+        },
+        {
+          "x": 0,
+          "y": 15,
+          "to": "dragon_lair",
+          "toX": 37,
+          "toY": 15,
+          "label": "잠긴 동굴",
+          "requireItem": "dragon_gate_key"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "dragon_lair",
+          "toX": 37,
+          "toY": 16,
+          "label": "잠긴 동굴",
+          "requireItem": "dragon_gate_key"
+        }
+      ]
+    },
+    "dragon_lair": {
+      "name": "고룡의 둥지",
+      "kind": "field",
+      "bgm": "dragon",
+      "bgColor": "#140a08",
+      "stage": 0,
+      "power": 1,
+      "levelBonus": 0,
+      "grid": [
+        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "bbbAmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmAbbb",
+        "bbbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbbb",
+        "bbbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbbb",
+        "bbbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbbb",
+        "bbbAAAAAAAAAcAAAAAAAAAAAAAAcAAAAAAAAAbbb",
+        "bbbAAAAAAAAAAAAAAAAAeAAAAAAAAAAAAAAAAbbb",
+        "bbbAAAAAAAppppppppppppppppppppAAAAAAAbbb",
+        "bbbAAAAAAAppppppppppppppppppppAAAAAAAbbb",
+        "bbbAAAAAAAppppppepppppppepppppAAAAAAAbbb",
+        "bbbAAAAAAAppppppppppppppppppppAAAAAAAbbb",
+        "bbbAAAAAAAppppppppppppppppppppAAAAAAAbbb",
+        "bbbAAAAAAAppppppppppppppppppppAAAAAAAAAX",
+        "bbbAAAAAcAppppppppppppppppppppAcAAAAAAAX",
+        "bbbAAAAAAAppppppppppppppppppppAAAAAAAbbb",
+        "bbbAAAAAAAppppppppppppppppppppAAAAAAAbbb",
+        "bbbAAAAAAAppppppppppppppppppppAAAAAAAbbb",
+        "bbbAAAAAAAppppppepppppppepppppAAAAAAAbbb",
+        "bbbAAAAAAAppppppppppppppppppppAAAAAAAbbb",
+        "bbbAAAAAAAAAAAAAAAAAeAAAAAAAAAAAAAAAAbbb",
+        "bbbAAAAAAAAAcAAAAAAAAAAAAAAcAAAAAAAAAbbb",
+        "bbbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbbb",
+        "bbbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbbb",
+        "bbbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbbb",
+        "bbbAmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmAbbb",
+        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      ],
+      "monsters": [],
+      "monsterCount": 0,
+      "spawns": [
+        {
+          "monster": "elder_dragon",
+          "x": 20,
+          "y": 16,
+          "boss": true
+        }
+      ],
+      "boss": "elder_dragon",
+      "bossRespawnMs": 3600000,
+      "bossKeepHp": true,
+      "reviveAt": {
+        "map": "west_cliff",
+        "x": 3,
+        "y": 15
+      },
+      "respawnMs": 0,
+      "magicPart": 0.5,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 39,
+          "y": 15,
+          "to": "west_cliff",
+          "toX": 1,
+          "toY": 15,
+          "label": "서쪽 절벽"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "west_cliff",
+          "toX": 1,
+          "toY": 16,
+          "label": "서쪽 절벽"
+        }
+      ]
+    },
+    "castle": {
+      "name": "포이노 성",
+      "kind": "town",
+      "bgm": "town",
+      "bgColor": "#1a1c2a",
+      "grid": [
+        "UUUUUUUUUUUUUUUUUUUUUUUU",
+        "UUUUUUUUUUUUUUUUUUUUUUUU",
+        "CCLLLLLLLBBBBBBLLLLLLLCC",
+        "CCLLLLLLLBBBBBBLLLLLsLCC",
+        "CCLLLLLLLLLLLLLLLLLLLLCC",
+        "CCLLLLLLLLLLLLLLLLLLLLCC",
+        "CCLLLCCLLLLLLLLLLCCLLLCC",
+        "CCLLLCCLLLLLLLLLLCCLLLCC",
+        "CCLLLLLLLLLLLLLLLLLLLLCC",
+        "CCLLLLLLLLLLLLLLLLLLLLCC",
+        "CCLLLCCLLLLLLLLLLCCLLLCC",
+        "CCLLLCCLLLLLLLLLLCCLLLCC",
+        "CC343LLLLLLLLLLLLLL121CC",
+        "CCLLLLLLLLLLLLLLLLLLLLCC",
+        "CCLLLLLLLLLLLLLLLLLLLLCC",
+        "CCCCCCCCCCCKKCCCCCCCCCCC"
+      ],
+      "spawns": [],
+      "respawnMs": 0,
+      "npcs": [
+        {
+          "id": "king",
+          "x": 11,
+          "y": 5
+        },
+        {
+          "id": "royal_smith",
+          "x": 3,
+          "y": 13
+        },
+        {
+          "id": "dungeon_warden",
+          "x": 19,
+          "y": 5
+        },
+        {
+          "id": "gate_merchant",
+          "x": 20,
+          "y": 13
+        }
+      ],
+      "portals": [
+        {
+          "x": 11,
+          "y": 15,
+          "to": "poino",
+          "toX": 19,
+          "toY": 8,
+          "label": "마을로"
+        },
+        {
+          "x": 12,
+          "y": 15,
+          "to": "poino",
+          "toX": 20,
+          "toY": 8,
+          "label": "마을로"
+        },
+        {
+          "x": 20,
+          "y": 3,
+          "to": "dungeon_1",
+          "toX": 9,
+          "toY": 20,
+          "label": "지하감옥",
+          "requireLevel": 40,
+          "blockedText": "지하감옥 간수: 레벨 40은 되어야 내려보낼 수 있네."
+        }
+      ]
+    },
+    "dungeon_1": {
+      "name": "지하감옥 1층 · 무너진 감방",
+      "kind": "field",
+      "bgm": "dungeon",
+      "bgColor": "#0a0910",
+      "dungeon": true,
+      "stage": 21,
+      "power": 11.936,
+      "magicPart": 0.5,
+      "levelBonus": 16,
+      "dark": true,
+      "sight": 3.5,
+      "aggro": 5,
+      "rooms": [
+        {
+          "x": 9,
+          "y": 20
+        },
+        {
+          "x": 27,
+          "y": 18
+        },
+        {
+          "x": 20,
+          "y": 7
+        },
+        {
+          "x": 33,
+          "y": 9
+        },
+        {
+          "x": 10,
+          "y": 12
+        },
+        {
+          "x": 18,
+          "y": 14
+        }
+      ],
+      "randomStairs": true,
+      "groupOdds": [
+        0.6,
+        0.35,
+        0.05
+      ],
+      "grid": [
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZdddddddddddZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZdddddddddddZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZdddddddddddZZZZddddddZZZZ",
+        "ZZZZZZZZZZZZZZZdddddddddddZZZZddddddZZZZ",
+        "ZZZZZZZZZZZZZZZdddddddddddddddddddddZZZZ",
+        "ZZZZZZZZZZZZZZZdddddddddddddddddddddZZZZ",
+        "ZZZZZZZdddddddddddddddddddddddddddddZZZZ",
+        "ZZZZZZZdddddddddddddddddddddddddddddZZZZ",
+        "ZZZZZZZddddddZZZZZZZddZZZZZZZZddddddZZZZ",
+        "ZZZZZZZdddddddddddddddZZZZZZZZddddddZZZZ",
+        "ZZZZZZZdddddddddddddddZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZddddddZZdddsdddZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZddddddZZdddddddZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZdddddddZZdddddddZZZZZZZZZ",
+        "ZZZZZddddddddZZZZZZZddZZdddddddZZZZZZZZZ",
+        "ZZZZZddddddddZZZZZZZdddddddddddZZZZZZZZZ",
+        "ZZZZZddddddddZZZZZZZdddddddddddZZZZZZZZZ",
+        "ZZZZZddddudddddddddddddddddddZZZZZZZZZZZ",
+        "ZZZZZdddddddddddddddddddddddZZZZZZZZZZZZ",
+        "ZZZZZddddddddZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZddddddddZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
+      ],
+      "monsters": [
+        "elite_skeleton",
+        "elite_demon_soldier"
+      ],
+      "monsterCount": 12,
+      "boss": null,
+      "bossOnly": false,
+      "respawnMs": 15000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 9,
+          "y": 20,
+          "to": "castle",
+          "toX": 20,
+          "toY": 4,
+          "label": "성으로"
+        },
+        {
+          "x": 18,
+          "y": 14,
+          "to": "dungeon_2",
+          "label": "2층으로",
+          "toX": 14,
+          "toY": 25
+        }
+      ]
+    },
+    "field_1": {
+      "name": "1단계 · 포이노 동쪽 들판",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 1,
+      "deep": false,
+      "bgColor": "#16301f",
+      "power": 1.327,
+      "levelBonus": 0,
+      "magicPart": 0,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 98129,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": null,
+      "monsters": [
+        "slime"
+      ],
+      "monsterCount": 9,
+      "boss": null,
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "poino",
+          "toX": 38,
+          "toY": 15,
+          "label": "포이노 마을"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_2",
+          "toX": 1,
+          "toY": 15,
+          "label": "바람 언덕"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "poino",
+          "toX": 38,
+          "toY": 16,
+          "label": "포이노 마을"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_2",
+          "toX": 1,
+          "toY": 16,
+          "label": "바람 언덕"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_2": {
+      "name": "2단계 · 바람 언덕",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 2,
+      "deep": false,
+      "bgColor": "#173322",
+      "power": 1.721,
+      "levelBonus": 1,
+      "magicPart": 0,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 106048,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": null,
+      "monsters": [
+        "slime",
+        "bat"
+      ],
+      "monsterCount": 10,
+      "boss": null,
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_1",
+          "toX": 38,
+          "toY": 15,
+          "label": "포이노 동쪽 들판"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_3",
+          "toX": 1,
+          "toY": 15,
+          "label": "늑대 골짜기"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_1",
+          "toX": 38,
+          "toY": 16,
+          "label": "포이노 동쪽 들판"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_3",
+          "toX": 1,
+          "toY": 16,
+          "label": "늑대 골짜기"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_3": {
+      "name": "3단계 · 늑대 골짜기",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 3,
+      "deep": false,
+      "bgColor": "#1a2f28",
+      "power": 1.481,
+      "levelBonus": 2,
+      "magicPart": 0,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 113967,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": null,
+      "monsters": [
+        "bat",
+        "wolf"
+      ],
+      "monsterCount": 10,
+      "boss": null,
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_2",
+          "toX": 38,
+          "toY": 15,
+          "label": "바람 언덕"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_4",
+          "toX": 1,
+          "toY": 15,
+          "label": "잿빛 숲"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_2",
+          "toX": 38,
+          "toY": 16,
+          "label": "바람 언덕"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_4",
+          "toX": 1,
+          "toY": 16,
+          "label": "잿빛 숲"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_4": {
+      "name": "4단계 · 잿빛 숲",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 4,
+      "deep": false,
+      "bgColor": "#222c1e",
+      "power": 3.333,
+      "levelBonus": 3,
+      "magicPart": 0,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 121886,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": null,
+      "monsters": [
+        "wolf",
+        "mushroom"
+      ],
+      "monsterCount": 11,
+      "boss": null,
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_3",
+          "toX": 38,
+          "toY": 15,
+          "label": "늑대 골짜기"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_5",
+          "toX": 1,
+          "toY": 15,
+          "label": "무너진 초소"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_3",
+          "toX": 38,
+          "toY": 16,
+          "label": "늑대 골짜기"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_5",
+          "toX": 1,
+          "toY": 16,
+          "label": "무너진 초소"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_5": {
+      "name": "5단계 · 무너진 초소",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 5,
+      "deep": false,
+      "bgColor": "#160d0a",
+      "power": 5.134,
+      "levelBonus": 4,
+      "magicPart": 0,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 129805,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": "volcano",
+      "monsters": [
+        "mushroom",
+        "imp"
+      ],
+      "monsterCount": 9,
+      "boss": "imp_captain",
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_4",
+          "toX": 38,
+          "toY": 15,
+          "label": "잿빛 숲"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_6",
+          "toX": 1,
+          "toY": 15,
+          "label": "붉은 황야",
+          "requireBossOf": "field_5",
+          "requireQuestOf": "imp_captain"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_4",
+          "toX": 38,
+          "toY": 16,
+          "label": "잿빛 숲"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_6",
+          "toX": 1,
+          "toY": 16,
+          "label": "붉은 황야",
+          "requireBossOf": "field_5",
+          "requireQuestOf": "imp_captain"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_6": {
+      "name": "6단계 · 붉은 황야",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 6,
+      "deep": false,
+      "bgColor": "#33221c",
+      "power": 8.184,
+      "levelBonus": 5,
+      "magicPart": 0,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 137724,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": null,
+      "monsters": [
+        "imp",
+        "skeleton"
+      ],
+      "monsterCount": 11,
+      "boss": null,
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_5",
+          "toX": 38,
+          "toY": 15,
+          "label": "무너진 초소"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_7",
+          "toX": 1,
+          "toY": 15,
+          "label": "뼈의 들판"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_5",
+          "toX": 38,
+          "toY": 16,
+          "label": "무너진 초소"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_7",
+          "toX": 1,
+          "toY": 16,
+          "label": "뼈의 들판"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_7": {
+      "name": "7단계 · 뼈의 들판",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 7,
+      "deep": false,
+      "bgColor": "#2c2622",
+      "power": 9.201,
+      "levelBonus": 6,
+      "magicPart": 0,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 145643,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": null,
+      "monsters": [
+        "skeleton"
+      ],
+      "monsterCount": 12,
+      "boss": null,
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_6",
+          "toX": 38,
+          "toY": 15,
+          "label": "붉은 황야"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_8",
+          "toX": 1,
+          "toY": 15,
+          "label": "악마의 길목"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_6",
+          "toX": 38,
+          "toY": 16,
+          "label": "붉은 황야"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_8",
+          "toX": 1,
+          "toY": 16,
+          "label": "악마의 길목"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_8": {
+      "name": "8단계 · 악마의 길목",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 8,
+      "deep": false,
+      "bgColor": "#2e1e26",
+      "power": 7.313,
+      "levelBonus": 7,
+      "magicPart": 0,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 153562,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": null,
+      "monsters": [
+        "skeleton",
+        "demon_soldier"
+      ],
+      "monsterCount": 11,
+      "boss": null,
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_7",
+          "toX": 38,
+          "toY": 15,
+          "label": "뼈의 들판"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_9",
+          "toX": 1,
+          "toY": 15,
+          "label": "검은 성문 앞"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_7",
+          "toX": 38,
+          "toY": 16,
+          "label": "뼈의 들판"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_9",
+          "toX": 1,
+          "toY": 16,
+          "label": "검은 성문 앞"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_9": {
+      "name": "9단계 · 검은 성문 앞",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 9,
+      "deep": false,
+      "bgColor": "#281a2c",
+      "power": 8.388,
+      "levelBonus": 8,
+      "magicPart": 0,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 161481,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": null,
+      "monsters": [
+        "skeleton",
+        "demon_soldier"
+      ],
+      "monsterCount": 12,
+      "boss": null,
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_8",
+          "toX": 38,
+          "toY": 15,
+          "label": "악마의 길목"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_10",
+          "toX": 1,
+          "toY": 15,
+          "label": "심연의 관문"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_8",
+          "toX": 38,
+          "toY": 16,
+          "label": "악마의 길목"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_10",
+          "toX": 1,
+          "toY": 16,
+          "label": "심연의 관문"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_10": {
+      "name": "10단계 · 심연의 관문",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 10,
+      "deep": false,
+      "bgColor": "#160d0a",
+      "power": 9.521,
+      "levelBonus": 9,
+      "magicPart": 0,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 169400,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": "volcano",
+      "monsters": [
+        "demon_soldier"
+      ],
+      "monsterCount": 9,
+      "boss": "demon_general",
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_9",
+          "toX": 38,
+          "toY": 15,
+          "label": "검은 성문 앞"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_11",
+          "toX": 1,
+          "toY": 15,
+          "label": "되살아난 들판",
+          "requireBossOf": "field_10",
+          "requireQuestOf": "demon_general"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_9",
+          "toX": 38,
+          "toY": 16,
+          "label": "검은 성문 앞"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_11",
+          "toX": 1,
+          "toY": 16,
+          "label": "되살아난 들판",
+          "requireBossOf": "field_10",
+          "requireQuestOf": "demon_general"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_11": {
+      "name": "11단계 · 되살아난 들판",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 11,
+      "deep": true,
+      "bgColor": "#16301f",
+      "power": 4.262,
+      "levelBonus": 3,
+      "magicPart": 0.1,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 98129,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": null,
+      "monsters": [
+        "elite_slime"
+      ],
+      "monsterCount": 9,
+      "boss": null,
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_10",
+          "toX": 38,
+          "toY": 15,
+          "label": "심연의 관문"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_12",
+          "toX": 1,
+          "toY": 15,
+          "label": "무너진 바람 언덕"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_10",
+          "toX": 38,
+          "toY": 16,
+          "label": "심연의 관문"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_12",
+          "toX": 1,
+          "toY": 16,
+          "label": "무너진 바람 언덕"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_12": {
+      "name": "12단계 · 무너진 바람 언덕",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 12,
+      "deep": true,
+      "bgColor": "#173322",
+      "power": 4.32,
+      "levelBonus": 4,
+      "magicPart": 0.1,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 106048,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": null,
+      "monsters": [
+        "elite_slime",
+        "elite_bat"
+      ],
+      "monsterCount": 10,
+      "boss": null,
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_11",
+          "toX": 38,
+          "toY": 15,
+          "label": "되살아난 들판"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_13",
+          "toX": 1,
+          "toY": 15,
+          "label": "검게 죽은 골짜기"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_11",
+          "toX": 38,
+          "toY": 16,
+          "label": "되살아난 들판"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_13",
+          "toX": 1,
+          "toY": 16,
+          "label": "검게 죽은 골짜기"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_13": {
+      "name": "13단계 · 검게 죽은 골짜기",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 13,
+      "deep": true,
+      "bgColor": "#1a2f28",
+      "power": 3.885,
+      "levelBonus": 5,
+      "magicPart": 0.1,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 113967,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": null,
+      "monsters": [
+        "elite_bat",
+        "elite_wolf"
+      ],
+      "monsterCount": 10,
+      "boss": null,
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_12",
+          "toX": 38,
+          "toY": 15,
+          "label": "무너진 바람 언덕"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_14",
+          "toX": 1,
+          "toY": 15,
+          "label": "재의 숲"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_12",
+          "toX": 38,
+          "toY": 16,
+          "label": "무너진 바람 언덕"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_14",
+          "toX": 1,
+          "toY": 16,
+          "label": "재의 숲"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_14": {
+      "name": "14단계 · 재의 숲",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 14,
+      "deep": true,
+      "bgColor": "#222c1e",
+      "power": 4.03,
+      "levelBonus": 6,
+      "magicPart": 0.1,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 121886,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": null,
+      "monsters": [
+        "elite_wolf",
+        "elite_mushroom"
+      ],
+      "monsterCount": 11,
+      "boss": null,
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_13",
+          "toX": 38,
+          "toY": 15,
+          "label": "검게 죽은 골짜기"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_15",
+          "toX": 1,
+          "toY": 15,
+          "label": "되세워진 초소"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_13",
+          "toX": 38,
+          "toY": 16,
+          "label": "검게 죽은 골짜기"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_15",
+          "toX": 1,
+          "toY": 16,
+          "label": "되세워진 초소"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_15": {
+      "name": "15단계 · 되세워진 초소",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 15,
+      "deep": true,
+      "bgColor": "#160d0a",
+      "power": 4.814,
+      "levelBonus": 7,
+      "magicPart": 0.1,
+      "bossMagicPart": 0.3,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 129805,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": "volcano",
+      "monsters": [
+        "elite_mushroom",
+        "elite_imp"
+      ],
+      "monsterCount": 9,
+      "boss": "elite_imp_captain",
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_14",
+          "toX": 38,
+          "toY": 15,
+          "label": "재의 숲"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_16",
+          "toX": 1,
+          "toY": 15,
+          "label": "피에 젖은 황야",
+          "requireBossOf": "field_15",
+          "requireQuestOf": "elite_imp_captain"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_14",
+          "toX": 38,
+          "toY": 16,
+          "label": "재의 숲"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_16",
+          "toX": 1,
+          "toY": 16,
+          "label": "피에 젖은 황야",
+          "requireBossOf": "field_15",
+          "requireQuestOf": "elite_imp_captain"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_16": {
+      "name": "16단계 · 피에 젖은 황야",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 16,
+      "deep": true,
+      "bgColor": "#33221c",
+      "power": 7.865,
+      "levelBonus": 8,
+      "magicPart": 0.2,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 137724,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": null,
+      "monsters": [
+        "elite_imp",
+        "elite_skeleton"
+      ],
+      "monsterCount": 11,
+      "boss": null,
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_15",
+          "toX": 38,
+          "toY": 15,
+          "label": "되세워진 초소"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_17",
+          "toX": 1,
+          "toY": 15,
+          "label": "뼈가 쌓인 들판"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_15",
+          "toX": 38,
+          "toY": 16,
+          "label": "되세워진 초소"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_17",
+          "toX": 1,
+          "toY": 16,
+          "label": "뼈가 쌓인 들판"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_17": {
+      "name": "17단계 · 뼈가 쌓인 들판",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 17,
+      "deep": true,
+      "bgColor": "#2c2622",
+      "power": 8.533,
+      "levelBonus": 9,
+      "magicPart": 0.2,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 145643,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": null,
+      "monsters": [
+        "elite_skeleton"
+      ],
+      "monsterCount": 12,
+      "boss": null,
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_16",
+          "toX": 38,
+          "toY": 15,
+          "label": "피에 젖은 황야"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_18",
+          "toX": 1,
+          "toY": 15,
+          "label": "악마의 대로"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_16",
+          "toX": 38,
+          "toY": 16,
+          "label": "피에 젖은 황야"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_18",
+          "toX": 1,
+          "toY": 16,
+          "label": "악마의 대로"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_18": {
+      "name": "18단계 · 악마의 대로",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 18,
+      "deep": true,
+      "bgColor": "#2e1e26",
+      "power": 7.923,
+      "levelBonus": 10,
+      "magicPart": 0.2,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 153562,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": null,
+      "monsters": [
+        "elite_skeleton",
+        "elite_demon_soldier"
+      ],
+      "monsterCount": 11,
+      "boss": null,
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_17",
+          "toX": 38,
+          "toY": 15,
+          "label": "뼈가 쌓인 들판"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_19",
+          "toX": 1,
+          "toY": 15,
+          "label": "닫힌 성문 앞"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_17",
+          "toX": 38,
+          "toY": 16,
+          "label": "뼈가 쌓인 들판"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_19",
+          "toX": 1,
+          "toY": 16,
+          "label": "닫힌 성문 앞"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_19": {
+      "name": "19단계 · 닫힌 성문 앞",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 19,
+      "deep": true,
+      "bgColor": "#281a2c",
+      "power": 8.707,
+      "levelBonus": 11,
+      "magicPart": 0.2,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 161481,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": null,
+      "monsters": [
+        "elite_skeleton",
+        "elite_demon_soldier"
+      ],
+      "monsterCount": 12,
+      "boss": null,
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_18",
+          "toX": 38,
+          "toY": 15,
+          "label": "악마의 대로"
+        },
+        {
+          "x": 39,
+          "y": 15,
+          "to": "field_20",
+          "toX": 1,
+          "toY": 15,
+          "label": "심연 너머"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_18",
+          "toX": 38,
+          "toY": 16,
+          "label": "악마의 대로"
+        },
+        {
+          "x": 39,
+          "y": 16,
+          "to": "field_20",
+          "toX": 1,
+          "toY": 16,
+          "label": "심연 너머"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "field_20": {
+      "name": "20단계 · 심연 너머",
+      "kind": "field",
+      "bgm": "field",
+      "stage": 20,
+      "deep": true,
+      "bgColor": "#160d0a",
+      "power": 9.114,
+      "levelBonus": 12,
+      "magicPart": 0.2,
+      "bossMagicPart": 0.3,
+      "generate": {
+        "w": 40,
+        "h": 32,
+        "seed": 169400,
+        "entryY": 15,
+        "exitY": 15,
+        "treeClusters": 16,
+        "rocks": 16,
+        "ponds": 3,
+        "flowers": 26
+      },
+      "theme": "volcano",
+      "monsters": [
+        "elite_demon_soldier"
+      ],
+      "monsterCount": 9,
+      "boss": "elite_demon_general",
+      "respawnMs": 11000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 0,
+          "y": 15,
+          "to": "field_19",
+          "toX": 38,
+          "toY": 15,
+          "label": "닫힌 성문 앞"
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "to": "field_19",
+          "toX": 38,
+          "toY": 16,
+          "label": "닫힌 성문 앞"
+        }
+      ],
+      "waypoint": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "dungeon_2": {
+      "name": "지하감옥 2층 · 물 고인 복도",
+      "kind": "field",
+      "bgm": "dungeon",
+      "bgColor": "#0a0910",
+      "dungeon": true,
+      "stage": 22,
+      "power": 14.289,
+      "magicPart": 0.5,
+      "levelBonus": 17,
+      "dark": true,
+      "sight": 3.5,
+      "aggro": 5,
+      "rooms": [
+        {
+          "x": 14,
+          "y": 25
+        },
+        {
+          "x": 13,
+          "y": 17
+        },
+        {
+          "x": 24,
+          "y": 7
+        },
+        {
+          "x": 24,
+          "y": 21
+        },
+        {
+          "x": 10,
+          "y": 6
+        },
+        {
+          "x": 16,
+          "y": 10
+        }
+      ],
+      "randomStairs": true,
+      "groupOdds": [
+        0.6,
+        0.35,
+        0.05
+      ],
+      "grid": [
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZdddddZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZdddddZZZZZZZZZdddddZZZZZZZZZZZZZ",
+        "ZZZZZZZZdddddddddddddddddddZZZZZZZZZZZZZ",
+        "ZZZZZZZZdddddddddddddddddddZZZZZZZZZZZZZ",
+        "ZZZZZZZZdddddddddddddddddddZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZddddddZZZdddddZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZdddsddZZZZZddZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZddddddZZZZZddZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZddddddZZZZZddZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZddZZZZZZZZZddZZZZZZZZZZZZZZ",
+        "ZZZZZZZZdddddddddddZZZZZddZZZZZZZZZZZZZZ",
+        "ZZZZZZZZdddddddddddZZZZZddZZZZZZZZZZZZZZ",
+        "ZZZZZZZZdddddddddddZZZZZddZZZZZZZZZZZZZZ",
+        "ZZZZZZZZdddddddddddZZZZZddZZZZZZZZZZZZZZ",
+        "ZZZZZZZZdddddddddddZZZZZddZZZZZZZZZZZZZZ",
+        "ZZZZZZZZdddddddddddZddddddddZZZZZZZZZZZZ",
+        "ZZZZZZZZdddddddddddZddddddddZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZddZZZZddddddddZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZddZZZZddddddddZZZZZZZZZZZZ",
+        "ZZZZZZZZZZdddddddddZddddddddZZZZZZZZZZZZ",
+        "ZZZZZZZZZZdddddddddZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZdddduddddZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZdddddddddZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
+      ],
+      "monsters": [
+        "elite_demon_soldier",
+        "dungeon_wraith"
+      ],
+      "monsterCount": 13,
+      "boss": null,
+      "bossOnly": false,
+      "respawnMs": 15000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 14,
+          "y": 25,
+          "to": "dungeon_1",
+          "label": "1층으로",
+          "toX": 18,
+          "toY": 14
+        },
+        {
+          "x": 16,
+          "y": 10,
+          "to": "dungeon_3",
+          "label": "3층으로",
+          "toX": 21,
+          "toY": 18
+        }
+      ]
+    },
+    "dungeon_3": {
+      "name": "지하감옥 3층 · 석상의 방",
+      "kind": "field",
+      "bgm": "dungeon",
+      "bgColor": "#0a0910",
+      "dungeon": true,
+      "stage": 23,
+      "power": 17.683,
+      "magicPart": 0.5,
+      "levelBonus": 18,
+      "dark": true,
+      "sight": 3.5,
+      "aggro": 5,
+      "rooms": [
+        {
+          "x": 21,
+          "y": 18
+        },
+        {
+          "x": 29,
+          "y": 11
+        },
+        {
+          "x": 9,
+          "y": 17
+        },
+        {
+          "x": 15,
+          "y": 10
+        },
+        {
+          "x": 11,
+          "y": 24
+        },
+        {
+          "x": 30,
+          "y": 22
+        },
+        {
+          "x": 9,
+          "y": 7
+        }
+      ],
+      "randomStairs": true,
+      "groupOdds": [
+        0.6,
+        0.35,
+        0.05
+      ],
+      "grid": [
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZddddddZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZddddddZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZdddsddZdddddZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZddddddZdddddZZZZZZZZdddddddZZZZZZZ",
+        "ZZZZZZZZZddZZdddddZZZZZZZZdddddddZZZZZZZ",
+        "ZZZZZZZZZdddddddddZZZZZZZZdddddddZZZZZZZ",
+        "ZZZZZZZZZddddddddddddddddddddddddZZZZZZZ",
+        "ZZZZZZZZZddddddddddddddddddddddddZZZZZZZ",
+        "ZZZZZZZZZddZZZZddZZZZZZZZZdddddddZZZZZZZ",
+        "ZZZZZZZZZddZZZZddZddddddZZZZZddZZZZZZZZZ",
+        "ZZZZZdddddddddZddZddddddZZZZZddZZZZZZZZZ",
+        "ZZZZZdddddddddZddZddddddZZZZZddZZZZZZZZZ",
+        "ZZZZZdddddddddZddZddddddZZZZZddZZZZZZZZZ",
+        "ZZZZZdddddddddZddZdddudddddddddZZZZZZZZZ",
+        "ZZZZZdddddddddZddZddddddddddddddddddZZZZ",
+        "ZZZZZZZZZddZZZZddZddddddZdddddddddddZZZZ",
+        "ZZZZZZdddddddddddZddddddZdddddddddddZZZZ",
+        "ZZZZZZddddddddddddddddddddddddddddddZZZZ",
+        "ZZZZZZddddddddddddddddddddddddddddddZZZZ",
+        "ZZZZZZddddddddddddddddddddddddddddddZZZZ",
+        "ZZZZZZdddddddddddddddddddddddddZZZZZZZZZ",
+        "ZZZZZZddddddddddZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
+      ],
+      "monsters": [
+        "dungeon_wraith",
+        "dungeon_golem"
+      ],
+      "monsterCount": 14,
+      "boss": null,
+      "bossOnly": false,
+      "respawnMs": 15000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 21,
+          "y": 18,
+          "to": "dungeon_2",
+          "label": "2층으로",
+          "toX": 16,
+          "toY": 10
+        },
+        {
+          "x": 9,
+          "y": 7,
+          "to": "dungeon_4",
+          "label": "4층으로",
+          "toX": 13,
+          "toY": 4
+        }
+      ]
+    },
+    "dungeon_4": {
+      "name": "지하감옥 4층 · 봉인된 층",
+      "kind": "field",
+      "bgm": "dungeon",
+      "bgColor": "#0a0910",
+      "dungeon": true,
+      "stage": 24,
+      "power": 12.592,
+      "magicPart": 0.5,
+      "levelBonus": 19,
+      "dark": true,
+      "sight": 3.5,
+      "aggro": 5,
+      "rooms": [
+        {
+          "x": 13,
+          "y": 4
+        },
+        {
+          "x": 24,
+          "y": 23
+        },
+        {
+          "x": 29,
+          "y": 13
+        },
+        {
+          "x": 16,
+          "y": 17
+        },
+        {
+          "x": 7,
+          "y": 21
+        },
+        {
+          "x": 15,
+          "y": 10
+        }
+      ],
+      "randomStairs": true,
+      "groupOdds": [
+        0.6,
+        0.35,
+        0.05
+      ],
+      "grid": [
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZddddddZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZddddddZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZddduddZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZddddddZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZddZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZddZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZddddddZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZddddddZZZZZZZdddddddddZZZZZZ",
+        "ZZZZZZZddddddddsddZZZZZZZdddddddddZZZZZZ",
+        "ZZZZZZZdddddddddddZZZZZZZdddddddddZZZZZZ",
+        "ZZZZZZZddZZZZddZZZZZZZZZZdddddddddZZZZZZ",
+        "ZZZZZZZddZZZZdddddddddddddddddddddZZZZZZ",
+        "ZZZZZZZddZZZZdddddddddddddddddddddZZZZZZ",
+        "ZZZZZZZddZZZZddddddZZZZZZdddddddddZZZZZZ",
+        "ZZZZZZZddZZZZddddddZZZZZZdddddddddZZZZZZ",
+        "ZZZZZZZddddddddddddZZZZZZZZZZddZZZZZZZZZ",
+        "ZZdddddddddddddddddZZZZZZZZZZddZZZZZZZZZ",
+        "ZZddddddddddZddddddZZZZZZZZZZddZZZZZZZZZ",
+        "ZZddddddddddZddddddZZZZZZZZZZddZZZZZZZZZ",
+        "ZZddddddddddZddZZZZZZdddddddZddZZZZZZZZZ",
+        "ZZddddddddddZddZZZZZZdddddddZddZZZZZZZZZ",
+        "ZZddddddddddZddddddddddddddddddZZZZZZZZZ",
+        "ZZZZZZZZZZZZZdddddddddddddddddZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZdddddddZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
+      ],
+      "monsters": [
+        "dungeon_golem",
+        "dungeon_general"
+      ],
+      "monsterCount": 14,
+      "boss": null,
+      "bossOnly": false,
+      "respawnMs": 15000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 13,
+          "y": 4,
+          "to": "dungeon_3",
+          "label": "3층으로",
+          "toX": 9,
+          "toY": 7
+        },
+        {
+          "x": 15,
+          "y": 10,
+          "to": "dungeon_5",
+          "label": "5층으로",
+          "toX": 19,
+          "toY": 12
+        }
+      ]
+    },
+    "dungeon_5": {
+      "name": "지하감옥 5층 · 주인의 자리",
+      "kind": "field",
+      "bgm": "dungeon",
+      "bgColor": "#0a0910",
+      "dungeon": true,
+      "stage": 25,
+      "power": 18.609,
+      "magicPart": 0.5,
+      "levelBonus": 20,
+      "dark": true,
+      "sight": 3.5,
+      "aggro": 5,
+      "waypoint": {
+        "x": 20,
+        "y": 12
+      },
+      "rooms": [
+        {
+          "x": 19,
+          "y": 12
+        },
+        {
+          "x": 29,
+          "y": 18
+        },
+        {
+          "x": 9,
+          "y": 8
+        },
+        {
+          "x": 6,
+          "y": 15
+        },
+        {
+          "x": 30,
+          "y": 7
+        },
+        {
+          "x": 15,
+          "y": 20
+        }
+      ],
+      "randomStairs": false,
+      "groupOdds": null,
+      "grid": [
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZdddddZZZZZZZZZZZZZZZZdddddZZZZZZZ",
+        "ZZZZZZZdddddZZZZZZZZZZZZZZZZdddddZZZZZZZ",
+        "ZZZZZZZdddddZZZZZZZZZZZZZZZZdddddZZZZZZZ",
+        "ZZZZZZdddddddddddddddddddddddddddZZZZZZZ",
+        "ZZZZZZddddddddddddddddddddddddddZZZZZZZZ",
+        "ZZZZZZddddddZZZZdddddddZZZZZZdddZZZZZZZZ",
+        "ZZZZZZddddddZZZZdddddddZZZZZZdddZZZZZZZZ",
+        "ZZZZZZddZZZZZZZZdddudddZZZZZZdddZZZZZZZZ",
+        "ZZdddddddddZZZZZdddddddZZZZZZdddZZZZZZZZ",
+        "ZZdddddddddZZZZZdddddddZZZZZZdddZZZZZZZZ",
+        "ZZddddddddddddddddddddddddddddddZZZZZZZZ",
+        "ZZdddddddddddddddddddddddddddddddZZZZZZZ",
+        "ZZZZZZZZZZZZddddddZddZZZZZdddddddZZZZZZZ",
+        "ZZZZZZZZZZZZddddddZddddddddddddddZZZZZZZ",
+        "ZZZZZZZZZZZZddddddZddddddddddddddZZZZZZZ",
+        "ZZZZZZZZZZZZdddddddddddddddddddddZZZZZZZ",
+        "ZZZZZZZZZZZZdddddddddddddddddddZZZZZZZZZ",
+        "ZZZZZZZZZZZZddddddZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZddddddZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
+      ],
+      "monsters": [
+        "dungeon_golem"
+      ],
+      "monsterCount": 10,
+      "boss": "dungeon_lord",
+      "bossOnly": true,
+      "respawnMs": 15000,
+      "npcs": [],
+      "portals": [
+        {
+          "x": 19,
+          "y": 12,
+          "to": "dungeon_4",
+          "label": "4층으로",
+          "toX": 15,
+          "toY": 10
+        }
+      ]
+    }
+  }
+}

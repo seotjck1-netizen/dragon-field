@@ -1,0 +1,5 @@
+﻿표,항목,값,설명
+traits.json,everyLevels,10,몇 레벨마다 특성 포인트를 주나
+traits.json,pointsPerGrant,1,그때 한 번에 주는 특성 포인트
+skills.json,everyLevels,3,몇 레벨마다 스킬 포인트를 주나
+skills.json,pointsPerGrant,1,그때 한 번에 주는 스킬 포인트

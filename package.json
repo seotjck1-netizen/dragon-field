@@ -1,0 +1,26 @@
+{
+  "name": "dragon-field",
+  "version": "0.58.0",
+  "private": true,
+  "description": "드래곤 필드 — HTML/Canvas RPG. 서버는 의존성 0개(순수 Node).",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server/server.js",
+    "build": "node tools/build-single-file.js",
+    "assets": "node tools/gen-assets.js",
+    "gif": "node tools/battle-gif.js",
+    "maps": "node tools/gen-maps.js && node tools/gen-dungeon.js",
+    "check": "node tools/print-tables.js",
+    "balance": "node tools/balance.js",
+    "sheets": "node tools/sheets.js export && node tools/make-xlsx.js",
+    "sheets:import": "node tools/sheets.js import",
+    "sheets:apply": "node tools/sheets.js apply",
+    "event": "node tools/event.js",
+    "deep": "node tools/deep-power.js",
+    "xlsx": "node tools/make-xlsx.js"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

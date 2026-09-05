@@ -1,0 +1,442 @@
+{
+  "slime": {
+    "name": "슬라임",
+    "level": 1,
+    "sprite": "mon_slime_field",
+    "battleSprite": "mon_slime_battle",
+    "stats": {
+      "hp": 44,
+      "atk": 24,
+      "def": 7,
+      "spd": 6,
+      "crit": 0.03
+    },
+    "exp": 9,
+    "gold": 6,
+    "moveStyle": "wander"
+  },
+  "bat": {
+    "name": "동굴 박쥐",
+    "level": 3,
+    "sprite": "mon_bat_field",
+    "battleSprite": "mon_bat_battle",
+    "stats": {
+      "hp": 51,
+      "atk": 25,
+      "def": 6,
+      "spd": 13,
+      "crit": 0.12
+    },
+    "exp": 12,
+    "gold": 11,
+    "moveStyle": "chase"
+  },
+  "mushroom": {
+    "name": "성난 버섯",
+    "level": 9,
+    "sprite": "mon_mushroom_field",
+    "battleSprite": "mon_mushroom_battle",
+    "stats": {
+      "hp": 75,
+      "atk": 17,
+      "def": 11,
+      "spd": 5,
+      "crit": 0.04
+    },
+    "exp": 15,
+    "gold": 22,
+    "moveStyle": "wander"
+  },
+  "wolf": {
+    "name": "잿빛 늑대",
+    "level": 6,
+    "sprite": "mon_wolf_field",
+    "battleSprite": "mon_wolf_battle",
+    "stats": {
+      "hp": 99,
+      "atk": 29,
+      "def": 13,
+      "spd": 17,
+      "crit": 0.14
+    },
+    "exp": 22,
+    "gold": 34,
+    "moveStyle": "chase"
+  },
+  "imp": {
+    "name": "꼬마 악마",
+    "level": 13,
+    "sprite": "mon_imp_field",
+    "battleSprite": "mon_imp_battle",
+    "stats": {
+      "hp": 118,
+      "atk": 36,
+      "def": 18,
+      "spd": 15,
+      "crit": 0.1
+    },
+    "exp": 36,
+    "gold": 52,
+    "moveStyle": "chase",
+    "school": "magic"
+  },
+  "skeleton": {
+    "name": "해골 병사",
+    "level": 17,
+    "sprite": "mon_skeleton_field",
+    "battleSprite": "mon_skeleton_battle",
+    "stats": {
+      "hp": 168,
+      "atk": 50,
+      "def": 30,
+      "spd": 12,
+      "crit": 0.08
+    },
+    "exp": 58,
+    "gold": 84,
+    "moveStyle": "wander"
+  },
+  "demon_soldier": {
+    "name": "악마 병사",
+    "level": 21,
+    "sprite": "mon_demon_soldier_field",
+    "battleSprite": "mon_demon_soldier_battle",
+    "stats": {
+      "hp": 260,
+      "atk": 78,
+      "def": 46,
+      "spd": 18,
+      "crit": 0.12
+    },
+    "exp": 72,
+    "gold": 150,
+    "moveStyle": "chase"
+  },
+  "imp_captain": {
+    "name": "악마 정찰대장",
+    "level": 15,
+    "boss": true,
+    "sprite": "mon_imp_captain_field",
+    "battleSprite": "mon_imp_captain_battle",
+    "battleScale": 1.15,
+    "stats": {
+      "hp": 150,
+      "atk": 45,
+      "def": 28,
+      "spd": 14,
+      "crit": 0.16
+    },
+    "exp": 433,
+    "gold": 749,
+    "moveStyle": "wander",
+    "school": "magic",
+    "intro": "여기서 더는 못 간다.",
+    "defeat": "겨우… 정찰대장 하나에…"
+  },
+  "demon_general": {
+    "name": "악마 장군 발가르",
+    "level": 30,
+    "boss": true,
+    "sprite": "mon_demon_general_field",
+    "battleSprite": "mon_demon_general_battle",
+    "battleScale": 1.25,
+    "stats": {
+      "hp": 464,
+      "atk": 95,
+      "def": 55,
+      "spd": 20,
+      "crit": 0.18
+    },
+    "exp": 1056,
+    "gold": 2816,
+    "moveStyle": "chase",
+    "school": "magic",
+    "intro": "네 이름을 기억해 두마. 짧게 쓸 이름이지만.",
+    "defeat": "장군의 목이… 이렇게 가벼웠나…"
+  },
+  "elite_slime": {
+    "name": "강화된 슬라임",
+    "level": 31,
+    "sprite": "mon_slime_field",
+    "battleSprite": "mon_slime_battle",
+    "elite": true,
+    "stats": {
+      "hp": 3200,
+      "atk": 300,
+      "def": 150,
+      "spd": 16.2,
+      "crit": 0.06
+    },
+    "exp": 420,
+    "gold": 130,
+    "moveStyle": "wander"
+  },
+  "elite_bat": {
+    "name": "강화된 동굴 박쥐",
+    "level": 33,
+    "sprite": "mon_bat_field",
+    "battleSprite": "mon_bat_battle",
+    "elite": true,
+    "stats": {
+      "hp": 3300,
+      "atk": 315,
+      "def": 155,
+      "spd": 35.1,
+      "crit": 0.15
+    },
+    "exp": 630,
+    "gold": 240,
+    "moveStyle": "chase"
+  },
+  "elite_mushroom": {
+    "name": "강화된 성난 버섯",
+    "level": 39,
+    "sprite": "mon_mushroom_field",
+    "battleSprite": "mon_mushroom_battle",
+    "elite": true,
+    "stats": {
+      "hp": 3600,
+      "atk": 340,
+      "def": 168,
+      "spd": 13.5,
+      "crit": 0.07
+    },
+    "exp": 700,
+    "gold": 480,
+    "moveStyle": "wander"
+  },
+  "elite_wolf": {
+    "name": "강화된 잿빛 늑대",
+    "level": 36,
+    "sprite": "mon_wolf_field",
+    "battleSprite": "mon_wolf_battle",
+    "elite": true,
+    "stats": {
+      "hp": 3800,
+      "atk": 360,
+      "def": 178,
+      "spd": 45.9,
+      "crit": 0.17
+    },
+    "exp": 790,
+    "gold": 750,
+    "moveStyle": "chase"
+  },
+  "elite_imp": {
+    "name": "강화된 꼬마 악마",
+    "level": 42,
+    "sprite": "mon_imp_field",
+    "battleSprite": "mon_imp_battle",
+    "elite": true,
+    "stats": {
+      "hp": 3950,
+      "atk": 380,
+      "def": 186,
+      "spd": 40.5,
+      "crit": 0.13
+    },
+    "exp": 820,
+    "gold": 1140,
+    "moveStyle": "chase",
+    "school": "magic"
+  },
+  "elite_skeleton": {
+    "name": "강화된 해골 병사",
+    "level": 45,
+    "sprite": "mon_skeleton_field",
+    "battleSprite": "mon_skeleton_battle",
+    "elite": true,
+    "stats": {
+      "hp": 4200,
+      "atk": 405,
+      "def": 198,
+      "spd": 32.4,
+      "crit": 0.11
+    },
+    "exp": 1190,
+    "gold": 1850,
+    "moveStyle": "wander"
+  },
+  "elite_demon_soldier": {
+    "name": "강화된 악마 병사",
+    "level": 48,
+    "sprite": "mon_demon_soldier_field",
+    "battleSprite": "mon_demon_soldier_battle",
+    "elite": true,
+    "stats": {
+      "hp": 4500,
+      "atk": 435,
+      "def": 212,
+      "spd": 48.6,
+      "crit": 0.15
+    },
+    "exp": 1500,
+    "gold": 3300,
+    "moveStyle": "chase"
+  },
+  "elite_imp_captain": {
+    "name": "강화된 악마 정찰대장",
+    "level": 44,
+    "sprite": "mon_imp_captain_field",
+    "battleSprite": "mon_imp_captain_battle",
+    "elite": true,
+    "stats": {
+      "hp": 4996,
+      "atk": 460,
+      "def": 220,
+      "spd": 17.67,
+      "crit": 0.2
+    },
+    "exp": 8928,
+    "gold": 15550,
+    "moveStyle": "wander",
+    "battleScale": 1.15,
+    "school": "magic",
+    "intro": "또 너냐. 이번엔 놓치지 않는다.",
+    "defeat": "두 번은 안 진다고… 했는데…"
+  },
+  "elite_demon_general": {
+    "name": "강화된 악마 장군 발가르",
+    "level": 66,
+    "sprite": "mon_demon_general_field",
+    "battleSprite": "mon_demon_general_battle",
+    "elite": true,
+    "stats": {
+      "hp": 7421,
+      "atk": 520,
+      "def": 260,
+      "spd": 21.63,
+      "crit": 0.24
+    },
+    "exp": 46728,
+    "gold": 71508,
+    "moveStyle": "chase",
+    "battleScale": 1.25,
+    "school": "magic",
+    "intro": "성문 너머는 네가 걸을 땅이 아니다.",
+    "defeat": "문이… 열리는구나…"
+  },
+  "dungeon_wraith": {
+    "name": "지하의 망령",
+    "level": 62,
+    "sprite": "mon_skeleton_field",
+    "battleSprite": "mon_skeleton_battle",
+    "stats": {
+      "hp": 4200,
+      "atk": 210,
+      "def": 150,
+      "spd": 52,
+      "crit": 0.22
+    },
+    "exp": 2600,
+    "gold": 2200,
+    "moveStyle": "chase",
+    "school": "magic",
+    "elite": true
+  },
+  "dungeon_golem": {
+    "name": "감옥 석상",
+    "level": 70,
+    "sprite": "mon_demon_soldier_field",
+    "battleSprite": "mon_demon_soldier_battle",
+    "stats": {
+      "hp": 9800,
+      "atk": 245,
+      "def": 280,
+      "spd": 14,
+      "crit": 0.08
+    },
+    "exp": 4800,
+    "gold": 3800,
+    "moveStyle": "wander",
+    "elite": true,
+    "battleScale": 1.2
+  },
+  "dungeon_general": {
+    "name": "봉인된 장군 발가르",
+    "level": 73,
+    "sprite": "mon_demon_general_field",
+    "battleSprite": "mon_demon_general_battle",
+    "stats": {
+      "hp": 14000,
+      "atk": 480,
+      "def": 320,
+      "spd": 22,
+      "crit": 0.25
+    },
+    "exp": 7200,
+    "gold": 6000,
+    "moveStyle": "chase",
+    "school": "magic",
+    "elite": true,
+    "battleScale": 1.4,
+    "rage": 0.05,
+    "intro": "봉인이 풀린 건 네 덕이다. 값은 치러야지.",
+    "defeat": "다시… 어둠으로…"
+  },
+  "dungeon_lord": {
+    "name": "감옥의 주인",
+    "level": 75,
+    "sprite": "mon_demon_general_field",
+    "battleSprite": "mon_demon_general_battle",
+    "stats": {
+      "hp": 10000,
+      "atk": 350,
+      "def": 211,
+      "spd": 34,
+      "crit": 0.28
+    },
+    "exp": 134520,
+    "gold": 106200,
+    "moveStyle": "chase",
+    "school": "magic",
+    "boss": true,
+    "battleScale": 1.45,
+    "intro": "내려온 자는 많았다. 올라간 자는 없었고.",
+    "defeat": "올라가라. 위에서 무엇을 볼지는… 모르지만."
+  },
+  "great_dragon": {
+    "name": "고룡 카르나크",
+    "level": 99,
+    "sprite": "mon_great_dragon_field",
+    "battleSprite": "mon_great_dragon_battle",
+    "stats": {
+      "hp": 700000,
+      "atk": 7000,
+      "def": 420,
+      "spd": 40,
+      "crit": 0.3
+    },
+    "exp": 400000,
+    "gold": 300000,
+    "moveStyle": "chase",
+    "school": "magic",
+    "boss": true,
+    "battleScale": 2.1,
+    "rage": 0.1,
+    "intro": "작은 것이 왔구나. 숨 한 번이면 될 것을.",
+    "defeat": "…재미있었다. 오랜만에."
+  },
+  "elder_dragon": {
+    "name": "잠겨 있던 용 아그라모스",
+    "level": 110,
+    "sprite": "mon_elder_dragon_field",
+    "battleSprite": "mon_elder_dragon_battle",
+    "stats": {
+      "hp": 4937000,
+      "atk": 9500,
+      "def": 2962,
+      "spd": 40,
+      "crit": 0.3
+    },
+    "exp": 1200000,
+    "gold": 15000000,
+    "moveStyle": "chase",
+    "school": "magic",
+    "boss": true,
+    "battleScale": 2.3,
+    "rage": 0.1,
+    "intro": "천 년을 갇혀 있었다. 문을 연 값을 받아야겠다.",
+    "defeat": "문을 연 것도 너였고… 닫는 것도 너로구나…"
+  }
+}

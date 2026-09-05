@@ -1,0 +1,1047 @@
+{
+  "club": {
+    "name": "낡은 몽둥이",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_club",
+    "rarity": "common",
+    "stackable": false,
+    "enhanceable": false,
+    "price": 12,
+    "stats": {
+      "atk": 7
+    },
+    "desc": "마을 뒤뜰에서 주워 온 나무 몽둥이. 강화할 수 없다."
+  },
+  "wooden_sword": {
+    "name": "나무 검",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_wooden_sword",
+    "rarity": "common",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 40,
+    "stats": {
+      "atk": 6,
+      "hp": 12
+    },
+    "desc": "훈련용으로 깎은 검. 없는 것보단 낫다."
+  },
+  "iron_sword": {
+    "name": "강철 검",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_iron_sword",
+    "rarity": "uncommon",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 190,
+    "stats": {
+      "atk": 13,
+      "crit": 0.02,
+      "hp": 28
+    },
+    "desc": "제대로 벼려진 검. 손맛이 다르다."
+  },
+  "flame_sword": {
+    "name": "화염검",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_flame_sword",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 1500,
+    "stats": {
+      "atk": 36,
+      "crit": 0.05,
+      "hp": 66
+    },
+    "desc": "날에 꺼지지 않는 불이 감돈다."
+  },
+  "demon_blade": {
+    "name": "마검 발가르",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_demon_blade",
+    "rarity": "epic",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 4200,
+    "stats": {
+      "atk": 58,
+      "crit": 0.1,
+      "spd": 5,
+      "hp": 96
+    },
+    "desc": "악마 장군의 검. 쥔 자의 피를 조금씩 마신다."
+  },
+  "short_bow": {
+    "name": "낡은 사냥활",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_short_bow",
+    "rarity": "common",
+    "stackable": false,
+    "enhanceable": false,
+    "price": 14,
+    "stats": {
+      "atk": 5,
+      "spd": 1,
+      "crit": 0.03
+    },
+    "desc": "마을 뒤편에서 주워 온 활. 강화할 수 없다."
+  },
+  "hunting_bow": {
+    "name": "사냥용 활",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_hunting_bow",
+    "rarity": "uncommon",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 210,
+    "stats": {
+      "atk": 12,
+      "spd": 4,
+      "crit": 0.06,
+      "hp": 12
+    },
+    "desc": "제대로 손질된 활. 시위 소리가 맑다."
+  },
+  "elven_bow": {
+    "name": "바람의 장궁",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_elven_bow",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 1600,
+    "stats": {
+      "atk": 33,
+      "spd": 9,
+      "crit": 0.11,
+      "hp": 34
+    },
+    "desc": "화살이 바람을 타고 나간다."
+  },
+  "gnarled_staff": {
+    "name": "옹이 지팡이",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_gnarled_staff",
+    "rarity": "common",
+    "stackable": false,
+    "enhanceable": false,
+    "price": 14,
+    "stats": {
+      "atk": 5,
+      "def": 1
+    },
+    "desc": "옹이가 박힌 나무 막대기. 강화할 수 없다."
+  },
+  "apprentice_staff": {
+    "name": "견습 지팡이",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_apprentice_staff",
+    "rarity": "uncommon",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 215,
+    "stats": {
+      "atk": 22,
+      "hp": 46,
+      "critDmg": 0.03
+    },
+    "desc": "끝에 박힌 돌이 희미하게 빛난다."
+  },
+  "archmage_staff": {
+    "name": "대마법사의 지팡이",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_archmage_staff",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 1700,
+    "stats": {
+      "atk": 46,
+      "hp": 84,
+      "critDmg": 0.1
+    },
+    "desc": "쥐고만 있어도 마력이 흐른다."
+  },
+  "cloth_armor": {
+    "name": "천 옷",
+    "type": "armor",
+    "slot": "armor",
+    "icon": "item_cloth_armor",
+    "rarity": "common",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 35,
+    "stats": {
+      "def": 3,
+      "hp": 18
+    },
+    "desc": "평범한 여행자의 옷."
+  },
+  "leather_armor": {
+    "name": "가죽 갑옷",
+    "type": "armor",
+    "slot": "armor",
+    "icon": "item_leather_armor",
+    "rarity": "uncommon",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 160,
+    "stats": {
+      "def": 8,
+      "hp": 35
+    },
+    "desc": "질긴 가죽을 겹쳐 만든 갑옷."
+  },
+  "knight_armor": {
+    "name": "기사 갑옷",
+    "type": "armor",
+    "slot": "armor",
+    "icon": "item_knight_armor",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 950,
+    "stats": {
+      "def": 26,
+      "hp": 90
+    },
+    "desc": "포이노 근위대의 정식 장비."
+  },
+  "dragon_mail": {
+    "name": "용린 갑옷",
+    "type": "armor",
+    "slot": "armor",
+    "icon": "item_dragon_mail",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 20000,
+    "stats": {
+      "def": 54,
+      "hp": 200
+    },
+    "desc": "용의 비늘을 엮었다. 불도 마법도 튕겨낸다. 투구·어깨와 맞춰 입으면 힘을 더 낸다."
+  },
+  "dragon_helm": {
+    "name": "용린 투구",
+    "type": "armor",
+    "slot": "helmet",
+    "icon": "item_dragon_helm",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 20000,
+    "stats": {
+      "def": 16,
+      "hp": 70
+    },
+    "desc": "용의 이마 비늘로 만든 투구. 시야가 트이고 머리가 서늘하다."
+  },
+  "dragon_pauldron": {
+    "name": "용린 어깨갑옷",
+    "type": "armor",
+    "slot": "shoulder",
+    "icon": "item_dragon_pauldron",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 20000,
+    "stats": {
+      "def": 15,
+      "hp": 65
+    },
+    "desc": "어깨를 덮은 용의 등비늘. 어깨가 무거운 만큼 든든하다."
+  },
+  "useless_sword": {
+    "name": "쓸모없는 검",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_useless_sword",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": false,
+    "price": 100000,
+    "stats": {
+      "atk": 1
+    },
+    "desc": "날이 죽고 이가 빠졌다. 그런데 홈이 둘 뚫려 있다. 홈에는 빨간 빛과 녹색빛이 나는 것 같다."
+  },
+  "dragon_knight_sword": {
+    "name": "용린 기사검",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_dragon_knight_sword",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 100000,
+    "stats": {
+      "atk": 56,
+      "def": 8,
+      "hp": 120,
+      "crit": 0.06
+    },
+    "desc": "쓸모없는 검이 제 이름을 찾았다. 용린 한 벌을 갖추면 고룡 앞에서 다른 검이 된다."
+  },
+  "magic_helm": {
+    "name": "매직 투구",
+    "type": "armor",
+    "slot": "helmet",
+    "icon": "item_magic_helm",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 24000,
+    "stats": {
+      "def": 10,
+      "hp": 55
+    },
+    "magic": "보호",
+    "mods": {
+      "sightBonus": 2,
+      "dungeonStealth": 1
+    },
+    "desc": "마력을 엮어 짠 투구. 방어는 얇지만 머리로 오는 마법을 흘려 낸다.\n지하감옥에서 두 칸 더 멀리 보이고, 그곳의 것들이 먼저 알아채지 못한다."
+  },
+  "cloth_hood": {
+    "name": "천 두건",
+    "type": "armor",
+    "slot": "helmet",
+    "icon": "item_cloth_hood",
+    "rarity": "common",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 30,
+    "stats": {
+      "def": 2,
+      "hp": 10
+    },
+    "desc": "머리에 두르는 천 조각. 없는 것보다는 낫다."
+  },
+  "leather_cap": {
+    "name": "가죽 모자",
+    "type": "armor",
+    "slot": "helmet",
+    "icon": "item_leather_cap",
+    "rarity": "uncommon",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 140,
+    "stats": {
+      "def": 5,
+      "hp": 22
+    },
+    "desc": "챙을 눌러쓰면 비도 화살도 조금은 비껴간다."
+  },
+  "knight_helm": {
+    "name": "기사 투구",
+    "type": "armor",
+    "slot": "helmet",
+    "icon": "item_knight_helm",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 820,
+    "stats": {
+      "def": 14,
+      "hp": 55
+    },
+    "desc": "포이노 근위대의 정식 투구. 볼가리개가 턱까지 내려온다."
+  },
+  "rune_helm": {
+    "name": "룬 투구",
+    "type": "armor",
+    "slot": "helmet",
+    "icon": "item_rune_helm",
+    "rarity": "epic",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 58000,
+    "stats": {
+      "def": 34,
+      "hp": 140
+    },
+    "desc": "정수리에서 빛이 흘러 깃털처럼 뻗는다. 룬 한 벌의 마지막 조각.",
+    "magic": "보호"
+  },
+  "dragon_knight_bow": {
+    "name": "용린 기사궁",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_dragon_knight_bow",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 100000,
+    "stats": {
+      "atk": 52,
+      "def": 6,
+      "hp": 100,
+      "spd": 8,
+      "crit": 0.1
+    },
+    "desc": "쓸모없는 검이 사냥꾼의 손에서 활이 되었다. 용린 한 벌을 갖추면 고룡 앞에서 다른 물건이 된다."
+  },
+  "dragon_knight_staff": {
+    "name": "용린 기사장",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_dragon_knight_staff",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 100000,
+    "stats": {
+      "atk": 54,
+      "def": 8,
+      "hp": 130,
+      "critDmg": 0.14
+    },
+    "desc": "쓸모없는 검이 마법사의 손에서 지팡이가 되었다. 용린 한 벌을 갖추면 고룡 앞에서 다른 물건이 된다."
+  },
+  "swift_ring": {
+    "name": "질풍의 반지",
+    "type": "accessory",
+    "slot": "ring",
+    "icon": "item_swift_ring",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 420,
+    "stats": {
+      "spd": 5,
+      "crit": 0.07
+    },
+    "desc": "끼고 있으면 발끝이 가벼워진다."
+  },
+  "power_ring": {
+    "name": "격노의 반지",
+    "type": "accessory",
+    "slot": "ring",
+    "icon": "item_power_ring",
+    "rarity": "epic",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 1300,
+    "stats": {
+      "atk": 18,
+      "crit": 0.05
+    },
+    "desc": "심장 박동에 맞춰 붉게 뛴다."
+  },
+  "potion": {
+    "name": "회복약",
+    "type": "consumable",
+    "icon": "item_potion",
+    "rarity": "common",
+    "stackable": true,
+    "enhanceable": false,
+    "price": 28,
+    "use": {
+      "hp": 55
+    },
+    "desc": "HP를 55 회복한다."
+  },
+  "herb": {
+    "name": "약초",
+    "type": "material",
+    "icon": "item_herb",
+    "rarity": "common",
+    "stackable": true,
+    "enhanceable": false,
+    "price": 50,
+    "desc": "가장 기본적인 강화 재료."
+  },
+  "magic_stone": {
+    "name": "마력석",
+    "type": "material",
+    "icon": "item_magic_stone",
+    "rarity": "uncommon",
+    "stackable": true,
+    "enhanceable": false,
+    "price": 500,
+    "desc": "고단계 강화에 쓰이는 결정."
+  },
+  "demon_core": {
+    "name": "악마의 핵",
+    "type": "material",
+    "icon": "item_demon_core",
+    "rarity": "rare",
+    "stackable": true,
+    "enhanceable": false,
+    "price": 850,
+    "desc": "아직도 미약하게 맥동한다. 대장간에서 비싸게 쳐준다."
+  },
+  "slime_jelly": {
+    "name": "슬라임 젤리",
+    "type": "material",
+    "icon": "item_slime_jelly",
+    "rarity": "common",
+    "stackable": true,
+    "enhanceable": false,
+    "price": 6,
+    "desc": "말랑하고 미묘하게 따뜻하다."
+  },
+  "bat_fang": {
+    "name": "박쥐 송곳니",
+    "type": "material",
+    "icon": "item_bat_fang",
+    "rarity": "uncommon",
+    "stackable": true,
+    "enhanceable": false,
+    "price": 14,
+    "desc": "작지만 제법 날카롭다."
+  },
+  "speed_potion": {
+    "name": "질주의 물약",
+    "type": "consumable",
+    "icon": "item_speed_potion",
+    "rarity": "common",
+    "stackable": true,
+    "enhanceable": false,
+    "price": 50,
+    "use": {
+      "buff": {
+        "id": "haste",
+        "name": "질주",
+        "icon": "💨",
+        "durationMs": 90000,
+        "effects": {
+          "speedMult": 1.5
+        },
+        "desc": "이동속도 1.5배"
+      }
+    },
+    "desc": "90초 동안 이동속도가 1.5배가 된다."
+  },
+  "leather_pauldron": {
+    "name": "가죽 어깨보호구",
+    "type": "armor",
+    "slot": "shoulder",
+    "icon": "item_leather_pauldron",
+    "rarity": "uncommon",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 130,
+    "stats": {
+      "def": 4,
+      "hp": 8
+    },
+    "desc": "어깨를 덮는 질긴 가죽."
+  },
+  "steel_pauldron": {
+    "name": "강철 어깨갑옷",
+    "type": "armor",
+    "slot": "shoulder",
+    "icon": "item_steel_pauldron",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 640,
+    "stats": {
+      "def": 12,
+      "hp": 22
+    },
+    "desc": "묵직하지만 어깨가 든든하다."
+  },
+  "cloth_gloves": {
+    "name": "천 장갑",
+    "type": "armor",
+    "slot": "gloves",
+    "icon": "item_cloth_gloves",
+    "rarity": "common",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 45,
+    "stats": {
+      "def": 3
+    },
+    "desc": "손이 미끄러지지 않는다."
+  },
+  "steel_gauntlet": {
+    "name": "강철 건틀릿",
+    "type": "armor",
+    "slot": "gloves",
+    "icon": "item_steel_gauntlet",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 560,
+    "stats": {
+      "def": 9,
+      "atk": 4
+    },
+    "desc": "주먹째로 후려칠 수도 있다."
+  },
+  "leather_boots": {
+    "name": "가죽 부츠",
+    "type": "armor",
+    "slot": "boots",
+    "icon": "item_leather_boots",
+    "rarity": "common",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 70,
+    "stats": {
+      "def": 3,
+      "spd": 2
+    },
+    "desc": "오래 걸어도 발이 편하다."
+  },
+  "swift_boots": {
+    "name": "질주의 부츠",
+    "type": "armor",
+    "slot": "boots",
+    "icon": "item_swift_boots",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 500,
+    "stats": {
+      "def": 5,
+      "spd": 7
+    },
+    "desc": "발끝에 바람이 감돈다."
+  },
+  "leather_belt": {
+    "name": "가죽 허리띠",
+    "type": "accessory",
+    "slot": "belt",
+    "icon": "item_leather_belt",
+    "rarity": "common",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 60,
+    "stats": {
+      "hp": 30,
+      "def": 10
+    },
+    "desc": "허리를 잡아 주면 힘이 더 실린다."
+  },
+  "mana_belt": {
+    "name": "마력의 허리띠",
+    "type": "accessory",
+    "slot": "belt",
+    "icon": "item_mana_belt",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 720,
+    "stats": {
+      "hp": 40,
+      "crit": 0.1
+    },
+    "desc": "박힌 결정이 은은하게 빛난다."
+  },
+  "wood_amulet": {
+    "name": "나무 부적",
+    "type": "accessory",
+    "slot": "necklace",
+    "icon": "item_wood_amulet",
+    "rarity": "common",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 55,
+    "stats": {
+      "hp": 20
+    },
+    "desc": "마을 어귀에서 파는 흔한 부적."
+  },
+  "guard_amulet": {
+    "name": "수호의 목걸이",
+    "type": "accessory",
+    "slot": "necklace",
+    "icon": "item_guard_amulet",
+    "rarity": "rare",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 680,
+    "stats": {
+      "def": 18,
+      "hp": 90,
+      "spd": 3
+    },
+    "desc": "방패 문양이 새겨져 있다."
+  },
+  "frost_blade": {
+    "name": "서리검",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_frost_blade",
+    "rarity": "epic",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 90000,
+    "magic": "서리",
+    "stats": {
+      "atk": 82,
+      "crit": 0.1,
+      "def": 10,
+      "hp": 158,
+      "spd": 5
+    },
+    "desc": "날에 서리가 어려 있다. 벨 때마다 찬 기운이 상처에 스민다."
+  },
+  "storm_bow": {
+    "name": "뇌전궁",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_storm_bow",
+    "rarity": "epic",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 92000,
+    "magic": "뇌전",
+    "stats": {
+      "atk": 76,
+      "spd": 14,
+      "crit": 0.15,
+      "hp": 100
+    },
+    "desc": "시위를 당기면 푸른 불꽃이 튄다."
+  },
+  "ember_staff": {
+    "name": "성염 지팡이",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_ember_staff",
+    "rarity": "epic",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 94000,
+    "magic": "성염",
+    "stats": {
+      "atk": 78,
+      "hp": 145,
+      "critDmg": 0.25
+    },
+    "desc": "꺼지지 않는 불씨가 머리에 박혀 있다."
+  },
+  "rune_mail": {
+    "name": "룬 갑옷",
+    "type": "armor",
+    "slot": "armor",
+    "icon": "item_rune_mail",
+    "rarity": "epic",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 76000,
+    "magic": "보호",
+    "stats": {
+      "def": 66,
+      "hp": 250
+    },
+    "desc": "판마다 보호의 룬이 새겨져 있다."
+  },
+  "rune_pauldron": {
+    "name": "룬 어깨갑옷",
+    "type": "armor",
+    "slot": "shoulder",
+    "icon": "item_rune_pauldron",
+    "rarity": "epic",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 42000,
+    "magic": "보호",
+    "stats": {
+      "def": 30,
+      "hp": 64
+    },
+    "desc": "어깨에 얹힌 룬이 옅게 빛난다."
+  },
+  "rune_gauntlet": {
+    "name": "룬 건틀릿",
+    "type": "armor",
+    "slot": "gloves",
+    "icon": "item_rune_gauntlet",
+    "rarity": "epic",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 38000,
+    "magic": "완력",
+    "stats": {
+      "def": 23,
+      "atk": 13
+    },
+    "desc": "주먹을 쥐면 룬이 달아오른다."
+  },
+  "rune_boots": {
+    "name": "룬 부츠",
+    "type": "armor",
+    "slot": "boots",
+    "icon": "item_rune_boots",
+    "rarity": "epic",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 36000,
+    "magic": "질풍",
+    "stats": {
+      "def": 16,
+      "spd": 14
+    },
+    "desc": "발자국마다 룬이 남았다 사라진다."
+  },
+  "rune_belt": {
+    "name": "룬 허리띠",
+    "type": "accessory",
+    "slot": "belt",
+    "icon": "item_rune_belt",
+    "rarity": "epic",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 40000,
+    "magic": "마력",
+    "stats": {
+      "hp": 110,
+      "crit": 0.05,
+      "def": 12
+    },
+    "desc": "허리를 조이면 마력이 도는 게 느껴진다."
+  },
+  "rune_amulet": {
+    "name": "룬 목걸이",
+    "type": "accessory",
+    "slot": "necklace",
+    "icon": "item_rune_amulet",
+    "rarity": "epic",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 44000,
+    "magic": "가호",
+    "stats": {
+      "def": 26,
+      "hp": 120,
+      "crit": 0.03,
+      "critDmg": 0.3
+    },
+    "desc": "가슴께에서 룬이 조용히 맥동한다."
+  },
+  "greater_potion": {
+    "name": "희귀 회복약",
+    "type": "consumable",
+    "icon": "item_greater_potion",
+    "rarity": "rare",
+    "stackable": true,
+    "enhanceable": false,
+    "price": 1000,
+    "use": {
+      "hp": 210
+    },
+    "desc": "성문 상인만 취급하는 진한 약. HP를 210 회복한다."
+  },
+  "mega_potion": {
+    "name": "거대 회복약",
+    "type": "consumable",
+    "icon": "item_mega_potion",
+    "rarity": "epic",
+    "stackable": true,
+    "enhanceable": false,
+    "price": 9000,
+    "use": {
+      "hp": 700
+    },
+    "desc": "희귀 회복약 열 병을 눌러 담았다. HP를 700 회복한다. 연금술사만 만들 줄 안다."
+  },
+  "dragon_ring": {
+    "name": "용의 인장",
+    "type": "accessory",
+    "slot": "ring",
+    "icon": "item_dragon_ring",
+    "rarity": "epic",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 300000,
+    "magic": "용혈",
+    "stats": {
+      "atk": 26,
+      "hp": 90,
+      "crit": 0.09
+    },
+    "desc": "발가르의 손가락에서 빼낸 인장. 아직 뜨겁다."
+  },
+  "gem_ruby": {
+    "name": "루비",
+    "type": "material",
+    "icon": "item_gem_ruby",
+    "rarity": "epic",
+    "stackable": true,
+    "enhanceable": false,
+    "price": 12000,
+    "desc": "+10 장비의 홈에 박는다. 공격력 +8% — 한 번 박으면 뺄 수 없다."
+  },
+  "gem_sapphire": {
+    "name": "사파이어",
+    "type": "material",
+    "icon": "item_gem_sapphire",
+    "rarity": "epic",
+    "stackable": true,
+    "enhanceable": false,
+    "price": 12000,
+    "desc": "+10 장비의 홈에 박는다. 최대 HP +10% — 한 번 박으면 뺄 수 없다."
+  },
+  "gem_emerald": {
+    "name": "에메랄드",
+    "type": "material",
+    "icon": "item_gem_emerald",
+    "rarity": "epic",
+    "stackable": true,
+    "enhanceable": false,
+    "price": 12000,
+    "desc": "+10 장비의 홈에 박는다. 받는 피해 -6% — 한 번 박으면 뺄 수 없다."
+  },
+  "gem_topaz": {
+    "name": "토파즈",
+    "type": "material",
+    "icon": "item_gem_topaz",
+    "rarity": "epic",
+    "stackable": true,
+    "enhanceable": false,
+    "price": 12000,
+    "desc": "+10 장비의 홈에 박는다. 치명타 확률 +5% — 한 번 박으면 뺄 수 없다."
+  },
+  "gem_amethyst": {
+    "name": "자수정",
+    "type": "material",
+    "icon": "item_gem_amethyst",
+    "rarity": "epic",
+    "stackable": true,
+    "enhanceable": false,
+    "price": 12000,
+    "desc": "+10 장비의 홈에 박는다. 치명타 피해 +18% — 한 번 박으면 뺄 수 없다."
+  },
+  "gem_onyx": {
+    "name": "오닉스",
+    "type": "material",
+    "icon": "item_gem_onyx",
+    "rarity": "epic",
+    "stackable": true,
+    "enhanceable": false,
+    "price": 12000,
+    "desc": "+10 무기·허리띠의 홈에만 박는다. 흡혈 +7% — 한 번 박으면 뺄 수 없다."
+  },
+  "gem_diamond": {
+    "name": "다이아몬드",
+    "type": "material",
+    "icon": "item_gem_diamond",
+    "rarity": "epic",
+    "stackable": true,
+    "enhanceable": false,
+    "price": 12000,
+    "desc": "+10 장비의 홈에 박는다. 방어 관통 +10% — 한 번 박으면 뺄 수 없다."
+  },
+  "dragon_token": {
+    "name": "용의 징표",
+    "type": "material",
+    "icon": "item_dragon_token",
+    "rarity": "epic",
+    "stackable": true,
+    "enhanceable": false,
+    "price": 0,
+    "desc": "고룡의 숨결이 굳어 만들어진 징표. 마을 서쪽의 마녀만이 이것의 값을 안다."
+  },
+  "dragon_gate_key": {
+    "name": "용의 열쇠",
+    "type": "material",
+    "icon": "item_dragon_gate_key",
+    "rarity": "legendary",
+    "stackable": true,
+    "enhanceable": false,
+    "price": 0,
+    "desc": "마녀가 징표 열 개를 받고 내주는 열쇠. 서쪽 절벽 끝, 아무도 열지 못한 큰 동굴문의 것이다."
+  },
+  "dragonslayer": {
+    "name": "용살자",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_frost_blade",
+    "rarity": "legendary",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 0,
+    "stats": {
+      "atk": 98,
+      "def": 12,
+      "hp": 190,
+      "spd": 6,
+      "crit": 0.12
+    },
+    "magic": "서리",
+    "desc": "마녀가 용의 징표를 녹여 벼린 검. 쥔 자의 재주를 두 배로 되돌린다.",
+    "skillPower": 1
+  },
+  "skypiercer": {
+    "name": "천공궁",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_storm_bow",
+    "rarity": "legendary",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 0,
+    "stats": {
+      "atk": 91,
+      "hp": 120,
+      "spd": 17,
+      "crit": 0.18
+    },
+    "magic": "뇌전",
+    "desc": "시위를 당기면 하늘이 갈라진다. 쥔 자의 재주를 두 배로 되돌린다.",
+    "skillPower": 1
+  },
+  "worldtree_staff": {
+    "name": "세계수 지팡이",
+    "type": "weapon",
+    "slot": "weapon",
+    "icon": "item_ember_staff",
+    "rarity": "legendary",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 0,
+    "stats": {
+      "atk": 94,
+      "hp": 174,
+      "critDmg": 0.3
+    },
+    "magic": "성염",
+    "desc": "뿌리째 뽑아 온 가지. 쥔 자의 재주를 두 배로 되돌린다.",
+    "skillPower": 1
+  },
+  "dragonscale_plate": {
+    "name": "용비늘 성갑",
+    "type": "armor",
+    "slot": "armor",
+    "icon": "item_rune_mail",
+    "rarity": "legendary",
+    "stackable": false,
+    "enhanceable": true,
+    "price": 0,
+    "stats": {
+      "def": 79,
+      "hp": 300
+    },
+    "magic": "보호",
+    "desc": "고룡의 등비늘을 통째로 엮었다. 입은 자의 재주를 두 배로 되돌린다.",
+    "skillPower": 1
+  },
+  "socket_drill": {
+    "name": "악마의 파편",
+    "type": "material",
+    "icon": "item_socket_drill",
+    "rarity": "legendary",
+    "stackable": true,
+    "enhanceable": false,
+    "desc": "**장비에 보석 홈을 하나 더 만든다.** 지하감옥 깊은 곳에서만 나온다 — 무기·반지·목걸이·허리띠에 쓰고(+10 장비만, 한 장비에 한 번뿐 · 홈은 최대 2개), 방어구에는 쓸 수 없다."
+  }
+}

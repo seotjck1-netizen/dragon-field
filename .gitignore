@@ -1,0 +1,13 @@
+# 계정과 세이브. 절대 저장소에 올리지 마세요.
+server/data/
+
+# 빌드 결과물(필요하면 tools/build-single-file.js 로 다시 만듭니다)
+dist/
+*.zip
+
+# 내려받아 견주는 통합문서(사람이 그때그때 받는 것일 뿐)
+sheets/inbox/*.xlsx
+
+node_modules/
+.env
+.DS_Store

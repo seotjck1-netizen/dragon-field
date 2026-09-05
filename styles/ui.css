@@ -1,0 +1,5418 @@
+/* UI 레이어 전용 스타일. 캔버스 안의 그림은 여기서 다루지 않는다. */
+
+:root {
+  --w: 640px;
+  --h: 480px;
+
+  --ink: #eef2ff;
+  --ink-dim: #a8b3cf;
+  --panel: rgba(14, 20, 36, 0.9);
+  --panel-solid: #131a2c;
+  --line: rgba(148, 168, 214, 0.24);
+
+  --hp: linear-gradient(90deg, #ff6b6b, #ff9f68);
+  --exp: linear-gradient(90deg, #4fc3f7, #8b7bff);
+  --gold: #ffd166;
+
+  --common: #cfd6e6;
+  --uncommon: #6ee7a8;
+  --rare: #7cc4ff;
+  --epic: #d09bff;
+  --legendary: #ffb648;
+  /* 세트 장비 — 디아블로처럼 초록색으로 구분한다 */
+  --set: #6ee7a8;
+}
+
+body {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 50% 0%, #1a2340 0%, #080b16 70%);
+  color: var(--ink);
+  padding: 24px 16px;
+  /* 아이폰: 화면 밖으로 튀어나가거나 고무줄처럼 늘어나지 않게 */
+  overflow-x: hidden;
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* 터치 기기 — 화면을 꽉 쓰고, 아래는 조작 버튼 자리 */
+body.is-touch {
+  padding: 6px 4px 0;
+  align-content: start;
+  /* min-height 가 아니라 height 여야 한다 — 안쪽 #app 이 100dvh 를 쓰는데
+     body 위쪽 여백만큼 아래로 밀려 화면이 6px 넘치고 살짝 스크롤됐다. */
+  height: 100dvh;
+  overflow: hidden;
+}
+
+body.is-touch .footer-hint {
+  display: none;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 터치 기기: 남는 공간 가운데에 게임, 화면 맨 아래에 조작 버튼 */
+body.is-touch #app {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  justify-items: center;
+  /* body 안쪽 높이를 그대로 채운다(100dvh 를 다시 쓰면 여백만큼 넘친다) */
+  height: 100%;
+  width: 100%;
+  gap: 0;
+}
+
+/* 키보드 안내는 키보드가 없는 기기에서는 자리만 차지한다 */
+body.is-touch .hud-help {
+  display: none;
+}
+
+/* 축소된 스테이지가 차지할 자리. 크기는 core/Viewport.js 가 넣어 준다. */
+#stage-frame {
+  position: relative;
+  width: var(--w);
+  height: var(--h);
+}
+
+/*
+ * 스테이지는 항상 640×480 그대로 두고 통째로 축소한다.
+ * (캔버스만 줄이면 위에 얹힌 HTML UI 와 좌표가 어긋난다)
+ */
+#stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--w);
+  height: var(--h);
+  transform: scale(var(--stage-scale, 1));
+  transform-origin: top left;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  background: #0b1020;
+  /* 손가락으로 화면을 끌어 스크롤·확대되지 않게 한다 */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+#game-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+#ui-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+#ui-layer > * {
+  pointer-events: auto;
+}
+
+.footer-hint {
+  color: var(--ink-dim);
+  font-size: 12px;
+  letter-spacing: 0.01em;
+}
+
+/* ---------- 부팅 ---------- */
+.boot {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  background: #0b1020;
+  color: var(--ink-dim);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+}
+
+/* ---------- 공통 바 ---------- */
+.bar {
+  position: relative;
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  /* 0.40 — 자르지 않는다. 고룡은 체력이 일곱 자리라 "4,937,000 / 4,937,000" 이
+     막대보다 길어지는데, 잘라 버리면 앞뒤 숫자가 사라져 무슨 값인지 알 수 없었다.
+     막대 자체는 안쪽 <i> 가 이미 둥글게 그려지므로 잘라 낼 이유가 없다. */
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.bar i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0%;
+  border-radius: 999px;
+  transition: width 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bar--hp i {
+  background: var(--hp);
+}
+
+.bar--exp i {
+  background: var(--exp);
+}
+
+.bar span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 0 5px rgba(0, 0, 0, 0.9);
+}
+
+/* ---------- HUD ---------- */
+/* ============================================================
+   HUD — 디아블로식 네 귀퉁이 배치
+   ============================================================
+   예전에는 왼쪽 위 카드 하나에 전부 몰아 두었다. 그 카드가 화면 왼쪽을
+   통째로 덮어서 정작 걸어 다니는 땅이 안 보였다.
+   지금은 가장자리로 흩어 놓고 가운데를 완전히 비운다.
+   HUD 자체는 클릭을 통과시키고, 실제 버튼만 클릭을 받는다 —
+   그래야 상태 표시 뒤의 땅을 눌러 이동할 수 있다. */
+#hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+#hud button,
+#hud .hud-quest-card,
+#hud .hud-help-card,
+#hud .hud-orb {
+  pointer-events: auto;
+}
+
+/* ---------- 왼쪽 아래 · HP 구슬 ---------- */
+.hud-orb {
+  position: absolute;
+  left: 12px;
+  bottom: 20px;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  /* ⚠ 여기서 자르지 않는다(0.40).
+     예전에는 구슬 전체에 overflow:hidden 이 걸려 있어서, 체력이 다섯 자리를 넘으면
+     "12345 / 23456" 의 양끝이 동그라미 밖으로 나가며 **잘려 나갔다.**
+     자르는 일은 피가 차는 안쪽(.orb-liquid)만 맡고, 숫자는 밖으로 나가도 그대로 보인다. */
+  border: 2px solid rgba(255, 255, 255, 0.16);
+  background: radial-gradient(circle at 35% 30%, #2a1420, #140a12 70%);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5), inset 0 0 18px rgba(0, 0, 0, 0.6);
+}
+
+/* 피가 차는 안쪽 — 동그랗게 잘리는 것은 여기까지다. */
+.orb-liquid {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+/* 피는 아래에서 위로 찬다 — 구슬이 비어 가는 게 눈에 보여야 한다 */
+.orb-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, #ff5b5b, #a8121b);
+  transition: height 260ms ease-out;
+}
+
+.hud-orb.is-low .orb-fill {
+  animation: orb-pulse 900ms ease-in-out infinite;
+}
+
+@keyframes orb-pulse {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.45); }
+}
+
+.orb-face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 1px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+/* 숫자는 구슬 한가운데. 길어지면 동그라미 밖으로 조금 나가되 잘리지 않고,
+   대신 뒤에 어두운 알약을 깔아 땅 위에서도 읽히게 한다. */
+.orb-hp {
+  font-size: 12px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  text-align: center;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(10, 8, 14, 0.55);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+  /* 글자가 구슬보다 넓어지면 grid 의 가운데 맞춤은 손을 놓고 왼쪽에 붙여 버린다
+     (넘치는 항목의 안전 정렬). 그래서 가운데는 여기서 직접 잡는다 —
+     왼쪽 끝을 한가운데에 두고 제 너비의 절반만큼 되민다. 넓이와 상관없이 맞는다. */
+  justify-self: start;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 자릿수가 늘면 글자를 한 단계씩 줄인다 — 알약이 구슬을 다 덮지 않게. */
+.orb-hp.is-long { font-size: 11px; letter-spacing: -0.02em; }
+.orb-hp.is-longer { font-size: 10px; letter-spacing: -0.03em; }
+
+/* 레벨 줄도 같은 자리에 맞춰 둔다(구슬이 작아지는 세로 화면에서 어긋나지 않게) */
+.orb-lv {
+  justify-self: center;
+}
+
+.orb-lv {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.orb-lv b {
+  color: #fff;
+  font-size: 11.5px;
+}
+
+/* ---------- 왼쪽 아래 · 구슬 위 (버프 · 고룡) ---------- */
+.hud-left {
+  position: absolute;
+  left: 12px;
+  bottom: 112px;
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
+
+/* ---------- 맨 아래 · 경험치 띠 ---------- */
+/* 가늘고 길게, 회색으로. 10% 마다 눈금이 있어 "몇 칸 남았나"가 보인다. */
+.hud-exp {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 9px;
+  background: rgba(12, 14, 20, 0.85);
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  overflow: hidden;
+}
+
+.hud-exp > i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #8c93a6, #c3cadb);
+  transition: width 300ms ease-out;
+}
+
+.hud-exp-ticks {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  pointer-events: none;
+}
+
+.hud-exp-ticks span {
+  flex: 1;
+  border-right: 1px solid rgba(10, 12, 18, 0.85);
+}
+
+.hud-exp-text {
+  position: absolute;
+  right: 6px;
+  top: -1px;
+  font-size: 8.5px;
+  line-height: 10px;
+  color: rgba(220, 226, 240, 0.7);
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+/* ---------- 오른쪽 위 · 퀘스트 ---------- */
+.hud-quest-btn {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 226, 122, 0.45);
+  background: rgba(40, 34, 16, 0.82);
+  color: #ffe27a;
+  font-size: 17px;
+  font-weight: 900;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.hud-quest-btn[hidden] {
+  display: none !important;
+}
+
+/* 다 모으면 겉이 반짝인다 — 돌아가야 할 때를 놓치지 않게 */
+.hud-quest-btn.is-ready {
+  border-color: #ffd166;
+  animation: quest-glow 1400ms ease-in-out infinite;
+}
+
+@keyframes quest-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 209, 102, 0.55), 0 0 8px rgba(255, 209, 102, 0.35); }
+  50% { box-shadow: 0 0 0 7px rgba(255, 209, 102, 0), 0 0 20px rgba(255, 209, 102, 0.8); }
+}
+
+.hq-badge {
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #7ef0b0;
+  color: #08301c;
+  font-size: 10px;
+  font-weight: 900;
+  display: grid;
+  place-items: center;
+}
+
+.hud-quest-card {
+  position: absolute;
+  right: 54px;
+  top: 12px;
+  width: min(230px, 46vw);
+  padding: 10px 11px;
+  border-radius: 10px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  display: grid;
+  gap: 6px;
+  font-size: 11.5px;
+}
+
+.hud-quest-card.is-ready {
+  border-color: rgba(255, 209, 102, 0.5);
+}
+
+.hqc-title {
+  font-weight: 800;
+  font-size: 12.5px;
+  color: #ffe27a;
+}
+
+.hqc-desc {
+  margin: 0;
+  line-height: 1.55;
+  color: var(--ink-dim);
+}
+
+.hqc-bar {
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.hqc-bar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #ffb454, #ffd166);
+}
+
+.hqc-foot {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.hqc-foot .is-ready {
+  color: #7ef0b0;
+}
+
+/* ---------- 오른쪽 세로 · 기능 아이콘 ---------- */
+.hud-tools {
+  position: absolute;
+  right: 12px;
+  top: 56px;
+  display: grid;
+  gap: 5px;
+}
+
+.hud-tool {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  background: rgba(12, 16, 28, 0.78);
+  color: var(--ink);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.hud-tool:hover:not(:disabled) {
+  background: rgba(40, 52, 82, 0.9);
+  border-color: rgba(160, 180, 230, 0.4);
+}
+
+.hud-tool:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.ht-icon {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.ht-badge {
+  position: absolute;
+  right: -3px;
+  top: -3px;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 3px;
+  border-radius: 8px;
+  background: #ffb454;
+  color: #2a1a06;
+  font-size: 9.5px;
+  font-weight: 900;
+  display: grid;
+  place-items: center;
+}
+
+/* ---------- 도움말 ---------- */
+.hud-help-card {
+  position: absolute;
+  right: 54px;
+  bottom: 64px;
+  width: min(210px, 46vw);
+  padding: 9px 11px;
+  border-radius: 10px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  font-size: 11px;
+}
+
+.hud-help-card[hidden] {
+  display: none !important;
+}
+
+.hh-title {
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+
+/* '막혔을 때' — 조작법과 눈으로 갈라 놓는다 */
+.hh-title--stuck {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+  color: #ffb648;
+}
+
+.hh-note {
+  margin: 0 0 6px;
+  color: var(--ink-dim);
+  font-size: 10.5px;
+  line-height: 1.45;
+}
+
+.hh-fix {
+  display: grid;
+  gap: 4px;
+}
+
+.hh-btn {
+  padding: 6px 8px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: rgba(124, 196, 255, 0.12);
+  color: var(--ink);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.hh-btn:hover {
+  background: rgba(124, 196, 255, 0.22);
+}
+
+.hh-btn--warn {
+  background: rgba(255, 182, 72, 0.12);
+  color: #ffd166;
+}
+
+.hh-btn--warn:hover {
+  background: rgba(255, 182, 72, 0.22);
+}
+
+.hud-help-card dl {
+  margin: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.hud-help-card dl > div {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 6px;
+}
+
+.hud-help-card dt {
+  color: #ffd98a;
+  font-weight: 700;
+}
+
+.hud-help-card dd {
+  margin: 0;
+  color: var(--ink-dim);
+}
+
+/* ---------- 오른쪽 아래 · 지금 있는 곳과 골드 ---------- */
+.hud-place {
+  position: absolute;
+  right: 12px;
+  bottom: 18px;
+  display: grid;
+  gap: 1px;
+  justify-items: end;
+  text-align: right;
+  /* 땅 위에 그대로 얹히므로 밝은 풀밭에서도 읽히도록 어두운 판을 깐다.
+     테두리까지 두르면 창처럼 보여서 무거우니 배경만 옅게 준다. */
+  padding: 5px 9px;
+  border-radius: 9px;
+  background: rgba(8, 12, 24, 0.62);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  max-width: 42vw;
+}
+
+.hp-where {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: rgba(226, 232, 246, 0.94);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.hp-gold {
+  font-size: 12px;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+
+kbd {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 4px;
+  padding: 0 4px;
+  font-size: 10px;
+}
+
+/* ---------- 전투 뷰 ---------- */
+.battle-view {
+  position: absolute;
+  inset: 0;
+}
+
+.battle-hud {
+  position: absolute;
+  inset: 12px 12px auto 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fighter {
+  width: 232px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 7px 9px;
+  display: grid;
+  gap: 5px;
+}
+
+.fighter--monster {
+  align-self: flex-end;
+}
+
+.fighter-name {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ── 보스 등장 연출 (0.47) ─────────────────────────────────
+   곡은 바뀌는데 화면은 그대로여서 "이게 보스인가" 가 안 보였다.
+   1.4초 동안 화면이 어두워지고 이름이 가로질러 들어왔다 나간다. */
+.boss-intro {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 6; /* 데미지 숫자보다 위, 결과창보다 아래 */
+  pointer-events: none; /* 연출일 뿐이다 — 밑의 스킵 단추를 가로막지 않는다 */
+  background: rgba(6, 9, 16, 0);
+  transition: background 220ms ease;
+}
+
+.boss-intro.is-in {
+  background: rgba(6, 9, 16, 0.62);
+}
+
+.boss-intro-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 26px 12px 14px;
+  max-width: 88%;
+  border-radius: 12px;
+  background: linear-gradient(90deg, rgba(60, 12, 12, 0.9), rgba(24, 10, 20, 0.86));
+  border: 1px solid rgba(255, 120, 100, 0.5);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 90, 60, 0.18);
+  opacity: 0;
+  transform: translateX(-38px);
+}
+
+.boss-intro.is-in .boss-intro-card {
+  animation: bossIn 1400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.boss-intro-art {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
+}
+
+.boss-intro-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.boss-intro-tag {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: #ff8b6f;
+}
+
+.boss-intro-name {
+  font-size: 26px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.5), 0 0 18px rgba(255, 140, 90, 0.45);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.boss-intro-lv {
+  font-size: 12px;
+  color: #ffd0c0;
+}
+
+/* 들어와서 잠시 머물다 반대쪽으로 빠진다. 머무는 자리가 있어야 이름이 읽힌다. */
+@keyframes bossIn {
+  0% { opacity: 0; transform: translateX(-44px) scale(0.96); }
+  16% { opacity: 1; transform: translateX(0) scale(1); }
+  76% { opacity: 1; transform: translateX(0) scale(1); }
+  100% { opacity: 0; transform: translateX(44px) scale(0.98); }
+}
+
+/* 보스가 던지는 한 줄 (0.48) — 이름표 아래에 따로 앉는다.
+   카드 안에 넣으면 카드가 길어져 이름이 안 읽힌다. */
+.boss-intro-line {
+  margin: 14px 0 0;
+  max-width: 86%;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: rgba(8, 10, 18, 0.72);
+  border-left: 3px solid rgba(255, 140, 100, 0.7);
+  color: #ffe6dc;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  opacity: 0;
+}
+
+.boss-intro.is-in .boss-intro-line {
+  animation: bossLine 1400ms ease forwards;
+  animation-delay: 260ms; /* 이름이 먼저 자리를 잡고 나서 말한다 */
+}
+
+@keyframes bossLine {
+  0% { opacity: 0; transform: translateY(8px); }
+  22% { opacity: 1; transform: translateY(0); }
+  78% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-4px); }
+}
+
+/* ── 쓰러졌다 (0.48) ──────────────────────────────────────
+   등장은 붉게 밀고 들어오고, 쓰러짐은 **가라앉는다**.
+   같은 움직임을 쓰면 이겼는지 졌는지가 눈에 안 들어온다. */
+.boss-intro--out .boss-intro-card {
+  background: linear-gradient(90deg, rgba(20, 26, 40, 0.92), rgba(14, 18, 30, 0.88));
+  border-color: rgba(150, 200, 255, 0.45);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 26px rgba(120, 180, 255, 0.14);
+}
+
+.boss-intro--out .boss-intro-tag { color: #9fd0ff; }
+
+.boss-intro--out .boss-intro-art {
+  filter: grayscale(0.75) brightness(0.7) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
+}
+
+.boss-intro--out .boss-intro-line {
+  border-left-color: rgba(150, 200, 255, 0.6);
+  color: #d8e6f6;
+}
+
+.boss-intro.is-in.boss-intro--out .boss-intro-card {
+  animation: bossOut 1600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes bossOut {
+  0% { opacity: 0; transform: translateY(-16px) scale(1.04); }
+  18% { opacity: 1; transform: translateY(0) scale(1); }
+  74% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(20px) scale(0.97); }
+}
+
+/* ── 고룡은 크게 (0.48) ───────────────────────────────────
+   30분에 한 번 오는 상대다. 다른 보스와 같은 배너로 나오면
+   "그냥 조금 센 놈" 으로 보인다. 화면을 통째로 쓰고 더 오래 머문다. */
+.boss-intro--grand.is-in {
+  background: radial-gradient(circle at 50% 45%, rgba(60, 8, 8, 0.72), rgba(4, 4, 10, 0.94));
+}
+
+.boss-intro--grand .boss-intro-card {
+  flex-direction: column;
+  gap: 6px;
+  padding: 22px 40px 18px;
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+.boss-intro--grand .boss-intro-art {
+  width: 190px;
+  height: 190px;
+  filter: drop-shadow(0 0 40px rgba(255, 90, 40, 0.55)) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.7));
+}
+
+.boss-intro--grand .boss-intro-text { text-align: center; justify-items: center; }
+
+.boss-intro--grand .boss-intro-tag {
+  font-size: 13px;
+  letter-spacing: 0.5em;
+  color: #ff6a4a;
+}
+
+.boss-intro--grand .boss-intro-name {
+  font-size: 44px;
+  letter-spacing: -0.01em;
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.55), 0 0 34px rgba(255, 110, 60, 0.7);
+}
+
+.boss-intro--grand .boss-intro-lv { font-size: 14px; }
+
+.boss-intro--grand .boss-intro-line {
+  font-size: 16px;
+  background: rgba(0, 0, 0, 0.55);
+  border-left: none;
+  border-top: 1px solid rgba(255, 120, 80, 0.4);
+  border-bottom: 1px solid rgba(255, 120, 80, 0.4);
+}
+
+/* 그림이 아래에서 솟아오르고, 이름은 그 뒤에 자리를 잡는다.
+   가로로 미는 보통 배너와 **다른 방향**이라 한눈에 다른 상대인 줄 안다. */
+.boss-intro--grand.is-in .boss-intro-card {
+  animation: bossGrand 2800ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.boss-intro--grand.is-in .boss-intro-line {
+  animation-duration: 2500ms;
+  animation-delay: 620ms;
+}
+
+@keyframes bossGrand {
+  0% { opacity: 0; transform: translateY(60px) scale(0.7); }
+  14% { opacity: 1; transform: translateY(0) scale(1.06); }
+  22% { transform: translateY(0) scale(1); }
+  /* 한 번 더 크게 숨을 쉰다 — 살아 있는 것처럼 보이게 */
+  50% { transform: translateY(-2px) scale(1.03); }
+  84% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-18px) scale(1.02); }
+}
+
+/* 세로 화면에서는 그림을 줄이고 글씨도 한 단 낮춘다 */
+@media (max-aspect-ratio: 1/1) {
+  .boss-intro-art { width: 56px; height: 56px; }
+  .boss-intro-name { font-size: 21px; }
+  .boss-intro-line { font-size: 12.5px; padding: 7px 12px; }
+  .boss-intro--grand .boss-intro-art { width: 128px; height: 128px; }
+  .boss-intro--grand .boss-intro-name { font-size: 30px; }
+  .boss-intro--grand .boss-intro-line { font-size: 13.5px; }
+}
+
+.damage-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.dmg {
+  position: absolute;
+  font-weight: 900;
+  font-size: 26px;
+  color: #fff;
+  text-shadow: 0 2px 0 #6b1010, 0 4px 12px rgba(0, 0, 0, 0.7);
+  animation: dmgPop 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transform: translateX(var(--jitter, 0));
+}
+
+.dmg--monster {
+  left: 62%;
+  top: 34%;
+}
+
+.dmg--player {
+  left: 22%;
+  top: 62%;
+  color: #ffd9d9;
+}
+
+/* 세게 맞았다 — 상대 최대 HP 의 6% / 15% 를 넘긴 한 대.
+   숫자를 읽지 않아도 눈으로 알 수 있어야 한다(BattleView 의 hitWeight). */
+.dmg--big {
+  font-size: 34px;
+  color: #ffd0a0;
+  text-shadow: 0 2px 0 #7a2a10, 0 5px 14px rgba(255, 130, 60, 0.5);
+}
+
+.dmg--huge {
+  font-size: 44px;
+  color: #ffb4a0;
+  text-shadow: 0 3px 0 #7a1010, 0 7px 20px rgba(255, 80, 40, 0.6);
+}
+
+/* 치명타 — 이 판에서 가장 큰 글씨. 굵고, 노랗고, 한 번 크게 부딪혔다 가라앉는다. */
+.dmg--crit {
+  font-size: 52px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #fff3c4;
+  -webkit-text-stroke: 2px #7a4b00;
+  paint-order: stroke fill; /* 테두리를 글자 **뒤에** 그린다 — 안 그러면 획이 잠식된다 */
+  text-shadow:
+    0 3px 0 #7a4b00,
+    0 0 18px rgba(255, 210, 90, 0.9),
+    0 8px 22px rgba(255, 170, 40, 0.55);
+  animation: dmgCrit 900ms cubic-bezier(0.18, 1.5, 0.35, 1) forwards;
+}
+
+/* 치명타이면서 크게 들어간 대 — 더 키운다. 둘이 겹치면 그만큼 더 세게 들어간 것이다. */
+.dmg--crit.dmg--big { font-size: 60px; }
+.dmg--crit.dmg--huge { font-size: 72px; }
+
+/* 선제 사격(예측 공격) — 붙기도 전에 들어가는 두 발.
+   다른 공격과 같은 모양이면 언제 나갔는지 알 수가 없어서 화살 색으로 따로 띄운다. */
+.dmg--opener {
+  color: #9be86b;
+  text-shadow: 0 2px 0 #2c5a14, 0 5px 14px rgba(120, 230, 90, 0.5);
+}
+
+/* 치명타는 보통 한 대와 **다르게 움직인다** — 크기만 키우면 그냥 큰 숫자다.
+   내리꽂히듯 나타나 한 번 크게 부풀었다가 천천히 사라진다. */
+@keyframes dmgCrit {
+  0% {
+    opacity: 0;
+    transform: translate(var(--jitter, 0), -28px) scale(0.4) rotate(-8deg);
+  }
+  18% {
+    opacity: 1;
+    transform: translate(var(--jitter, 0), -6px) scale(1.45) rotate(3deg);
+  }
+  34% {
+    transform: translate(var(--jitter, 0), -14px) scale(1.05) rotate(-1.5deg);
+  }
+  55% {
+    transform: translate(var(--jitter, 0), -22px) scale(1.15) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--jitter, 0), -58px) scale(1);
+  }
+}
+
+@keyframes dmgPop {
+  0% {
+    opacity: 0;
+    transform: translate(var(--jitter, 0), 12px) scale(0.6);
+  }
+  22% {
+    opacity: 1;
+    transform: translate(var(--jitter, 0), -18px) scale(1.15);
+  }
+  60% {
+    transform: translate(var(--jitter, 0), -26px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--jitter, 0), -46px) scale(0.95);
+  }
+}
+
+.battle-log {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  width: 300px;
+  max-height: 104px;
+  overflow-y: auto;
+  background: rgba(8, 12, 24, 0.82);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 11.5px;
+  line-height: 1.65;
+  color: var(--ink-dim);
+}
+
+.log-line--good {
+  color: #7ef0b0;
+  font-weight: 700;
+}
+
+.log-line--bad {
+  color: #ff9c9c;
+  font-weight: 700;
+}
+
+.skip-btn {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 15px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  transition: background 160ms ease;
+}
+
+.skip-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ---------- 전투 결과 ---------- */
+.result-panel {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(4, 7, 16, 0.68);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+.result-card {
+  width: 300px;
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 20px 16px;
+  text-align: center;
+  display: grid;
+  gap: 12px;
+  animation: cardIn 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+}
+
+.result-card h2 {
+  font-size: 24px;
+  letter-spacing: 0.06em;
+}
+
+.result-card.is-win h2 {
+  color: #ffe27a;
+}
+
+.result-card.is-lose h2 {
+  color: #ff9c9c;
+}
+
+.result-rewards {
+  display: grid;
+  gap: 5px;
+  font-size: 13px;
+}
+
+.reward {
+  display: flex;
+  justify-content: space-between;
+  color: var(--ink-dim);
+}
+
+.reward b {
+  color: var(--ink);
+}
+
+.result-items {
+  display: grid;
+  gap: 3px;
+  font-size: 12.5px;
+  border-top: 1px solid var(--line);
+  padding-top: 9px;
+  color: #cfe4ff;
+}
+
+/* 전리품 아래 — 각인이 붙어 나온 물건. 초월은 붉게 빛난다. */
+.result-engraved {
+  display: grid;
+  gap: 3px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #d9c2ff;
+}
+
+.result-engraved .is-perfect {
+  color: #ff6b6b;
+  font-weight: 800;
+  text-shadow: 0 0 6px rgba(255, 80, 80, 0.55);
+}
+
+.result-note {
+  font-size: 12.5px;
+  color: var(--ink-dim);
+  line-height: 1.6;
+}
+
+.levelup {
+  font-weight: 900;
+  font-size: 14px;
+  color: #7ef0b0;
+  letter-spacing: 0.06em;
+  animation: pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  to {
+    text-shadow: 0 0 14px rgba(126, 240, 176, 0.7);
+  }
+}
+
+.primary-btn,
+.confirm-btn {
+  background: linear-gradient(180deg, #5b78ff, #3f57d6);
+  border-radius: 9px;
+  padding: 9px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(70, 96, 220, 0.4);
+  transition: transform 120ms ease, filter 120ms ease;
+}
+
+.primary-btn:hover:not(:disabled),
+.confirm-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.primary-btn:disabled {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--ink-dim);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* ---------- 인벤토리 ---------- */
+.inventory-root {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(4, 7, 16, 0.72);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.inv-panel {
+  width: 560px;
+  max-width: calc(100% - 32px);
+  max-height: calc(100% - 32px);
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  display: grid;
+  grid-template-rows: auto auto auto auto 1fr;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.66);
+  animation: cardIn 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.inv-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.inv-header h2 {
+  font-size: 15px;
+  letter-spacing: 0.04em;
+}
+
+.inv-close {
+  color: var(--ink-dim);
+  font-size: 15px;
+}
+
+/* 소지품 창의 장착 띠 — 낀 장비만 한 줄로 (해제는 눌러서) */
+.inv-equipped {
+  padding: 8px 14px 0;
+  overflow-x: auto;
+}
+
+.equip-strip {
+  display: flex;
+  gap: 5px;
+}
+
+.equip-chip {
+  flex: 0 0 auto;
+  display: grid;
+  gap: 1px;
+  text-align: left;
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(91, 120, 255, 0.12);
+}
+
+.equip-chip:hover {
+  border-color: var(--accent, #5b78ff);
+}
+
+/* 지금 펼쳐 보고 있는 장비 — 목록의 선택과 같은 표시여야 헷갈리지 않는다. */
+.equip-chip.is-selected {
+  border-color: var(--accent, #5b78ff);
+  background: rgba(91, 120, 255, 0.3);
+}
+
+/* 세트 장비는 여기서도 초록으로 — 목록·자세히 보기와 같은 색이어야 한다. */
+.equip-chip.is-set .equip-chip-name {
+  color: var(--set);
+}
+
+/* 초월 각인은 세트보다도 앞선다 — 백에 하나짜리라 이것부터 눈에 들어와야 한다. */
+.equip-chip.is-perfect .equip-chip-name {
+  color: #ff6b6b !important;
+  text-shadow: 0 0 6px rgba(255, 80, 80, 0.5);
+}
+
+.equip-chip-slot {
+  font-size: 9px;
+  color: var(--ink-dim);
+}
+
+.equip-chip-name {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.equip-strip-empty {
+  font-size: 11px;
+}
+
+/* 캐릭터 창 장비 탭 */
+.gear-tab {
+  display: grid;
+  gap: 12px;
+  padding: 4px 2px;
+}
+
+.gear-slots {
+  display: grid;
+  gap: 8px;
+}
+
+/* 장비 탭 안의 칸은 촘촘하게 — 9칸이 한눈에 들어와야 한다 */
+.gear-slots .slot {
+  padding: 5px 7px;
+  gap: 2px;
+  min-height: 46px;
+  align-content: start;
+}
+
+.gear-slots .slot-name {
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.gear-slots .slot-name.muted {
+  font-weight: 400;
+}
+
+.gear-slots .mini-btn {
+  margin-top: 1px;
+}
+
+.slot-group-title {
+  font-size: 10px;
+  color: var(--ink-dim);
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.slot-group-slots {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.reset-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+  padding-top: 9px;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+
+.mini-btn.is-lack {
+  opacity: 0.45;
+}
+
+.slot {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px dashed var(--line);
+  border-radius: 9px;
+  padding: 7px 9px;
+  display: grid;
+  gap: 3px;
+  font-size: 11px;
+}
+
+.slot.is-filled {
+  border-style: solid;
+  background: rgba(91, 120, 255, 0.12);
+}
+
+.slot-label {
+  color: var(--ink-dim);
+  font-size: 10px;
+}
+
+.slot-name {
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.mini-btn {
+  justify-self: start;
+  font-size: 10px;
+  color: var(--ink-dim);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 1px 7px;
+}
+
+.mini-btn:hover {
+  color: var(--ink);
+}
+
+.inv-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 8px 14px 10px;
+  font-size: 11.5px;
+  color: var(--ink-dim);
+  border-bottom: 1px solid var(--line);
+}
+
+/* 디아블로2식 수치 줄: [>] 이름 ......... 값 */
+.stat-row {
+  display: grid;
+  grid-template-columns: 16px 1fr auto;
+  align-items: center;
+  gap: 6px;
+  padding: 1px 0;
+}
+
+.stat-row.is-open {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 6px;
+}
+
+.stat-toggle {
+  color: var(--ink-dim);
+  font-size: 10px;
+  font-family: ui-monospace, monospace;
+  line-height: 1;
+  border-radius: 4px;
+}
+
+.stat-toggle:hover {
+  color: var(--gold, #ffd666);
+}
+
+.stat-val {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-breakdown {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 1px;
+  padding: 3px 0 5px 22px;
+  font-size: 10.5px;
+}
+
+.stat-breakdown li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.stat-breakdown b {
+  color: #8fd4a0;
+  font-variant-numeric: tabular-nums;
+}
+
+.equip-choice {
+  display: grid;
+  gap: 5px;
+}
+
+.equip-choice small {
+  display: block;
+  font-size: 9.5px;
+  opacity: 0.75;
+  font-weight: 400;
+}
+
+.primary-btn.is-off {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--ink-dim);
+}
+
+.inv-body {
+  display: grid;
+  grid-template-columns: 1fr 216px;
+  min-height: 0;
+}
+
+.inv-list {
+  overflow-y: auto;
+  padding: 8px;
+  display: grid;
+  gap: 4px;
+  align-content: start;
+}
+
+.inv-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 8px;
+  border-radius: 9px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.inv-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.inv-item.is-selected {
+  background: rgba(91, 120, 255, 0.18);
+  border-color: rgba(120, 150, 255, 0.5);
+}
+
+.inv-item.is-equipped .inv-item-name::after {
+  content: ' ✔';
+  color: #7ef0b0;
+}
+
+.inv-icon {
+  border-radius: 7px;
+  overflow: hidden;
+  flex: none;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.inv-icon canvas,
+.inv-icon img {
+  width: 100%;
+  height: 100%;
+}
+
+.inv-item-text {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.inv-item-name {
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.inv-item-sub {
+  font-size: 10.5px;
+  color: var(--ink-dim);
+}
+
+.inv-empty {
+  padding: 20px;
+  text-align: center;
+}
+
+.inv-detail {
+  border-left: 1px solid var(--line);
+  padding: 12px;
+  display: grid;
+  gap: 9px;
+  align-content: start;
+  overflow-y: auto;
+  font-size: 12px;
+}
+
+.detail-head {
+  display: grid;
+  gap: 2px;
+}
+
+.detail-name {
+  font-size: 13.5px;
+  font-weight: 800;
+}
+
+.detail-type {
+  font-size: 10.5px;
+  color: var(--ink-dim);
+}
+
+.detail-desc {
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--ink-dim);
+}
+
+.detail-stats {
+  display: grid;
+  gap: 3px;
+  font-size: 11.5px;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+
+.detail-stats b {
+  color: #9fd0ff;
+}
+
+/*
+ * 갈아 끼웠을 때의 오르내림.
+ * 오르면 초록 ▲, 내려가면 빨강 ▼ — 색과 화살표 둘 다 쓴다.
+ * 색만으로 가르면 색을 못 가리는 사람에게는 아무 말도 안 하는 것과 같다.
+ */
+.stat-diff {
+  font-size: 10.5px;
+  font-weight: 800;
+  margin-left: 4px;
+}
+
+.stat-diff.is-up {
+  color: #7ef0b0;
+}
+
+.stat-diff.is-down {
+  color: #ff7b7b;
+}
+
+.enhance-box {
+  border-top: 1px solid var(--line);
+  padding-top: 9px;
+  display: grid;
+  gap: 6px;
+}
+
+.enhance-row {
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+
+.enhance-row b {
+  color: var(--ink);
+}
+
+.enhance-row .lack {
+  color: #ff9c9c;
+}
+
+.rarity-common {
+  color: var(--common);
+}
+.rarity-uncommon {
+  color: var(--uncommon);
+}
+.rarity-rare {
+  color: var(--rare);
+}
+.rarity-epic {
+  color: var(--epic);
+}
+/* 전설 — 용의 징표로만 얻는다. 다른 등급과 또렷이 갈리도록 옅게 빛난다. */
+.rarity-legendary {
+  color: var(--legendary);
+  text-shadow: 0 0 8px rgba(255, 182, 72, 0.45);
+}
+
+/* ── 세트 장비는 초록색 ─────────────────────────────────────
+   등급 색보다 **세트 색이 앞선다.** 세트인지 아닌지가 등급보다 중요한 정보라서다
+   (용린 세트는 희귀 등급이지만 맞춰 입으면 영웅 장비보다 낫다).
+   붙이는 쪽은 클래스를 뒤에 얹으므로 이 규칙이 자연스럽게 이긴다. */
+.is-set {
+  color: var(--set) !important;
+}
+
+.is-set.rarity-legendary {
+  text-shadow: 0 0 8px rgba(110, 231, 168, 0.4);
+}
+
+/* 세트 진행 — "3개 중 2개" 와 켜진 효과 */
+.set-lines {
+  margin-top: 6px;
+  padding: 7px 9px;
+  border-radius: 8px;
+  background: rgba(110, 231, 168, 0.09);
+  border: 1px solid rgba(110, 231, 168, 0.22);
+}
+
+.set-title {
+  display: block;
+  color: var(--set);
+  font-weight: 800;
+  font-size: 11.5px;
+  margin-bottom: 3px;
+}
+
+.set-step {
+  display: block;
+  font-size: 11px;
+  color: var(--ink-dim);
+  line-height: 1.5;
+}
+
+.set-step.is-on {
+  color: var(--set);
+}
+
+/*
+ * 조건이 붙은 줄 — 개수는 채웠지만 그때가 되어야 켜지는 효과(고룡전 한정),
+ * 그리고 변신에서 "지금 이 차례"인 보석.
+ * 켜진 초록과도, 아직인 회색과도 달라야 한다. 금빛으로 둔다.
+ */
+.set-step.is-when {
+  color: #ffd166;
+  font-weight: 700;
+}
+
+.set-parts {
+  display: block;
+  margin-top: 4px;
+  font-size: 10.5px;
+  color: var(--ink-dim);
+}
+
+.muted {
+  color: var(--ink-dim);
+}
+
+/* ---------- 토스트 ---------- */
+#toast-root {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  pointer-events: none;
+}
+
+.toast {
+  background: rgba(10, 15, 30, 0.92);
+  border: 1px solid var(--line);
+  border-left: 3px solid #5b78ff;
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 12px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 240ms ease, transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.toast.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast--good {
+  border-left-color: #6ee7a8;
+}
+.toast--bad {
+  border-left-color: #ff8080;
+}
+.toast--rare {
+  border-left-color: #d09bff;
+  color: #e9d4ff;
+}
+
+/* 초월 각인 — 각인의 연보라와 섞이면 안 된다. 소지품에서 쓰는 붉은색 그대로. */
+.toast--perfect {
+  border-left-color: #ff6b6b;
+  color: #ffd9d9;
+  font-weight: 700;
+  box-shadow: 0 0 14px rgba(255, 80, 80, 0.35);
+}
+
+/* ---------- 대사창 (드래곤퀘스트식) ---------- */
+.dialogue-root {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 0 12px 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.dlg-wrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  width: 100%;
+  max-width: 600px;
+  animation: dlgIn 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes dlgIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+.dlg-portrait {
+  flex: none;
+  width: 66px;
+  height: 88px;
+  border-radius: 10px;
+  background: rgba(8, 12, 24, 0.9);
+  border: 2px solid rgba(190, 205, 240, 0.35);
+  display: grid;
+  place-items: end center;
+  overflow: hidden;
+}
+
+.dlg-portrait img {
+  height: 92%;
+}
+
+.dlg-box {
+  flex: 1;
+  min-height: 88px;
+  background: linear-gradient(180deg, rgba(10, 16, 32, 0.96), rgba(6, 10, 22, 0.96));
+  border: 2px solid rgba(190, 205, 240, 0.6);
+  border-radius: 10px;
+  box-shadow: 0 0 0 2px rgba(6, 10, 22, 0.9), 0 14px 34px rgba(0, 0, 0, 0.5);
+  padding: 11px 14px 9px;
+  cursor: pointer;
+  display: grid;
+  gap: 5px;
+  align-content: start;
+}
+
+.dlg-name {
+  font-size: 12px;
+  font-weight: 800;
+  color: #ffe27a;
+  letter-spacing: 0.02em;
+}
+
+.dlg-text {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: #eef2ff;
+  white-space: pre-line;
+  min-height: 3em;
+}
+
+.dlg-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 24px;
+}
+
+.dlg-action {
+  background: linear-gradient(180deg, #5b78ff, #3f57d6);
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.dlg-action:hover {
+  filter: brightness(1.1);
+}
+
+.dlg-next {
+  margin-left: auto;
+  font-size: 11px;
+  color: #9fb0d8;
+  opacity: 0;
+}
+
+.dlg-next.is-ready {
+  opacity: 1;
+  animation: nextBob 900ms ease-in-out infinite;
+}
+
+@keyframes nextBob {
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+/* ---------- 상점 ---------- */
+.shop-root {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(4, 7, 16, 0.72);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.shop-panel {
+  width: 480px;
+  max-width: calc(100% - 32px);
+  max-height: calc(100% - 32px);
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  display: grid;
+  /* 머리 · 탭 · 목록 · (판매 탭일 때) 합계 띠 */
+  grid-template-rows: auto auto 1fr auto;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.66);
+  animation: cardIn 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.shop-gold {
+  margin-left: auto;
+  margin-right: 10px;
+  font-size: 12.5px;
+  color: var(--gold);
+}
+
+.shop-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.shop-tabs button {
+  padding: 5px 14px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink-dim);
+}
+
+.shop-tabs button.is-on {
+  background: rgba(91, 120, 255, 0.2);
+  color: var(--ink);
+}
+
+.shop-list {
+  overflow-y: auto;
+  padding: 8px;
+  display: grid;
+  gap: 4px;
+  align-content: start;
+}
+
+.shop-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 9px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.shop-info {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+
+.shop-name {
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.shop-sub {
+  font-size: 10.5px;
+  color: var(--ink-dim);
+}
+
+/* 무엇과 견준 것인지 — 화살표만 있으면 어디서 온 숫자인지 알 수 없다. */
+.shop-vs {
+  font-size: 10px;
+  color: #7c8496;
+}
+
+/* 초월 각인이 붙은 물건은 판매 목록에서도 붉게. 모르고 넘기지 않게. */
+.shop-row.is-perfect .shop-name {
+  color: #ff6b6b;
+  text-shadow: 0 0 6px rgba(255, 80, 80, 0.5);
+}
+
+.shop-btn {
+  flex: none;
+  background: linear-gradient(180deg, #5b78ff, #3f57d6);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.shop-btn:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--ink-dim);
+  cursor: not-allowed;
+}
+
+.shop-btn--sell {
+  background: linear-gradient(180deg, #d8a33c, #a87723);
+}
+
+/* 한 줄에 버튼이 둘 이상 붙을 때(×1 / ×10, 1개 / 전부) */
+.shop-buy-btns {
+  flex: none;
+  display: grid;
+  gap: 4px;
+  justify-items: stretch;
+}
+
+.shop-buy-btns .shop-btn {
+  width: 100%;
+  padding: 5px 10px;
+  font-size: 11.5px;
+}
+
+.shop-btn--bulk {
+  background: linear-gradient(180deg, #4d8ce0, #2f63ab);
+}
+
+/* 판매 탭 — 여러 개 고르기 */
+.shop-check {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+}
+
+.shop-check.is-on {
+  background: linear-gradient(180deg, #5b78ff, #3f57d6);
+  border-color: rgba(150, 175, 255, 0.7);
+}
+
+.shop-row.is-picked {
+  background: rgba(91, 120, 255, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(120, 150, 255, 0.35);
+}
+
+.shop-row .shop-info {
+  cursor: pointer;
+}
+
+.pick-qty {
+  color: #a9c0ff;
+}
+
+.shop-bulk {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-top: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.bulk-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+.bulk-sum {
+  font-size: 11.5px;
+  color: var(--ink-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bulk-sum b {
+  color: var(--gold);
+}
+
+.shop-bulk .primary-btn {
+  flex: none;
+  padding: 7px 12px;
+  font-size: 12px;
+}
+
+.inv-hint {
+  margin-left: auto;
+  margin-right: 10px;
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+
+
+/* ---------- 접속 화면 ---------- */
+/* 접속 화면은 스테이지 밖의 전체 화면 덮개다(축소·잘림의 영향을 받지 않는다). */
+.login-root {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  /* 열을 화면 폭에 묶어 둔다.
+     그냥 place-items:center 만 쓰면 열 너비가 카드 자신을 따라가서
+     카드의 max-width: calc(100% - 32px) 가 제 화면이 아니라 자기 자신을 기준으로 계산된다
+     (= 좁은 폰에서 카드가 화면 밖으로 삐져나간다). */
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(91, 120, 255, 0.22), transparent 60%),
+    linear-gradient(180deg, #101733, #070a15);
+}
+
+.login-card {
+  width: 360px;
+  max-width: calc(100% - 32px);
+  /* 그리드 칸 안에서는 min-width 가 auto 라서 내용보다 작게 못 줄어든다.
+     그대로 두면 320px 짜리 좁은 폰에서 카드가 화면 밖으로 삐져나간다. */
+  min-width: 0;
+  background: rgba(14, 20, 36, 0.94);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px 18px 12px;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  gap: 10px;
+  /* 화면이 낮아도 카드 자체는 넘치지 않는다 — 안쪽 입력 영역만 스크롤된다 */
+  max-height: calc(100dvh - 24px);
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  animation: cardIn 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.login-mark {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: linear-gradient(180deg, #5b78ff, #3f57d6);
+  font-size: 20px;
+}
+
+/* 배경 음악 켜고 끄기 — 브랜드 줄 오른쪽 끝(= 카드 오른쪽 위) (0.57).
+   margin-left:auto 로 밀어 두면 제목 길이가 바뀌어도 언제나 오른쪽에 붙는다. */
+.login-sound {
+  margin-left: auto;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  background: rgba(20, 26, 40, 0.85);
+  color: #cfe0f5;
+  cursor: pointer;
+  flex: 0 0 auto;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+}
+
+.login-sound:hover {
+  border-color: #7cc4ff;
+  color: #fff;
+}
+
+.login-sound.is-on {
+  color: #7cc4ff;
+  border-color: rgba(124, 196, 255, 0.55);
+}
+
+/* 꺼진 상태는 **한눈에** 꺼진 것으로 보여야 한다 — 흐리게 + ✕ */
+.login-sound.is-off {
+  color: #6b7690;
+  background: rgba(14, 18, 28, 0.85);
+}
+
+.login-brand h1 {
+  font-size: 17px;
+  letter-spacing: 0.02em;
+}
+
+.login-brand p {
+  font-size: 11px;
+  color: var(--ink-dim);
+  margin-top: 1px;
+}
+
+.login-tabs {
+  display: flex;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 9px;
+  padding: 3px;
+}
+
+.login-tabs button {
+  flex: 1;
+  padding: 6px 0;
+  border-radius: 7px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink-dim);
+}
+
+.login-tabs button.is-on {
+  background: rgba(91, 120, 255, 0.28);
+  color: var(--ink);
+}
+
+.login-form {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 8px;
+  min-height: 0;
+}
+
+/* 입력 항목들 — 여기만 스크롤된다 */
+.login-fields {
+  display: grid;
+  gap: 7px;
+  align-content: start;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
+  /* 스크롤 막대가 글자에 붙지 않게 */
+  padding-right: 2px;
+}
+
+.login-form label {
+  display: grid;
+  gap: 2px;
+}
+
+.login-form label span {
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+
+.login-form input {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 13px;
+  color: var(--ink);
+  font-family: inherit;
+}
+
+.login-form input:focus {
+  outline: 2px solid rgba(120, 150, 255, 0.6);
+  outline-offset: 1px;
+}
+
+.login-error {
+  font-size: 11.5px;
+  color: #ff9c9c;
+  line-height: 1.5;
+}
+
+/*
+ * 접속 버튼은 스크롤 영역 밖에 있다 —
+ * 카드가 아무리 길어져도, 창이 낮아도 항상 제자리에 보인다.
+ * (예전에는 화면 밖으로 밀려나 "버튼이 안 눌린다"가 됐다)
+ */
+.login-submit {
+  margin-top: 3px;
+  background: linear-gradient(180deg, #5b78ff, #3f57d6);
+  border-radius: 9px;
+  padding: 10px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(70, 96, 220, 0.4);
+}
+
+.login-submit:disabled {
+  filter: grayscale(0.5);
+  cursor: wait;
+}
+
+.login-foot {
+  border-top: 1px solid var(--line);
+  padding-top: 9px;
+  display: grid;
+  gap: 5px;
+  max-height: 30vh;
+  overflow-y: auto;
+}
+
+.login-where {
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+
+.login-where b {
+  color: #9fd0ff;
+}
+
+.login-warn {
+  font-size: 10.5px;
+  line-height: 1.55;
+  color: rgba(200, 212, 240, 0.55);
+}
+
+/* ---------- HUD 버튼 ---------- */
+
+
+.hud-btn:hover:not(:disabled) {
+  background: rgba(91, 120, 255, 0.28);
+  transform: translateY(-1px);
+}
+
+.hud-btn:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.hud-net {
+  font-size: 10px;
+  color: #9fd0ff;
+  white-space: nowrap;
+}
+
+/* 서버에 안 붙어 있을 때는 눈에 띄게 — 조용히 혼자 노는 상황을 막는다 */
+.hud-net.is-off {
+  color: #ffc98a;
+  border-color: rgba(255, 170, 90, 0.45);
+}
+
+/* ---------- 단축키 칸 ---------- */
+.qs-root {
+  position: absolute;
+  right: 116px;   /* 전투 로그(왼쪽 아래)와 스킵 버튼(오른쪽 아래) 사이 */
+  bottom: 10px;
+}
+
+.qs-row {
+  display: flex;
+  gap: 6px;
+}
+
+.qs-slot {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background: rgba(10, 15, 30, 0.86);
+  border: 1px solid var(--line);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  transition: border-color 140ms ease, transform 120ms ease;
+}
+
+.qs-slot.is-filled {
+  border-color: rgba(120, 150, 255, 0.55);
+}
+
+.qs-slot:hover.is-filled {
+  transform: translateY(-2px);
+}
+
+.qs-slot.is-empty-stock {
+  opacity: 0.45;
+}
+
+.qs-key {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  font-size: 9.5px;
+  font-weight: 800;
+  color: var(--ink-dim);
+}
+
+.qs-icon {
+  display: block;
+  pointer-events: none;
+}
+
+.qs-icon img,
+.qs-icon canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.qs-count {
+  position: absolute;
+  right: 3px;
+  bottom: 1px;
+  font-size: 10px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 1px 2px #000;
+}
+
+.qs-cd {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 0;
+  background: rgba(120, 150, 255, 0.42);
+  opacity: 0;
+  pointer-events: none;
+  transition: height 90ms linear;
+}
+
+/* ---------- 버프 칩 ---------- */
+.hud-buffs {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.buff-chip {
+  background: rgba(8, 12, 24, 0.8);
+  border: 1px solid rgba(126, 240, 176, 0.45);
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 10.5px;
+  color: #b8f5d4;
+}
+
+.buff-chip b {
+  margin-left: 3px;
+  font-variant-numeric: tabular-nums;
+}
+
+.hud-badge {
+  margin-left: 5px;
+  background: #e14b5a;
+  color: #fff;
+  border-radius: 999px;
+  padding: 0 5px;
+  font-size: 9.5px;
+  font-weight: 800;
+}
+
+/* ---------- 회복 숫자 ---------- */
+.dmg--heal {
+  color: #7ef0b0;
+  text-shadow: 0 2px 0 #14563a, 0 4px 12px rgba(0, 0, 0, 0.7);
+}
+
+/* ---------- 교환 패널 ---------- */
+.exchange-row {
+  gap: 8px;
+}
+
+/* 교환 · 전부 — 세로로 붙여 둔다(줄 높이를 늘리지 않게) */
+.ex-btns {
+  display: grid;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+
+.ex-btns .shop-btn {
+  width: 100%;
+  padding: 4px 10px;
+  font-size: 11.5px;
+  white-space: nowrap;
+}
+
+.shop-btn--all {
+  background: linear-gradient(180deg, #4d8ce0, #2f63ab);
+}
+
+.ex-side {
+  display: grid;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.ex-side--get {
+  flex: 0 0 auto;
+}
+
+.ex-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+
+.ex-cell b {
+  margin-left: 4px;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-cell.is-lacking b {
+  color: #ff9c9c;
+}
+
+.ex-arrow {
+  color: var(--ink-dim);
+  font-size: 15px;
+  flex: none;
+}
+
+/* ---------- 캐릭터 창 ---------- */
+.char-panel {
+  width: 560px;
+  max-width: calc(100% - 32px);
+  max-height: calc(100% - 32px);
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  display: grid;
+  /* 머리 · 패시브 한 줄 · 요약 · 탭 · 본문 */
+  grid-template-rows: auto auto auto auto 1fr;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.66);
+  animation: cardIn 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.char-class {
+  font-size: 11px;
+  color: #9fd0ff;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.char-points {
+  margin-left: auto;
+  margin-right: 10px;
+  font-size: 11.5px;
+  color: var(--ink-dim);
+}
+
+.char-points b {
+  color: var(--ink);
+}
+
+.char-points b.is-on {
+  color: #ffe27a;
+}
+
+.char-body {
+  overflow-y: auto;
+  padding: 10px 12px 14px;
+}
+
+.char-list {
+  display: grid;
+  gap: 6px;
+}
+
+.char-node,
+.char-skill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+.char-skill.is-learned {
+  border-color: rgba(126, 240, 176, 0.4);
+  background: rgba(126, 240, 176, 0.08);
+}
+
+.char-skill.is-locked {
+  opacity: 0.55;
+}
+
+.char-icon {
+  width: 26px;
+  text-align: center;
+  font-size: 16px;
+  flex: none;
+}
+
+.char-text {
+  display: grid;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.char-name {
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.char-name b {
+  color: #ffe27a;
+  margin-left: 3px;
+}
+
+.char-name i {
+  color: var(--ink-dim);
+  font-style: normal;
+  font-size: 10.5px;
+}
+
+.char-desc {
+  font-size: 10.5px;
+  color: var(--ink-dim);
+  line-height: 1.5;
+}
+
+.char-total {
+  font-size: 10.5px;
+  color: #9fd0ff;
+}
+
+.char-req {
+  font-size: 10px;
+  color: #ff9c9c;
+}
+
+.char-plus {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(180deg, #5b78ff, #3f57d6);
+}
+
+.char-plus:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--ink-dim);
+  cursor: not-allowed;
+}
+
+.char-locked {
+  padding: 26px 10px;
+  text-align: center;
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+
+.char-note {
+  font-size: 11px;
+  color: var(--ink-dim);
+  margin-bottom: 8px;
+}
+
+.char-tier {
+  margin-bottom: 10px;
+}
+
+.char-tier-label {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--ink-dim);
+  margin-bottom: 5px;
+}
+
+.char-tier-nodes {
+  display: grid;
+  gap: 6px;
+}
+
+.detail-specials {
+  display: grid;
+  gap: 3px;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+  font-size: 10.5px;
+  color: #d09bff;
+}
+
+.detail-specials b {
+  color: #e9d4ff;
+}
+
+.detail-quick {
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+  display: grid;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+
+.quick-pick {
+  display: flex;
+  gap: 4px;
+}
+
+.quick-pick button {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-dim);
+}
+
+.quick-pick button.is-on {
+  background: rgba(91, 120, 255, 0.32);
+  color: #fff;
+  border-color: rgba(120, 150, 255, 0.6);
+}
+
+/* ---------- 직업 선택 ---------- */
+.class-pick {
+  display: grid;
+  gap: 4px;
+}
+
+.class-pick > span {
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+
+.class-row {
+  display: grid;
+  /* minmax(0,1fr) 이어야 칸이 내용보다 작게도 줄어든다.
+     그냥 1fr 이면 좁은 폰에서 카드가 화면 밖으로 밀려난다. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.class-row button {
+  display: grid;
+  /* 카드마다 글 길이가 달라도 높이가 어긋나지 않게 — 위에서부터 채우고 아래를 비운다 */
+  grid-template-rows: auto auto auto auto 1fr;
+  align-items: start;
+  min-width: 0;
+  justify-items: center;
+  gap: 2px;
+  padding: 6px 3px 5px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-dim);
+  background: rgba(255, 255, 255, 0.04);
+  transition: border-color 140ms ease, background 140ms ease;
+}
+
+.class-row button:hover:not(:disabled) {
+  border-color: rgba(120, 150, 255, 0.5);
+}
+
+.class-art {
+  width: 30px;
+  height: 40px;
+  object-fit: contain;
+  image-rendering: auto;
+}
+
+.class-art--none {
+  display: block;
+}
+
+.class-row button.is-on .class-art {
+  filter: drop-shadow(0 0 6px rgba(140, 170, 255, 0.75));
+}
+
+.class-tagline {
+  font-size: 9.5px;
+  min-height: 24px;
+  font-weight: 400;
+  line-height: 1.35;
+  text-align: center;
+  opacity: 0.8;
+}
+
+.class-stats {
+  font-size: 8.5px;
+  /* 좁으면 줄바꿈되게 둔다(넘쳐서 카드를 밀어내지 않도록) */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  font-weight: 400;
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 직업 패시브 — 카드 아래 한 줄. 고르기 전에 이 직업만의 것이 보여야 한다. */
+.class-passive {
+  display: block;
+  align-self: end;
+  margin-top: 3px;
+  padding: 3px 4px;
+  border-radius: 6px;
+  width: 100%;
+  font-size: 8.5px;
+  font-weight: 400;
+  line-height: 1.35;
+  text-align: center;
+  color: #cfd9ff;
+  background: rgba(120, 150, 255, 0.14);
+  border: 1px solid rgba(120, 150, 255, 0.22);
+}
+
+.class-passive b {
+  display: block;
+  font-size: 9px;
+  color: #a9c0ff;
+}
+
+.class-row button.is-on .class-passive {
+  background: rgba(150, 180, 255, 0.24);
+  border-color: rgba(160, 190, 255, 0.45);
+}
+
+.class-row button.is-on {
+  background: rgba(91, 120, 255, 0.28);
+  color: var(--ink);
+  border-color: rgba(120, 150, 255, 0.6);
+}
+
+.class-row button:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.class-row button i {
+  display: block;
+  font-style: normal;
+  font-size: 9px;
+  opacity: 0.7;
+}
+
+/* 패널이 화면 위 토스트와 겹치지 않도록 살짝 내려 앉힌다 */
+.inventory-root,
+.shop-root {
+  padding-top: 34px;
+  align-content: center;
+  /*
+    minmax(0, 1fr) 이어야 한다 — 그냥 두면 행·열 칸이 "안에 든 카드 크기"로 정해지고,
+    카드의 max-height/max-width: calc(100% - 32px) 가 그 칸을 기준으로 계산되어
+    자기 자신보다 작아진다. 결과는 카드 아래쪽(마지막 줄, 버튼)이 잘려 보이는 것.
+    접속 화면 카드에서 겪은 것과 같은 함정이라 여기서 한 번에 막아 둔다.
+  */
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* 전투 중 단축키 칸이 로그와 겹치지 않게 */
+.battle-log {
+  width: 268px;
+}
+
+/* ---------- 퀘스트 ---------- */
+
+.quest-panel {
+  width: 540px;
+  max-width: calc(100% - 32px);
+  max-height: calc(100% - 32px);
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.66);
+  animation: cardIn 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.quest-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  min-height: 0;
+}
+
+/*
+ * 왼쪽 칸 — 진행 중 의뢰 + 특별 의뢰를 한 덩어리로 묶는다.
+ * 묶지 않으면 셋째 칸(의뢰 목록)이 다음 줄로 밀려 왼쪽 아래로 내려간다.
+ */
+.quest-left {
+  min-width: 0;
+  overflow-y: auto;
+}
+
+.quest-current {
+  padding: 12px;
+}
+
+.quest-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  display: grid;
+  gap: 9px;
+}
+
+.quest-card.is-ready {
+  border-color: rgba(126, 240, 176, 0.55);
+  background: rgba(126, 240, 176, 0.08);
+}
+
+/*
+ * 특별 의뢰 — 게시판 차례와 상관없이 열리는 줄.
+ * 여느 의뢰와 같은 카드를 쓰되 금빛 머리글로 "이건 다른 것" 임을 알린다.
+ */
+.quest-special {
+  padding: 0 12px 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.quest-special-title {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 800;
+  color: #ffd166;
+  letter-spacing: 0.04em;
+}
+
+.quest-tag {
+  justify-self: start;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #0b1020;
+  background: #ffd166;
+  border-radius: 999px;
+  padding: 2px 9px;
+}
+
+.quest-card h3 {
+  font-size: 16px;
+}
+
+.quest-desc {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--ink-dim);
+}
+
+.quest-progress .bar {
+  height: 18px;
+}
+
+.quest-progress .bar i {
+  background: linear-gradient(90deg, #ffd166, #7ef0b0);
+}
+
+.quest-rewards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.quest-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(8, 12, 24, 0.6);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+
+.quest-chip b {
+  color: var(--ink);
+}
+
+.quest-empty {
+  padding: 40px 12px;
+  text-align: center;
+  line-height: 1.8;
+  font-size: 12.5px;
+}
+
+.quest-list {
+  border-left: 1px solid var(--line);
+  padding: 12px 10px;
+  overflow-y: auto;
+}
+
+.quest-list h3 {
+  font-size: 11px;
+  color: var(--ink-dim);
+  letter-spacing: 0.06em;
+  margin-bottom: 7px;
+}
+
+.quest-row {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  gap: 4px 6px;
+  padding: 6px 6px;
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+
+.quest-row.is-active {
+  background: rgba(255, 209, 102, 0.12);
+  color: var(--ink);
+}
+
+.quest-row.is-done {
+  opacity: 0.55;
+}
+
+.quest-row.is-done .quest-mark {
+  color: #7ef0b0;
+}
+
+.quest-row-title {
+  font-weight: 700;
+}
+
+.quest-row-type,
+.quest-row-reward {
+  grid-column: 2 / -1;
+  font-size: 10px;
+  opacity: 0.85;
+}
+
+/* ===================== 설정 창 ===================== */
+
+.settings-panel {
+  width: 480px;
+}
+
+.set-group {
+  margin-bottom: 12px;
+}
+
+.set-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 2px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.set-text {
+  display: grid;
+  gap: 1px;
+}
+
+.set-label {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.set-desc {
+  font-size: 10.5px;
+  color: var(--ink-dim);
+}
+
+.set-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+/* 켜짐/꺼짐 스위치 */
+.set-switch {
+  width: 38px;
+  height: 21px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--line);
+  position: relative;
+  transition: background 140ms ease;
+}
+
+.set-switch[aria-checked='true'] {
+  background: rgba(91, 120, 255, 0.85);
+}
+
+.set-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 140ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.set-switch[aria-checked='true'] .set-knob {
+  transform: translateX(17px);
+}
+
+.set-range {
+  width: 110px;
+  accent-color: #5b78ff;
+}
+
+.set-value {
+  min-width: 38px;
+  text-align: right;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 직업 퀘스트 — 레벨 제한과 보상 선택 */
+.quest-req {
+  margin-left: 7px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #7cc4ff;
+  border: 1px solid rgba(124, 196, 255, 0.5);
+  border-radius: 999px;
+  padding: 1px 6px;
+  vertical-align: middle;
+}
+
+.quest-req.is-lack {
+  color: #ff9c9c;
+  border-color: rgba(255, 156, 156, 0.5);
+}
+
+.quest-lock {
+  font-size: 11px;
+}
+
+.quest-choice-title {
+  font-size: 10.5px;
+  color: var(--ink-dim);
+  margin: 6px 0 4px;
+}
+
+.quest-choice-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.quest-choice-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.quest-choice-btn.is-on {
+  border-color: #ffd166;
+  background: rgba(255, 209, 102, 0.14);
+}
+
+.quest-choice-btn b {
+  display: block;
+  font-size: 11.5px;
+}
+
+.quest-choice-btn i {
+  display: block;
+  font-size: 10px;
+  font-style: normal;
+  color: var(--ink-dim);
+}
+
+/* ===================== 시전(캐스팅) 바 ===================== */
+
+.cast-root {
+  position: absolute;
+  left: 50%;
+  bottom: 92px;
+  transform: translateX(-50%);
+  z-index: 8;
+}
+
+.cast-card {
+  width: 232px;
+  background: rgba(8, 12, 24, 0.88);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 10px 7px;
+  display: grid;
+  gap: 5px;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  animation: cardIn 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cast-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cast-label {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.cast-cancel {
+  color: var(--ink-dim);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.cast-cancel:hover {
+  color: var(--ink);
+}
+
+.bar--cast i {
+  background: linear-gradient(90deg, #8b7bff, #4fc3f7);
+  transition: width 60ms linear;
+}
+
+.cast-hint {
+  font-size: 9.5px;
+  color: var(--ink-dim);
+  text-align: center;
+}
+
+/* 설정 — 선택형(choice) 항목 */
+.set-choice {
+  display: flex;
+  gap: 4px;
+}
+
+.set-choice button {
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font-size: 11px;
+  color: var(--ink-dim);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.set-choice button.is-on {
+  background: rgba(91, 120, 255, 0.28);
+  color: var(--ink);
+  border-color: rgba(120, 150, 255, 0.6);
+}
+
+/* ===================== 소지품 분류 탭 ===================== */
+.inv-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 0 14px 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.inv-tabs button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--ink-dim);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.inv-tabs button.is-on {
+  background: rgba(91, 120, 255, 0.28);
+  color: var(--ink);
+  border-color: rgba(120, 150, 255, 0.6);
+}
+
+.inv-tabs button i {
+  font-style: normal;
+  font-size: 9.5px;
+  font-weight: 400;
+  opacity: 0.75;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 캐릭터 창 — 직업 전투 방식 */
+.combat-traits ul {
+  display: grid;
+  gap: 3px;
+}
+
+/* 캐릭터 창 머리 아래 — 직업 패시브 한 줄(어느 탭에서도 보인다) */
+.char-passive {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 11px;
+  line-height: 1.45;
+  color: #d6e0ff;
+  background: rgba(120, 150, 255, 0.13);
+  border-bottom: 1px solid var(--line);
+}
+
+.char-passive-tag {
+  flex: none;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 9.5px;
+  font-weight: 800;
+  color: #0d1430;
+  background: #a9c0ff;
+}
+
+.char-passive b {
+  flex: none;
+  color: #a9c0ff;
+}
+
+.char-passive-desc {
+  min-width: 0;
+  color: var(--ink-dim);
+}
+
+/* 직업 패시브 — 전투 방식 목록 위에 한 줄로 강조한다. */
+.passive-line {
+  margin: 0 0 6px;
+  padding: 5px 7px;
+  border-radius: 7px;
+  font-size: 11px;
+  line-height: 1.45;
+  color: #d6e0ff;
+  background: rgba(120, 150, 255, 0.14);
+  border: 1px solid rgba(120, 150, 255, 0.26);
+}
+
+.passive-line b {
+  color: #a9c0ff;
+}
+
+.combat-traits li {
+  position: relative;
+  padding-left: 13px;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--ink-dim);
+}
+
+.combat-traits li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: #7cc4ff;
+}
+
+/* 전투 — 남은 마리 수 */
+.foe-count {
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 400;
+  color: #ffd166;
+  margin-left: 6px;
+}
+
+/* ===================== 새 콘텐츠 알림 ===================== */
+.update-root {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 12;
+}
+
+.update-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px 7px 12px;
+  border-radius: 999px;
+  background: rgba(14, 20, 36, 0.94);
+  border: 1px solid rgba(126, 240, 176, 0.5);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.5);
+  animation: cardIn 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.update-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #7ef0b0;
+  box-shadow: 0 0 8px #7ef0b0;
+  animation: pulse 1.2s ease-in-out infinite alternate;
+}
+
+.update-text {
+  font-size: 11.5px;
+  color: var(--ink);
+}
+
+.update-btn {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: rgba(126, 240, 176, 0.2);
+  border: 1px solid rgba(126, 240, 176, 0.55);
+  color: #b9ffd8;
+}
+
+.update-btn:hover {
+  background: rgba(126, 240, 176, 0.32);
+}
+
+.update-close {
+  color: var(--ink-dim);
+  font-size: 11px;
+  padding: 0 2px;
+}
+
+/* ===================== 터치 조작 버튼 ===================== */
+/* 스테이지 밖(화면 크기 기준)에 붙는다 — 축소돼도 손가락으로 누를 만한 크기를 지킨다. */
+
+.tc-root {
+  display: none;
+}
+
+body.is-touch .tc-root {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: 'pad menu actions';
+  align-items: end;
+  gap: 8px;
+  width: 100%;
+  max-width: 520px;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* 방향 패드 */
+.tc-pad {
+  grid-area: pad;
+  position: relative;
+  width: 152px;
+  height: 152px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  touch-action: none;
+  /* 조이패드처럼 쓰려면 화살표 사이의 빈틈도 잡혀야 한다.
+     빈틈이 안 잡히면 손가락이 그 위를 지날 때 방향이 끊긴다. */
+  background: rgba(12, 18, 34, 0.45);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  padding: 6px;
+  box-sizing: border-box;
+}
+
+/* 화살표 자체는 손가락을 받지 않는다 — 패드가 통째로 받아
+   한가운데에서의 방향으로 판단한다(TouchControls 의 dirFrom). */
+.tc-pad [data-dir],
+.tc-pad .tc-center {
+  pointer-events: none;
+}
+
+.tc-dir {
+  background: rgba(20, 28, 50, 0.9);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  /* 누르는 순간 사파리가 회색 상자를 그리지 않게 */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 지금 가고 있는 쪽을 밝힌다. :active 는 손가락이 화살표 위에 있을 때만 걸리는데,
+   조이패드에서는 빈틈에 손가락이 있어도 방향이 정해지므로 클래스로 직접 켠다. */
+.tc-dir.is-on,
+.tc-dir:active {
+  background: rgba(91, 120, 255, 0.55);
+  border-color: rgba(150, 175, 255, 0.8);
+}
+
+.tc-up { grid-area: 1 / 2; border-radius: 14px 14px 4px 4px; }
+.tc-left { grid-area: 2 / 1; border-radius: 14px 4px 4px 14px; }
+.tc-right { grid-area: 2 / 3; border-radius: 4px 14px 14px 4px; }
+.tc-down { grid-area: 3 / 2; border-radius: 4px 4px 14px 14px; }
+
+.tc-center {
+  grid-area: 2 / 2;
+  background: rgba(20, 28, 50, 0.55);
+  border-radius: 4px;
+}
+
+/* 오른쪽 행동 버튼 */
+.tc-actions {
+  grid-area: actions;
+  display: grid;
+  grid-template-columns: repeat(2, 62px);
+  gap: 8px;
+  justify-items: stretch;
+}
+
+.tc-btn {
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(20, 28, 50, 0.9);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tc-btn:active {
+  transform: scale(0.94);
+}
+
+.tc-confirm {
+  background: rgba(91, 120, 255, 0.5);
+  border-color: rgba(140, 170, 255, 0.7);
+}
+
+.tc-cancel {
+  background: rgba(90, 40, 60, 0.7);
+}
+
+.tc-quick {
+  background: rgba(30, 45, 40, 0.85);
+  font-size: 15px;
+}
+
+/* 가운데 메뉴 버튼 */
+.tc-menu {
+  grid-area: menu;
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  align-content: end;
+}
+
+.tc-mini {
+  min-width: 74px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(20, 28, 50, 0.85);
+  border: 1px solid var(--line);
+  color: var(--ink-dim);
+  font-size: 11.5px;
+  font-weight: 700;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tc-mini:active {
+  color: var(--ink);
+  background: rgba(91, 120, 255, 0.4);
+}
+
+/* 가로로 눕히면 버튼을 화면 양쪽 아래 구석에 띄운다 */
+@media (orientation: landscape) {
+  body.is-touch #app {
+    grid-template-rows: 1fr;
+  }
+
+  body.is-touch .tc-root {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-width: none;
+    background: none;
+    pointer-events: none;
+    z-index: 30;
+  }
+
+  body.is-touch .tc-pad,
+  body.is-touch .tc-actions,
+  body.is-touch .tc-menu {
+    pointer-events: auto;
+  }
+
+  body.is-touch .tc-pad {
+    width: 132px;
+    height: 132px;
+  }
+
+  /* 가로 모드에서는 메뉴 버튼을 위쪽 가운데로 — 아래는 단축키 칸과 겹친다 */
+  body.is-touch .tc-menu {
+    position: fixed;
+    top: calc(6px + env(safe-area-inset-top));
+    left: 50%;
+    transform: translateX(-50%);
+    grid-auto-flow: column;
+    gap: 6px;
+  }
+
+  body.is-touch .tc-mini {
+    min-width: 62px;
+    padding: 6px 8px;
+    font-size: 11px;
+    background: rgba(20, 28, 50, 0.75);
+  }
+}
+
+/* 로그인 — 계정이 어디에 저장되는지 안내 */
+.login-note {
+  font-size: 10.5px;
+  line-height: 1.6;
+  color: var(--ink-dim);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 7px 9px;
+}
+
+.login-note b {
+  color: var(--ink);
+}
+
+.login-note code {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  padding: 0 4px;
+  font-size: 10px;
+}
+
+.login-note.is-good {
+  border-left: 2px solid #7ef0b0;
+}
+
+.login-note.is-warn {
+  border-left: 2px solid #ffd166;
+}
+
+/* 이 기기에 저장된 계정 고르기 */
+.login-known {
+  display: grid;
+  gap: 4px;
+}
+
+.login-known > span {
+  font-size: 10.5px;
+  color: var(--ink-dim);
+}
+
+.login-known-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.login-known-row button {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 11px;
+  color: var(--ink);
+}
+
+.login-known-row button:hover {
+  border-color: rgba(120, 150, 255, 0.6);
+}
+
+.login-error {
+  white-space: pre-line;
+}
+
+/* 설정 — 세이브 옮기기 */
+.set-hint {
+  margin-bottom: 6px;
+  line-height: 1.55;
+}
+
+.save-move {
+  display: grid;
+  gap: 6px;
+}
+
+.save-box {
+  width: 100%;
+  height: 58px;
+  resize: none;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 8px;
+  color: var(--ink);
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  line-height: 1.4;
+  word-break: break-all;
+}
+
+.save-btns {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.set-desc.is-good {
+  color: #8fd4a0;
+}
+
+.set-desc.is-bad {
+  color: #ff9c9c;
+}
+
+/* ===================== 부팅 실패 안내 ===================== */
+.boot--error {
+  align-items: center;
+  padding: 18px;
+  overflow-y: auto;
+  text-align: left;
+  letter-spacing: 0;
+}
+
+.boot-card {
+  max-width: 460px;
+  display: grid;
+  gap: 9px;
+  color: var(--ink);
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+
+.boot-card h2 {
+  font-size: 15px;
+  color: #ffd166;
+}
+
+.boot-card p,
+.boot-card li {
+  color: var(--ink-dim);
+}
+
+.boot-card b {
+  color: var(--ink);
+}
+
+.boot-card .boot-do {
+  margin-top: 2px;
+  color: var(--ink);
+}
+
+.boot-card ol,
+.boot-card ul {
+  display: grid;
+  gap: 7px;
+  padding-left: 18px;
+  list-style: decimal;
+}
+
+.boot-card ul {
+  list-style: disc;
+}
+
+.boot-card li {
+  padding-left: 2px;
+}
+
+.boot-card code {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: ui-monospace, monospace;
+  font-size: 11.5px;
+  color: #cfe4ff;
+}
+
+/* 로그인 — 자가 진단 */
+.login-diag-btn {
+  margin-left: 6px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-size: 10px;
+  color: var(--ink-dim);
+}
+
+.login-diag-btn:hover {
+  color: var(--ink);
+}
+
+.login-ver {
+  float: right;
+  font-size: 10px;
+  color: var(--ink-dim);
+  opacity: 0.7;
+}
+
+/* 한 장짜리 html 이 들고 있는 표의 기준 시각. 버전 왼쪽에 붙는다. */
+.login-stamp {
+  float: right;
+  margin-right: 8px;
+  font-size: 10px;
+  color: var(--ink-dim);
+  opacity: 0.55;
+  cursor: help;
+}
+
+.login-diag ul {
+  display: grid;
+  gap: 5px;
+  margin-top: 6px;
+  padding: 8px 9px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.login-diag li {
+  display: grid;
+  gap: 1px;
+  font-size: 10.5px;
+  line-height: 1.5;
+}
+
+.login-diag li b {
+  font-size: 11px;
+}
+
+.login-diag li.is-ok b {
+  color: #8fd4a0;
+}
+
+.login-diag li.is-bad b {
+  color: #ff9c9c;
+}
+
+.login-diag li span {
+  color: var(--ink-dim);
+  padding-left: 14px;
+}
+
+.login-diag li.is-info b {
+  color: var(--ink-dim);
+}
+
+/*
+ * 낮은 화면(폰 가로, 작게 줄인 창)에서는 설명글이 입력칸 자리를 빼앗는다.
+ * 꼭 필요한 것 — 입력칸과 접속 버튼 — 부터 자리를 준다.
+ */
+.login-fields {
+  min-height: 132px;
+}
+
+@media (max-height: 640px) {
+  .login-card {
+    gap: 7px;
+    padding: 12px 16px 10px;
+  }
+
+  .login-brand {
+    display: none;
+  }
+
+  .login-note,
+  .login-warn {
+    display: none;
+  }
+
+  .login-foot {
+    max-height: none;
+    padding-top: 7px;
+  }
+
+  .class-art {
+    width: 26px;
+    height: 34px;
+  }
+
+  .class-tagline {
+    display: none;
+  }
+}
+
+/* 아주 낮으면 설명 라벨까지 접고 placeholder 만으로 안내한다 */
+@media (max-height: 470px) {
+  .login-form label span {
+    display: none;
+  }
+
+  .class-pick > span {
+    display: none;
+  }
+}
+
+/* 미리보기 창(샌드박스)에서 열렸을 때의 경고 */
+.login-preview-warn {
+  display: grid;
+  gap: 3px;
+  padding: 9px 10px;
+  border-radius: 9px;
+  background: rgba(255, 209, 102, 0.14);
+  border: 1px solid rgba(255, 209, 102, 0.5);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--ink-dim);
+}
+
+.login-preview-warn b {
+  color: #ffd166;
+  font-size: 11.5px;
+}
+
+/* ===================== 웨이포인트 ===================== */
+.wp-panel {
+  width: 440px;
+  max-width: calc(100% - 32px);
+  max-height: calc(100% - 32px);
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  display: grid;
+  /* 1fr 을 쓰면 안 된다 — 이 카드는 가운데 정렬된 자리에 놓여 높이가 "내용에 따라" 정해지는데,
+     그 안에서 1fr 은 기준이 없어 목록을 내용보다 짧게 잘라 버린다(마지막 줄이 안 보인다).
+     목록 쪽에 픽셀 상한을 두는 편이 확실하다. 스테이지 높이는 480 으로 고정이다. */
+  grid-template-rows: auto auto auto;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.66);
+  animation: cardIn 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.wp-note {
+  margin: 0;
+  padding: 6px 12px;
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: var(--ink-dim);
+  border-bottom: 1px solid var(--line);
+}
+
+.wp-list {
+  overflow-y: auto;
+  max-height: 330px;
+  padding: 6px;
+  display: grid;
+  gap: 4px;
+  align-content: start;
+}
+
+.wp-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 9px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid transparent;
+}
+
+.wp-row.is-open {
+  border-color: rgba(120, 170, 255, 0.35);
+  background: rgba(91, 140, 255, 0.12);
+}
+
+.wp-row.is-here {
+  border-color: rgba(126, 240, 176, 0.45);
+  background: rgba(60, 160, 110, 0.14);
+}
+
+.wp-row.is-locked {
+  opacity: 0.55;
+}
+
+.wp-stage {
+  flex: none;
+  width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #cfe0ff;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+}
+
+.wp-row.is-open .wp-stage {
+  color: #dff1ff;
+  background: rgba(91, 140, 255, 0.3);
+  border-color: rgba(140, 180, 255, 0.5);
+}
+
+.wp-info {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+
+.wp-name {
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.wp-sub {
+  font-size: 10.5px;
+  color: var(--ink-dim);
+}
+
+.wp-tag {
+  flex: none;
+  font-size: 11px;
+  font-weight: 700;
+  color: #7ef0b0;
+  padding: 5px 8px;
+}
+
+.wp-tag--locked {
+  color: var(--ink-dim);
+  font-weight: 400;
+}
+
+
+/* ===================== 특성·스킬 (개편판) ===================== */
+/* 단계(트리)가 없어졌으므로 그냥 촘촘한 목록이다. */
+.char-skill-list {
+  display: grid;
+  gap: 5px;
+}
+
+.char-long {
+  font-size: 10px;
+  line-height: 1.45;
+  color: var(--ink-dim);
+  opacity: 0.85;
+}
+
+.char-free {
+  font-style: normal;
+  color: #9fd0ff;
+}
+
+.char-node.is-learned,
+.char-skill.is-learned {
+  background: rgba(91, 120, 255, 0.13);
+  border-color: rgba(120, 150, 255, 0.32);
+}
+
+.char-skill.is-maxed {
+  background: rgba(201, 161, 61, 0.14);
+  border-color: rgba(230, 199, 106, 0.4);
+}
+
+.char-skill.is-maxed .char-plus {
+  background: linear-gradient(180deg, #d8a33c, #a87723);
+  color: #fff;
+  cursor: default;
+}
+
+
+/* 전투력 — HUD 와 캐릭터 창에서 같은 모양으로 쓴다. */
+
+
+
+.sum-power {
+  color: #ffd166;
+  font-weight: 700;
+}
+
+/* ---------- 강화 무작위 옵션 · 보석 ---------- */
+/* 옵션은 아이템마다 다르므로 눈에 띄어야 한다. 보석은 또 다른 색으로 구분한다. */
+.detail-specials .ex-affix {
+  color: #ffd98a;
+}
+
+.detail-specials .ex-gem {
+  color: #a8e6ff;
+}
+
+/* 각인 — 주울 때부터 붙어 있던 덤 한 줄. 강화 옵션과 색을 나눈다. */
+.detail-specials .ex-bonus {
+  color: #b6f5c8;
+  font-weight: 700;
+}
+
+/*
+ * 초월 각인 — 열에 하나. 이 물건에 붙는 모든 값이 최대치다.
+ * 세트의 초록, 각인의 연두와도 달라야 하므로 붉게 칠하고 빛을 준다.
+ * 이름 앞의 ✦✦ 와 함께 "이건 다른 물건" 이라고 한눈에 말한다.
+ */
+.detail-specials .ex-perfect {
+  color: #ff6b6b;
+  font-weight: 800;
+  text-shadow: 0 0 6px rgba(255, 80, 80, 0.55);
+}
+
+.is-perfect .inv-item-name,
+.detail-name.is-perfect,
+.inv-item.is-perfect .inv-item-name {
+  color: #ff6b6b !important;
+  text-shadow: 0 0 6px rgba(255, 80, 80, 0.5);
+}
+
+.detail-specials .ex-socket {
+  color: #7c8496;
+}
+
+/* 옵션 줄 오른쪽의 "다시" 버튼 — 대장간에서만 붙는다.
+   줄 안에 들어가야 하므로 글자와 같은 줄에 눕히고, 평소엔 조용히 있게 한다. */
+.detail-specials .ex-affix {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.reroll-btn {
+  flex: 0 0 auto;
+  padding: 1px 8px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #cdb6ff;
+  background: rgba(124, 92, 214, 0.16);
+  border: 1px solid rgba(154, 122, 235, 0.45);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.reroll-btn:hover:not(:disabled) {
+  background: rgba(124, 92, 214, 0.32);
+  color: #efe6ff;
+}
+
+.reroll-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.gem-pick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.gem-pick button {
+  flex: 1 1 auto;
+  min-width: 96px;
+  font-size: 11px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: rgba(20, 26, 40, 0.85);
+  color: #cfe0f5;
+  cursor: pointer;
+}
+
+.gem-pick button:hover:not(:disabled) {
+  border-color: #7cc4ff;
+  color: #fff;
+}
+
+.gem-pick button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* 한 번 눌러 "정말 박을까요?" 로 바뀐 상태. 보석은 빼지 못하므로 눈에 띄어야 한다. */
+.gem-pick button.is-armed {
+  border-color: #ffb347;
+  color: #ffdf9e;
+  background: rgba(70, 44, 12, 0.9);
+  font-weight: 700;
+}
+
+/* ---------- 화면 번쩍임 (초월 강화 대성공) ---------- */
+/*
+   두 단계가 한 번에 오르는 일은 열 번에 한 번뿐이다.
+   토스트 한 줄로만 알리면 그 순간이 그냥 지나가 버리므로,
+   화면 전체를 한 번 밝히고 금빛 테두리를 남긴다.
+   포인터는 통과시킨다 — 번쩍이는 동안에도 버튼을 누를 수 있어야 한다.
+*/
+.fx-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+}
+
+.fx-flash[hidden] {
+  display: none !important;
+}
+
+.fx-flash.is-great::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(255, 240, 190, 0.95), rgba(255, 200, 90, 0.35) 45%, rgba(255, 180, 40, 0) 72%);
+  animation: fx-great-burst 900ms ease-out forwards;
+}
+
+.fx-flash.is-great::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 3px solid rgba(255, 216, 120, 0.9);
+  border-radius: 12px;
+  box-shadow:
+    inset 0 0 42px rgba(255, 208, 110, 0.75),
+    0 0 30px rgba(255, 200, 90, 0.55);
+  animation: fx-great-rim 900ms ease-out forwards;
+}
+
+@keyframes fx-great-burst {
+  0% { opacity: 0; transform: scale(0.72); }
+  16% { opacity: 1; transform: scale(1.04); }
+  45% { opacity: 0.55; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.12); }
+}
+
+@keyframes fx-great-rim {
+  0% { opacity: 0; }
+  14% { opacity: 1; }
+  60% { opacity: 0.7; }
+  100% { opacity: 0; }
+}
+
+/* 움직임을 줄여 달라고 한 사람에게는 조용히 밝히기만 한다. */
+@media (prefers-reduced-motion: reduce) {
+  .fx-flash.is-great::before,
+  .fx-flash.is-great::after {
+    animation-duration: 420ms;
+    transform: none;
+  }
+}
+
+/* ---------- 초월 강화 상자 ---------- */
+.transcend-box {
+  border-color: rgba(154, 122, 235, 0.45);
+  background: rgba(58, 40, 96, 0.28);
+}
+
+.transcend-odds {
+  list-style: none;
+  margin: 6px 0;
+  padding: 0;
+  display: grid;
+  gap: 3px;
+  font-size: 12px;
+}
+
+.transcend-odds li {
+  display: flex;
+  justify-content: space-between;
+}
+
+.transcend-odds .tr-down { color: #ff9a9a; }
+.transcend-odds .tr-up1 { color: #9fe8b8; }
+.transcend-odds .tr-up2 { color: #ffd98a; }
+
+.transcend-btn {
+  background: linear-gradient(180deg, #7c5cd6, #4a2f8f);
+  border-color: rgba(180, 150, 255, 0.5);
+}
+
+/* 마녀처럼 하는 일이 둘인 NPC의 두 번째 버튼 */
+.dlg-action-alt {
+  background: rgba(90, 62, 150, 0.55);
+  border-color: rgba(170, 138, 235, 0.5);
+}
+
+/* ---------- 우편함 ---------- */
+/*
+   편지 한 통이 곧 한 칸이다. 안 받은 것은 또렷하게, 받은 것은 흐리게 —
+   목록을 훑는 것만으로 "아직 할 일이 남았나"가 보여야 한다.
+*/
+.mail-panel,
+.rank-panel {
+  width: min(460px, 92vw);
+}
+
+.mail-list {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  display: grid;
+  gap: 8px;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.mail-row {
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 9px 10px;
+  background: rgba(255, 255, 255, 0.035);
+  display: grid;
+  gap: 5px;
+}
+
+.mail-row.is-taken {
+  opacity: 0.5;
+}
+
+.mail-head {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+}
+
+.mail-icon {
+  font-size: 14px;
+}
+
+.mail-subject {
+  flex: 1;
+  font-weight: 700;
+  font-size: 12.5px;
+}
+
+.mail-when {
+  font-size: 10.5px;
+  color: var(--ink-dim);
+}
+
+.mail-from {
+  font-size: 10.5px;
+  color: var(--ink-dim);
+}
+
+.mail-body {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.mail-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.mail-item {
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 5px;
+  background: rgba(255, 217, 138, 0.14);
+  color: #ffd98a;
+  border: 1px solid rgba(255, 217, 138, 0.3);
+}
+
+.mail-claim {
+  margin-top: 2px;
+}
+
+.mail-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+}
+
+.mail-drop {
+  padding: 1px 8px;
+  font-size: 11px;
+  color: var(--ink-dim);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.mail-drop:hover {
+  color: #ff9a9a;
+  border-color: rgba(255, 120, 120, 0.4);
+}
+
+/* 봉투 위의 안 읽은 수 — 캐릭터 포인트 배지와 색을 달리해 구분한다 */
+
+
+/* ---------- 타임어택 랭킹 ---------- */
+.rank-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 8px 8px 0;
+}
+
+.rank-tabs button {
+  padding: 3px 9px;
+  font-size: 11.5px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--ink-dim);
+  cursor: pointer;
+}
+
+.rank-tabs button.is-on {
+  background: rgba(124, 92, 214, 0.28);
+  border-color: rgba(154, 122, 235, 0.5);
+  color: #e8e0ff;
+}
+
+.rank-where {
+  margin: 6px 10px 0;
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+
+.rank-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0 8px 10px;
+  display: grid;
+  gap: 4px;
+}
+
+.rank-row {
+  display: grid;
+  grid-template-columns: 30px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 9px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid transparent;
+  font-size: 12px;
+}
+
+/* 내 기록은 한눈에 찾을 수 있어야 한다 */
+.rank-row.is-me {
+  background: rgba(124, 92, 214, 0.2);
+  border-color: rgba(154, 122, 235, 0.45);
+}
+
+.rank-medal {
+  text-align: center;
+  font-size: 13px;
+}
+
+.rank-name {
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rank-time {
+  font-variant-numeric: tabular-nums;
+  color: #ffd98a;
+  font-weight: 700;
+}
+
+/* ---------- 고룡 상태 줄 (서쪽 절벽에서만) ---------- */
+/*
+   여기 서 있는 동안 알고 싶은 것은 둘뿐이다 — 얼마나 깎였나, 언제 사라지나.
+   체력 막대는 붉은 계열로 두어 내 HP 막대와 헷갈리지 않게 한다.
+*/
+.hud-dragon {
+  padding: 7px 9px;
+  border-radius: 8px;
+  background: rgba(42, 27, 72, 0.72);
+  border: 1px solid rgba(154, 122, 235, 0.4);
+  display: grid;
+  gap: 5px;
+  font-size: 11.5px;
+  max-width: 230px;
+}
+
+.hud-dragon[hidden] {
+  display: none !important;
+}
+
+.hud-dragon.is-gone {
+  background: rgba(28, 26, 38, 0.7);
+  border-color: var(--line);
+  color: var(--ink-dim);
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 7px;
+}
+
+.hd-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.hd-name {
+  font-weight: 800;
+  color: #d8c4ff;
+}
+
+.hd-left {
+  font-size: 10.5px;
+  color: #ffb454;
+  font-variant-numeric: tabular-nums;
+}
+
+.hd-bar {
+  height: 7px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.hd-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #ff8a3d, #e0341a);
+  transition: width 240ms ease-out;
+}
+
+.hd-foot {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10.5px;
+  color: var(--ink-dim);
+}
+
+.hd-foot b {
+  color: #ffd98a;
+}
+
+.hd-hp {
+  font-variant-numeric: tabular-nums;
+}
+
+.hd-solo {
+  font-size: 10px;
+  color: var(--ink-dim);
+}
+
+.hud-dragon .hd-note {
+  font-size: 10.5px;
+}
+
+/* ---------- 랭킹의 "내 기록" 줄 ---------- */
+/*
+   5위 밖이면 위 표에 내가 없다. 그때 이 줄이 유일한 내 자리다.
+   위 표와 붙여 두되 선 하나로 갈라, "여기부터는 나"임을 알게 한다.
+*/
+.rank-mine {
+  margin: 2px 8px 10px;
+  padding: 7px 9px;
+  border-radius: 7px;
+  border: 1px dashed rgba(154, 122, 235, 0.5);
+  background: rgba(124, 92, 214, 0.14);
+  font-size: 12px;
+  /* 위 표와 같은 세 칸(메달·이름·시간)에 맞춰 세운다.
+     flex 로 두면 "6위 / 6명"이 글자마다 줄바꿈되어 세로로 늘어진다. */
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  column-gap: 8px;
+  row-gap: 3px;
+}
+
+.rank-mine.is-none {
+  border-style: dashed;
+  border-color: var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--ink-dim);
+}
+
+.rank-mine-label {
+  font-size: 10.5px;
+  color: var(--ink-dim);
+  flex: 0 0 auto;
+}
+
+.rank-mine-rank {
+  font-weight: 800;
+  color: #d8c4ff;
+  white-space: nowrap;
+}
+
+.rank-mine-rank i {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10.5px;
+  color: var(--ink-dim);
+}
+
+.rank-mine-time {
+  font-variant-numeric: tabular-nums;
+  color: #ffd98a;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.rank-mine-gap {
+  grid-column: 1 / -1;
+  font-size: 10.5px;
+  color: var(--ink-dim);
+}
+
+.rank-mine-note {
+  grid-column: 2 / -1;
+  font-size: 11px;
+}
+
+/* 우편에 실려 오는 골드·경험치 — 아이템과 색으로 구분한다 */
+.mail-item.is-gold {
+  background: rgba(255, 200, 80, 0.14);
+  color: #ffd166;
+  border-color: rgba(255, 200, 80, 0.32);
+}
+
+.mail-item.is-exp {
+  background: rgba(126, 240, 176, 0.13);
+  color: #7ef0b0;
+  border-color: rgba(126, 240, 176, 0.3);
+}
+
+/* ── 설명 쪽지(툴팁) ───────────────────────────────────────
+   ui/Tooltip.js 가 body 에 하나만 붙여 두고 자리만 옮겨 쓴다.
+   마우스를 올렸을 때, 폰에서는 눌렀을 때 뜬다. */
+.tip-card {
+  position: fixed;
+  z-index: 90;
+  max-width: 280px;
+  padding: 9px 11px;
+  border-radius: 10px;
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.5);
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.5;
+  pointer-events: none; /* 쪽지가 마우스를 가로채면 곧장 사라진다 */
+}
+
+.tip-line + .tip-line {
+  margin-top: 3px;
+}
+
+.tip-title {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.tip-rarity {
+  font-size: 11px;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.tip-rarity.r-common { color: var(--common); }
+.tip-rarity.r-uncommon { color: var(--uncommon); }
+.tip-rarity.r-rare { color: var(--rare); }
+.tip-rarity.r-epic { color: var(--epic); }
+.tip-rarity.r-legendary { color: var(--legendary); }
+
+.tip-effect {
+  color: #7ef0b0;
+}
+
+.tip-note {
+  color: var(--ink-dim);
+  font-size: 11px;
+}
+
+/* ── 옛 파일로 열었을 때 — 접속 화면 맨 위의 띠 ────────────
+   접속 버튼도 함께 잠긴다(LoginScreen.isOutdated). */
+.login-outdated {
+  margin-bottom: 12px;
+  padding: 11px 13px;
+  border-radius: 10px;
+  background: rgba(255, 182, 72, 0.13);
+  border: 1px solid rgba(255, 182, 72, 0.4);
+  color: #ffe0a8;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.login-outdated b {
+  display: block;
+  color: #ffd166;
+  font-size: 13.5px;
+  margin-bottom: 3px;
+}
+
+.login-outdated b + b {
+  display: inline;
+  font-size: inherit;
+  margin: 0;
+}
+
+.login-outdated button {
+  display: block;
+  width: 100%;
+  margin-top: 9px;
+  padding: 9px;
+  border-radius: 8px;
+  border: 0;
+  background: #ffb648;
+  color: #2a1c05;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.login-outdated button:hover {
+  background: #ffc76e;
+}
+
+.lo-hint {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink-dim);
+  font-size: 10.5px;
+}
+
+/* 우편이 언제 사라지는가 — 받기 전에만 보여 준다 */
+.mail-until {
+  margin-left: 8px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(148, 168, 214, 0.16);
+  color: var(--ink-dim);
+  font-size: 10.5px;
+}
+
+.mail-until.is-soon {
+  background: rgba(255, 107, 107, 0.16);
+  color: #ff9f9f;
+}
+
+/* ── 랭킹 시즌 단 ─────────────────────────────────────────
+   초기화하면 지금 표가 '지난 시즌'으로 넘어간다. 지워지는 게 아니다. */
+.rank-eras {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin: 2px 0 8px;
+  padding: 3px;
+  border-radius: 9px;
+  background: rgba(148, 168, 214, 0.1);
+}
+
+.rank-eras button {
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--ink-dim);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.rank-eras button i {
+  font-style: normal;
+  opacity: 0.7;
+  font-size: 11px;
+}
+
+.rank-eras button.is-on {
+  background: rgba(124, 196, 255, 0.2);
+  color: var(--ink);
+}
+
+.rank-era-note {
+  margin: 0 0 8px;
+  color: var(--ink-dim);
+  font-size: 10.5px;
+}
+
+/* ── 운영자 창 ─────────────────────────────────────────────
+   운영자 계정으로 접속했을 때만 HUD 에 방패 버튼이 생긴다.
+   잠금은 전부 서버에 있다 — 여기 CSS 를 지운다고 권한이 생기지는 않는다. */
+.hud-tool--admin .ht-icon {
+  color: #ffd166;
+}
+
+.admin-panel {
+  /* ⚠ 스테이지는 640×480 이다. 여기에 88vh 같은 값을 쓰면 창이 스테이지 밖으로
+     비어져 나가고, 밖으로 나간 부분은 잘려서 **눌리지도 않는다**
+     (실제로 '투명해지기' 버튼이 화면 위쪽으로 밀려 나가 안 눌렸다).
+     높이는 반드시 부모(스테이지) 기준으로 잡는다. */
+  width: min(560px, calc(100% - 24px));
+  max-height: calc(100% - 24px);
+  grid-template-rows: none;
+  grid-auto-rows: min-content;
+  align-content: start;
+  overflow-y: auto;
+  padding: 12px 14px;
+  gap: 0;
+}
+
+/* 0.46 — 단이 넷이 되었다(전체 우편 · 랭킹 · 계정 · 표).
+   3칸으로 두면 '표' 가 혼자 다음 줄로 내려간다. */
+.admin-tabs {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.admin-tabs button {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.admin-status {
+  margin: 0 0 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(148, 168, 214, 0.14);
+  color: var(--ink);
+  font-size: 12px;
+  /* 여러 줄짜리 안내를 그대로 보여 준다("시트가 안 정해져 있습니다" 처럼
+     무엇을 해야 하는지 줄을 나눠 적는 글이 있다). */
+  white-space: pre-line;
+}
+
+.admin-status.good {
+  background: rgba(126, 240, 176, 0.14);
+  color: #7ef0b0;
+}
+
+.admin-status.bad {
+  background: rgba(255, 107, 107, 0.14);
+  color: #ff9f9f;
+}
+
+.admin-form {
+  display: grid;
+  gap: 9px;
+}
+
+.admin-form label {
+  display: grid;
+  gap: 3px;
+  font-size: 11.5px;
+  color: var(--ink-dim);
+}
+
+.admin-form input,
+.admin-form textarea {
+  padding: 8px 9px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: rgba(8, 12, 24, 0.6);
+  color: var(--ink);
+  font: inherit;
+  font-size: 12.5px;
+}
+
+.admin-form textarea {
+  resize: vertical;
+}
+
+.admin-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.admin-note {
+  margin: 0;
+  color: var(--ink-dim);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.admin-note--gap {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+/* ── 표 단 — 지금 보고 있는 구글 문서 (0.51) ─────────────── */
+.admin-sheet-now {
+  display: grid;
+  gap: 3px;
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: rgba(8, 12, 24, 0.5);
+}
+
+.admin-sheet-label {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--ink-dim);
+}
+
+.admin-sheet-id {
+  font-size: 11.5px;
+  /* 문서 아이디는 길고 잘리면 안 된다 — 잘리면 견줄 수가 없다. */
+  word-break: break-all;
+  color: var(--ink);
+}
+
+.admin-sheet-where {
+  font-size: 10.5px;
+  color: var(--ink-dim);
+  font-style: normal;
+}
+
+/* `.admin-form label { display: grid }` 보다 세게 잡아야 한 줄로 선다. */
+.admin-form label.admin-sheet-set {
+  display: grid;
+  gap: 4px;
+}
+
+.admin-sheet-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+/* 이 둘은 '시트 지금 읽기' 보다 한 단 작게 — 자주 누르는 단추가 아니다. */
+.admin-sheet-btns button {
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.admin-sheet-btns button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.admin-sheet-btns button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.admin-picker {
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.admin-cats {
+  display: flex;
+  gap: 4px;
+  padding: 6px;
+  background: rgba(148, 168, 214, 0.08);
+  flex-wrap: wrap;
+}
+
+.admin-cats button {
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(148, 168, 214, 0.14);
+  color: var(--ink-dim);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-cats button.is-on {
+  background: rgba(124, 196, 255, 0.26);
+  color: var(--ink);
+}
+
+.admin-search {
+  flex: 1;
+  min-width: 110px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(8, 12, 24, 0.6);
+  color: var(--ink);
+  font: inherit;
+  font-size: 11px;
+}
+
+.admin-items {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  max-height: 190px;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 4px;
+}
+
+.admin-item {
+  width: 100%;
+  display: grid;
+  gap: 1px;
+  padding: 6px 8px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  background: rgba(148, 168, 214, 0.08);
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.admin-item:hover {
+  background: rgba(148, 168, 214, 0.16);
+}
+
+.admin-item.is-on {
+  border-color: rgba(124, 196, 255, 0.6);
+  background: rgba(124, 196, 255, 0.18);
+}
+
+.admin-item-name {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.admin-item-name.r-common { color: var(--common); }
+.admin-item-name.r-uncommon { color: var(--uncommon); }
+.admin-item-name.r-rare { color: var(--rare); }
+.admin-item-name.r-epic { color: var(--epic); }
+.admin-item-name.r-legendary { color: var(--legendary); }
+
+.admin-item-id {
+  font-size: 10px;
+  color: var(--ink-dim);
+}
+
+/* 계정을 만든 때 (0.47) — 아이디보다 한 톤 밝게 두어 눈에 먼저 들어오게 한다.
+   시험 계정을 고를 때 실제로 보는 것이 이 값이다. */
+.admin-item-when {
+  font-style: normal;
+  color: #9fb0d0;
+}
+
+.admin-list-note {
+  margin: 6px 0 0;
+}
+
+.admin-empty {
+  grid-column: 1 / -1;
+  padding: 12px;
+  text-align: center;
+}
+
+.admin-picked {
+  display: grid;
+  gap: 4px;
+}
+
+.admin-picked-row {
+  display: grid;
+  grid-template-columns: 1fr 78px 30px;
+  gap: 6px;
+  align-items: center;
+  padding: 5px 8px;
+  border-radius: 7px;
+  background: rgba(124, 196, 255, 0.1);
+  font-size: 12px;
+}
+
+.admin-picked-row input {
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: rgba(8, 12, 24, 0.6);
+  color: var(--ink);
+  font: inherit;
+  font-size: 11.5px;
+}
+
+.admin-x {
+  border: 0;
+  border-radius: 6px;
+  background: rgba(255, 107, 107, 0.16);
+  color: #ff9f9f;
+  font: inherit;
+  cursor: pointer;
+}
+
+.admin-danger {
+  background: linear-gradient(180deg, #ff8a5b, #e8543a);
+}
+
+.admin-bosses {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.admin-bosses li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 9px;
+  border-radius: 7px;
+  background: rgba(148, 168, 214, 0.08);
+  font-size: 12px;
+}
+
+.admin-bosses i {
+  font-style: normal;
+  color: var(--ink-dim);
+  font-size: 11px;
+}
+
+.admin-bosses button {
+  padding: 4px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: rgba(255, 107, 107, 0.16);
+  color: #ff9f9f;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* 운영자의 투명 전환 */
+.admin-look {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 9px;
+  padding: 7px 10px;
+  border-radius: 9px;
+  background: rgba(148, 168, 214, 0.1);
+  font-size: 11.5px;
+}
+
+.admin-look-state.is-hidden {
+  color: #9fd6ff;
+}
+
+.admin-look-state.is-shown {
+  color: #ffd166;
+}
+
+.admin-look button {
+  padding: 5px 12px;
+  border: 0;
+  border-radius: 7px;
+  background: rgba(124, 196, 255, 0.2);
+  color: var(--ink);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* 설정의 '종료' — 되돌릴 수 없는 버튼은 색으로 구분한다 */
+.mini-btn--warn {
+  background: rgba(255, 182, 72, 0.14);
+  color: #ffd166;
+}
+
+.mini-btn--warn:hover {
+  background: rgba(255, 182, 72, 0.24);
+}
+
+/* ── 세로 판 ───────────────────────────────────────────────
+   스테이지가 480×640 이 된다(core/Viewport.js 가 --w/--h 를 바꾼다).
+   여기서는 그 좁은 폭에 맞춰 HUD 만 조금 눌러 준다. */
+body.is-portrait .hud-tools {
+  gap: 4px;
+}
+
+body.is-portrait .hud-tool {
+  width: 30px;
+  height: 30px;
+}
+
+body.is-portrait .hud-orb {
+  width: 66px;
+  height: 66px;
+}
+
+body.is-portrait .hud-help-card {
+  width: min(200px, 60vw);
+}
+
+body.is-portrait .inv-panel,
+body.is-portrait .wp-panel,
+body.is-portrait .char-panel,
+body.is-portrait .shop-panel {
+  width: calc(100% - 20px);
+  max-width: calc(100% - 20px);
+}
+
+/* 세로에서는 조작 버튼을 화면 아래 구석에 겹친다 — 자리를 따로 빼지 않는다 */
+body.is-portrait .tc-root {
+  pointer-events: none;
+}
+
+body.is-portrait .tc-root > * {
+  pointer-events: auto;
+}
+
+/* 우편 받을 사람 고르기 */
+.admin-to {
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 2px;
+}
+
+.admin-cats button[data-pickall],
+.admin-cats button[data-pickclear] {
+  background: rgba(148, 168, 214, 0.18);
+}
+
+
+/* ============================================================
+   시즌 넘김 — 전체 유저 초기화 (0.40)
+   ============================================================
+   운영자가 시즌을 넘기면 접속 중인 사람의 화면을 이 천이 덮는다.
+   그대로 조용히 새로고침해 버리면 "게임이 튕겼다" 로 읽히므로,
+   무슨 일이 일어났는지 읽을 시간을 먼저 준다. */
+.season-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: grid;
+  place-items: center;
+  background: rgba(6, 5, 12, 0.92);
+  opacity: 0;
+  transition: opacity 420ms ease;
+}
+
+.season-veil.is-in {
+  opacity: 1;
+}
+
+.season-card {
+  max-width: min(460px, 86vw);
+  padding: 26px 30px;
+  text-align: center;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 209, 102, 0.35);
+  background: linear-gradient(180deg, #1a1730, #12101f);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
+}
+
+.season-card h2 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  color: #ffd166;
+  text-shadow: 0 0 14px rgba(255, 209, 102, 0.35);
+}
+
+.season-card p {
+  margin: 0 0 8px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #cfd8e6;
+}
+
+.season-card .season-sub {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: #7c8496;
+}
+
+/* 운영자 창 — 시즌 다루기 상자 (0.45).
+   고정이 켜져 있으면 테두리가 초록으로 바뀐다. 창을 열자마자 "지금 잠겨 있다" 가
+   눈에 들어와야 한다 — 글씨로만 적어 두면 못 보고 초기화를 누른다. */
+.admin-seasonbox {
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.admin-seasonbox.is-locked {
+  border-color: rgba(126, 240, 176, 0.45);
+  background: rgba(126, 240, 176, 0.07);
+}
+
+.admin-seasonbox-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 8px;
+}
+
+.admin-seasonnow {
+  font-size: 13px;
+  color: #c9d2e4;
+}
+
+.admin-seasonnow b {
+  color: #fff;
+}
+
+/* ⚠ 선택자에 `.admin-form` 을 반드시 붙일 것.
+   `.admin-form label { display: grid }` 는 **클래스 하나 + 요소 하나**라
+   `.admin-seasonlock`(클래스 하나)보다 세다. 그냥 쓰면 grid 가 이겨서
+   체크칸과 글이 위아래로 갈린다 — 처음에 체크칸만 위에 떠 있었던 이유다. */
+.admin-form label.admin-seasonlock {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  color: #c9d2e4;
+  cursor: pointer;
+  white-space: nowrap; /* 글이 접히면 체크칸만 위에 남아 무엇의 체크인지 알 수 없다 */
+}
+
+.admin-form label.admin-seasonlock input {
+  flex: none;
+  margin: 0;
+}
+
+.admin-seasonlock i {
+  font-style: normal;
+  color: #7c8496;
+}
+
+.admin-seasonbox.is-locked .admin-form label.admin-seasonlock,
+.admin-form .admin-seasonbox.is-locked label.admin-seasonlock {
+  color: #7ef0b0;
+}
+
+.admin-seasonbox .admin-season-guard {
+  margin-top: 10px;
+}
+
+/* 목록 위에 놓는 확인 칸(계정 지우기) — 위에 붙는 선은 필요 없다. */
+.admin-season--top > :first-child {
+  margin-top: 0; /* 위쪽에 빈 자리가 크게 뜨는 것을 막는다 */
+}
+
+.admin-season--top {
+  margin-top: 0;
+  margin-bottom: 14px;
+  padding-top: 0;
+  border-top: none;
+  border-bottom: 1px solid rgba(255, 107, 107, 0.28);
+  padding-bottom: 12px;
+}
+
+/* 운영자 창 — 되돌릴 수 없는 단추 앞의 확인 칸 */
+.admin-season {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 107, 107, 0.28);
+}
+
+.admin-danger-text {
+  color: #ff8080;
+}
+
+.admin-season-what {
+  display: grid;
+  gap: 3px;
+  margin: 8px 0 10px;
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+
+.admin-season-what .is-gone { color: #ff9a9a; }
+.admin-season-what .is-kept { color: #7ef0b0; }
+
+.admin-season-guard {
+  display: grid;
+  gap: 5px;
+  margin-bottom: 10px;
+  font-size: 11.5px;
+  color: var(--ink-dim);
+}
+
+.admin-season-guard input {
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--ink);
+  font-size: 13px;
+}
+
+
+/* 소지품 목록의 소제목 — 장비 · 소모품 · 재료로 나눠 준다 (0.40) */
+.inv-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 8px 0 2px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+  cursor: default;
+}
+
+.inv-section:first-child {
+  margin-top: 0;
+}
+
+.inv-section i {
+  font-style: normal;
+  font-size: 10px;
+  color: #7c8496;
+}
+
+
+/* 시즌 단추 두 개 — 초기화와 선물이 나란히 선다 (0.41) */
+.admin-season-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+@media (max-width: 520px) {
+  .admin-season-btns { grid-template-columns: 1fr; }
+}
+
+.admin-gift-what {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #a9c0ff;
+}
+
+
+/* 초기화 옆의 "선물도 함께" 칸 (0.42) */
+.admin-season-also {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 10px;
+  font-size: 11.5px;
+  color: #a9c0ff;
+  cursor: pointer;
+}
+
+.admin-season-also input {
+  width: 15px;
+  height: 15px;
+  accent-color: #5b78ff;
+  cursor: pointer;
+}
+
+/* ── 세로 화면: 전투 글이 단축칸에 가리지 않게 (0.53) ─────────
+   가로(640)에서는 전투 글(왼쪽 아래)과 단축칸(오른쪽 아래)이 나란히 선다.
+   그런데 세로는 폭이 480 뿐이라 둘이 겹친다 — 실제로 글이 물약 칸 뒤로 들어가
+   반쯤 잘려 보였다. 세로에서는 글을 단축칸 **위**로 올리고 폭을 꽉 채운다. */
+@media (max-aspect-ratio: 1/1) {
+  .battle-log {
+    left: 10px;
+    right: 10px;
+    width: auto;
+    bottom: 66px;
+    max-height: 78px;
+  }
+}

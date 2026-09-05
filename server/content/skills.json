@@ -1,0 +1,232 @@
+{
+  "_읽는법": [
+    "스킬표. everyLevels 레벨마다 pointsPerGrant 점을 준다.",
+    "",
+    "★ 단계(트리)도 선행 조건도 없다. 가진 포인트로 아무거나, 아무 순서로나 찍는다.",
+    "  포인트가 넉넉하지 않으므로 '무엇을 포기할 것인가'가 곧 빌드다.",
+    "",
+    "effect 의 각 키는 SkillSystem 이 합산해 전투에 넘긴다. 로직은 없다.",
+    "class 는 그 스킬을 배울 수 있는 직업 — classes.json 의 skills 목록과 함께 쓰인다.",
+    "값이 0.01 이면 1% 다. 시간은 ms.",
+    "",
+    "확인:  node tools/print-tables.js skills"
+  ],
+
+  "everyLevels": 3,
+  "pointsPerGrant": 1,
+
+  "effectLabels": {
+    "atkPct": "공격력",
+    "defPct": "방어력",
+    "hpPct": "최대 HP",
+    "hpMult": "최대 HP 배율",
+    "crit": "치명타 확률",
+    "critMult": "치명타 피해",
+    "doubleHit": "2회 공격 확률",
+    "lifesteal": "흡혈",
+    "pierce": "방어 관통",
+    "dmgReduction": "받는 피해 감소",
+    "magicPower": "마법 피해",
+    "magicResist": "받는 마법 피해 감소",
+    "thorns": "가시 반사(방어력 기준)",
+    "defToAtk": "방어력 → 공격력 전환",
+    "lowHpCritMult": "위기의 치명타 피해",
+    "shieldBonusTurns": "보호막 막는 횟수",
+    "evadeBonus": "회피 확률",
+    "openerBonus": "선제 사격 횟수",
+    "openerPowerBonus": "선제 공격 위력",
+    "cleaveBonus": "광역 여파",
+    "chargeBonus": "충전 폭발 위력"
+  },
+
+  "tree": {
+    "_용사": "방어를 공격으로 바꾸고, 맞으면서 이긴다.",
+
+    "thorn_mail": {
+      "name": "가시 갑옷",
+      "icon": "🌵",
+      "max": 4,
+      "desc": "맞을 때마다 방어력의 25%를 그대로 되돌려 준다",
+      "long": "갑옷에 돋친 가시. 때린 쪽이 다친다. 방어력이 높을수록 아프게 되돌아간다.",
+      "effect": { "thorns": 0.25 }
+    },
+    "unbreakable": {
+      "name": "불굴의 심장",
+      "icon": "💗",
+      "max": 4,
+      "desc": "최대 HP +25% (4단계면 두 배)",
+      "long": "네 단계를 모두 찍으면 최대 HP가 정확히 두 배가 된다. 오래 버티는 싸움의 핵심.",
+      "effect": { "hpMult": 0.25 }
+    },
+    "battle_sense": {
+      "name": "전투 본능",
+      "icon": "🛡",
+      "max": 5,
+      "desc": "랭크마다 방어력의 8%가 공격력에 더해진다",
+      "long": "막는 자세 그대로 되받아친다. 방어구를 두를수록 공격력도 같이 오른다.",
+      "effect": { "defToAtk": 0.08 }
+    },
+    "fortress": {
+      "name": "철벽",
+      "icon": "🏰",
+      "max": 5,
+      "desc": "방어력 +15%",
+      "effect": { "defPct": 0.15 }
+    },
+    "bloodthirst": {
+      "name": "광폭화",
+      "icon": "🩸",
+      "max": 3,
+      "desc": "랭크마다 받는 피해 4% 감소",
+      "effect": { "dmgReduction": 0.04 },
+      "long": "피를 보면 아픔을 잊는다. 예전에는 준 피해를 그대로 빨아먹었는데, 한 벌을 갖추면 맞는 족족 도로 차올라 아예 죽지 않는 캐릭터가 되어서 바꿨다."
+    },
+    "double_slash": {
+      "name": "연격",
+      "icon": "⚡",
+      "max": 5,
+      "desc": "2회 공격 확률 +20%",
+      "effect": { "doubleHit": 0.2 }
+    },
+    "executioner": {
+      "name": "처형자",
+      "icon": "☠",
+      "max": 3,
+      "desc": "치명타 피해 +50%, 방어 관통 +20%",
+      "effect": { "critMult": 0.5, "pierce": 0.2 }
+    },
+    "iron_will": {
+      "name": "강철 의지",
+      "icon": "🪨",
+      "max": 5,
+      "desc": "받는 피해 -4%",
+      "effect": { "dmgReduction": 0.04 }
+    },
+
+    "_사냥꾼": "먼저 쏘고, 자주 쏘고, 맞지 않는다.",
+
+    "rapid_shot": {
+      "name": "속사",
+      "icon": "🏹",
+      "max": 5,
+      "desc": "2회 공격 확률 +7%",
+      "effect": { "doubleHit": 0.07 }
+    },
+    "hawk_eye": {
+      "name": "매의 눈",
+      "icon": "🦅",
+      "max": 5,
+      "desc": "치명타 확률 +2.5%",
+      "effect": { "crit": 0.025 }
+    },
+    "light_step": {
+      "name": "가벼운 발",
+      "icon": "🍃",
+      "max": 3,
+      "desc": "랭크마다 받는 피해 -5%",
+      "effect": { "dmgReduction": 0.05 }
+    },
+    "wind_walker": {
+      "name": "바람의 걸음",
+      "icon": "💨",
+      "max": 5,
+      "desc": "회피 확률 +3%",
+      "long": "사냥꾼의 기본 회피(18%) 위에 더해진다.",
+      "effect": { "evadeBonus": 0.03 }
+    },
+    "hunters_mark": {
+      "name": "사냥꾼의 표식",
+      "icon": "🎯",
+      "max": 5,
+      "desc": "방어 관통 +5%",
+      "effect": { "pierce": 0.05 }
+    },
+    "foresight": {
+      "name": "예측 공격",
+      "icon": "🎯",
+      "max": 3,
+      "desc": "선제 공격 피해 +70%",
+      "long": "붙기 전에 쏘는 화살이 더 깊이 박힌다. 화살 수는 그대로 2발이고 한 발 한 발이 세진다. 3포인트면 +210% — 세 배가 조금 넘는다.",
+      "effect": { "openerPowerBonus": 0.7 }
+    },
+    "deadeye": {
+      "name": "죽음의 일격",
+      "icon": "✦",
+      "max": 5,
+      "desc": "치명타 피해 +20%",
+      "effect": { "critMult": 0.2 }
+    },
+    "focus_hunt": {
+      "name": "사냥의 집중",
+      "icon": "🔥",
+      "max": 3,
+      "desc": "HP 40% 이하일 때 치명타 피해 +50%",
+      "effect": { "lowHpCritMult": 0.5, "lowHpThreshold": 0.4 }
+    },
+
+    "_마법사": "한 번에 크게 터뜨리고, 죽기 직전에 가장 세진다.",
+
+    "arcane_bolt": {
+      "name": "마력 증폭",
+      "icon": "🔮",
+      "max": 5,
+      "desc": "랭크마다 마법 피해 +20%",
+      "long": "마법사의 공격은 전부 마법 피해다. 최종피해가 증가한다. 3단계면 +60%.",
+      "effect": { "magicPower": 0.2 }
+    },
+    "mana_shield": {
+      "name": "보호막 연장",
+      "icon": "🛡",
+      "max": 4,
+      "desc": "2점마다 보호막이 한 대 더 막는다",
+      "long": "쓰러질 피해를 막아 주는 마력 보호막이 **2점마다 한 대씩** 더 막는다. 기본 1대 → 4단계면 3대.",
+      "effect": { "shieldBonusTurns": 0.5 }
+    },
+    "last_ember": {
+      "name": "최후의 불꽃",
+      "icon": "🔥",
+      "max": 5,
+      "desc": "HP 40% 이하일 때 치명타 피해 +25%",
+      "long": "몰릴수록 치명타가 크게 터진다. 보호막과 함께 쓰면 죽기 직전이 가장 무섭다.",
+      "effect": { "lowHpCritMult": 0.25, "lowHpThreshold": 0.4 }
+    },
+    "chain_spark": {
+      "name": "광역 확산",
+      "icon": "🌩",
+      "max": 3,
+      "desc": "광역 여파 +30%p",
+      "long": "주 대상에게 준 피해가 나머지에게 튀는 비율(기본 45%)이 늘어난다.",
+      "effect": { "cleaveBonus": 0.3 }
+    },
+    "flame_burst": {
+      "name": "마력 충전",
+      "icon": "💥",
+      "max": 3,
+      "desc": "충전 폭발 위력 +0.3배",
+      "long": "3번째 공격마다 터지는 대폭발이 2.1배에서 최대 3.0배까지.",
+      "effect": { "chargeBonus": 0.3 }
+    },
+    "arcane_armor": {
+      "name": "비전 갑주",
+      "icon": "💠",
+      "max": 5,
+      "desc": "받는 마법 피해 -8%",
+      "effect": { "magicResist": 0.08 }
+    },
+    "drain_life": {
+      "name": "생명 전환",
+      "icon": "🩸",
+      "max": 3,
+      "desc": "랭크마다 최대 HP +8%",
+      "effect": { "hpPct": 0.08 },
+      "long": "마력을 생명으로 돌린다. 예전에는 흡혈이었는데 장비 흡혈과 겹쳐 끝없이 차올랐다."
+    },
+    "meteor": {
+      "name": "메테오",
+      "icon": "☄",
+      "max": 4,
+      "desc": "치명타 피해 +25%",
+      "effect": { "critMult": 0.25 }
+    }
+  }
+}

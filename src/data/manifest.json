@@ -1,0 +1,1058 @@
+{
+  "chr_hero_field": {
+    "src": "assets/sprites/characters/hero_field.png",
+    "w": 48,
+    "h": 64,
+    "label": "용사"
+  },
+  "chr_hero_battle": {
+    "src": "assets/sprites/characters/hero_battle.png",
+    "w": 192,
+    "h": 256,
+    "label": "용사"
+  },
+  "chr_admin_field": {
+    "src": "assets/sprites/characters/admin_field.png",
+    "w": 48,
+    "h": 64,
+    "label": "운영자"
+  },
+  "chr_admin_battle": {
+    "src": "assets/sprites/characters/admin_battle.png",
+    "w": 192,
+    "h": 256,
+    "label": "운영자"
+  },
+  "npc_shopkeeper": {
+    "src": "assets/sprites/npc/shopkeeper.png",
+    "w": 48,
+    "h": 64,
+    "label": "상인"
+  },
+  "npc_blacksmith": {
+    "src": "assets/sprites/npc/blacksmith.png",
+    "w": 48,
+    "h": 64,
+    "label": "대장장이"
+  },
+  "npc_innkeeper": {
+    "src": "assets/sprites/npc/innkeeper.png",
+    "w": 48,
+    "h": 64,
+    "label": "여관주인"
+  },
+  "npc_villager": {
+    "src": "assets/sprites/npc/villager.png",
+    "w": 48,
+    "h": 64,
+    "label": "주민"
+  },
+  "npc_elder": {
+    "src": "assets/sprites/npc/elder.png",
+    "w": 48,
+    "h": 64,
+    "label": "촌장"
+  },
+  "npc_kid": {
+    "src": "assets/sprites/npc/kid.png",
+    "w": 48,
+    "h": 64,
+    "label": "아이"
+  },
+  "npc_guard": {
+    "src": "assets/sprites/npc/guard.png",
+    "w": 48,
+    "h": 64,
+    "label": "위병"
+  },
+  "npc_king": {
+    "src": "assets/sprites/npc/king.png",
+    "w": 48,
+    "h": 64,
+    "label": "국왕"
+  },
+  "mon_slime_field": {
+    "src": "assets/sprites/monsters/slime_field.png",
+    "w": 48,
+    "h": 48,
+    "label": "슬라임"
+  },
+  "mon_slime_battle": {
+    "src": "assets/sprites/monsters/slime_battle.png",
+    "w": 256,
+    "h": 256,
+    "label": "슬라임"
+  },
+  "mon_bat_field": {
+    "src": "assets/sprites/monsters/bat_field.png",
+    "w": 48,
+    "h": 48,
+    "label": "박쥐"
+  },
+  "mon_bat_battle": {
+    "src": "assets/sprites/monsters/bat_battle.png",
+    "w": 256,
+    "h": 256,
+    "label": "박쥐"
+  },
+  "mon_mushroom_field": {
+    "src": "assets/sprites/monsters/mushroom_field.png",
+    "w": 48,
+    "h": 48,
+    "label": "버섯"
+  },
+  "mon_mushroom_battle": {
+    "src": "assets/sprites/monsters/mushroom_battle.png",
+    "w": 256,
+    "h": 256,
+    "label": "버섯"
+  },
+  "mon_wolf_field": {
+    "src": "assets/sprites/monsters/wolf_field.png",
+    "w": 48,
+    "h": 48,
+    "label": "늑대"
+  },
+  "mon_wolf_battle": {
+    "src": "assets/sprites/monsters/wolf_battle.png",
+    "w": 256,
+    "h": 256,
+    "label": "늑대"
+  },
+  "mon_imp_field": {
+    "src": "assets/sprites/monsters/imp_field.png",
+    "w": 48,
+    "h": 48,
+    "label": "꼬마악마"
+  },
+  "mon_imp_battle": {
+    "src": "assets/sprites/monsters/imp_battle.png",
+    "w": 256,
+    "h": 256,
+    "label": "꼬마악마"
+  },
+  "mon_skeleton_field": {
+    "src": "assets/sprites/monsters/skeleton_field.png",
+    "w": 48,
+    "h": 48,
+    "label": "해골"
+  },
+  "mon_skeleton_battle": {
+    "src": "assets/sprites/monsters/skeleton_battle.png",
+    "w": 256,
+    "h": 256,
+    "label": "해골"
+  },
+  "mon_demon_soldier_field": {
+    "src": "assets/sprites/monsters/demon_soldier_field.png",
+    "w": 48,
+    "h": 48,
+    "label": "악마병사"
+  },
+  "mon_demon_soldier_battle": {
+    "src": "assets/sprites/monsters/demon_soldier_battle.png",
+    "w": 256,
+    "h": 256,
+    "label": "악마병사"
+  },
+  "mon_imp_captain_field": {
+    "src": "assets/sprites/monsters/imp_captain_field.png",
+    "w": 56,
+    "h": 56,
+    "label": "정찰대장"
+  },
+  "mon_imp_captain_battle": {
+    "src": "assets/sprites/monsters/imp_captain_battle.png",
+    "w": 256,
+    "h": 256,
+    "label": "정찰대장"
+  },
+  "mon_demon_general_field": {
+    "src": "assets/sprites/monsters/demon_general_field.png",
+    "w": 60,
+    "h": 60,
+    "label": "악마장군"
+  },
+  "mon_demon_general_battle": {
+    "src": "assets/sprites/monsters/demon_general_battle.png",
+    "w": 256,
+    "h": 256,
+    "label": "악마장군"
+  },
+  "tile_grass": {
+    "src": "assets/tiles/grass.png",
+    "w": 32,
+    "h": 32,
+    "label": "풀"
+  },
+  "tile_path": {
+    "src": "assets/tiles/path.png",
+    "w": 32,
+    "h": 32,
+    "label": "길"
+  },
+  "tile_tree": {
+    "src": "assets/tiles/tree.png",
+    "w": 32,
+    "h": 32,
+    "label": "나무"
+  },
+  "tile_rock": {
+    "src": "assets/tiles/rock.png",
+    "w": 32,
+    "h": 32,
+    "label": "바위"
+  },
+  "tile_water": {
+    "src": "assets/tiles/water.png",
+    "w": 32,
+    "h": 32,
+    "label": "물"
+  },
+  "tile_flower": {
+    "src": "assets/tiles/flower.png",
+    "w": 32,
+    "h": 32,
+    "label": "꽃"
+  },
+  "tile_brick": {
+    "src": "assets/tiles/brick.png",
+    "w": 32,
+    "h": 32,
+    "label": "석판"
+  },
+  "tile_house_wall": {
+    "src": "assets/tiles/house_wall.png",
+    "w": 32,
+    "h": 32,
+    "label": "벽"
+  },
+  "tile_house_roof": {
+    "src": "assets/tiles/house_roof.png",
+    "w": 32,
+    "h": 32,
+    "label": "지붕"
+  },
+  "tile_door": {
+    "src": "assets/tiles/door.png",
+    "w": 32,
+    "h": 32,
+    "label": "문"
+  },
+  "tile_castle_wall": {
+    "src": "assets/tiles/castle_wall.png",
+    "w": 32,
+    "h": 32,
+    "label": "성벽"
+  },
+  "tile_castle_top": {
+    "src": "assets/tiles/castle_top.png",
+    "w": 32,
+    "h": 32,
+    "label": "성벽"
+  },
+  "tile_castle_gate": {
+    "src": "assets/tiles/castle_gate.png",
+    "w": 32,
+    "h": 32,
+    "label": "성문"
+  },
+  "tile_castle_floor": {
+    "src": "assets/tiles/castle_floor.png",
+    "w": 32,
+    "h": 32,
+    "label": "바닥"
+  },
+  "tile_fence": {
+    "src": "assets/tiles/fence.png",
+    "w": 32,
+    "h": 32,
+    "label": "울타리"
+  },
+  "tile_gate_exit": {
+    "src": "assets/tiles/gate_exit.png",
+    "w": 32,
+    "h": 32,
+    "label": "출구"
+  },
+  "tile_signpost": {
+    "src": "assets/tiles/signpost.png",
+    "w": 32,
+    "h": 32,
+    "label": "표지판"
+  },
+  "tile_sign_item": {
+    "src": "assets/tiles/sign_item.png",
+    "w": 32,
+    "h": 32,
+    "label": "잡화점 간판"
+  },
+  "tile_sign_weapon": {
+    "src": "assets/tiles/sign_weapon.png",
+    "w": 32,
+    "h": 32,
+    "label": "대장간 간판"
+  },
+  "tile_sign_alchemy": {
+    "src": "assets/tiles/sign_alchemy.png",
+    "w": 32,
+    "h": 32,
+    "label": "연금술사 간판"
+  },
+  "tile_sign_inn": {
+    "src": "assets/tiles/sign_inn.png",
+    "w": 32,
+    "h": 32,
+    "label": "여관 간판"
+  },
+  "bg_battle_field": {
+    "src": "assets/ui/battle_bg_field.png",
+    "w": 640,
+    "h": 480,
+    "label": "전투 배경"
+  },
+  "item_wooden_sword": {
+    "src": "assets/ui/items/wooden_sword.png",
+    "w": 64,
+    "h": 64,
+    "label": "나무검"
+  },
+  "item_iron_sword": {
+    "src": "assets/ui/items/iron_sword.png",
+    "w": 64,
+    "h": 64,
+    "label": "강철검"
+  },
+  "item_flame_sword": {
+    "src": "assets/ui/items/flame_sword.png",
+    "w": 64,
+    "h": 64,
+    "label": "화염검"
+  },
+  "item_demon_blade": {
+    "src": "assets/ui/items/demon_blade.png",
+    "w": 64,
+    "h": 64,
+    "label": "마검"
+  },
+  "item_cloth_armor": {
+    "src": "assets/ui/items/cloth_armor.png",
+    "w": 64,
+    "h": 64,
+    "label": "천옷"
+  },
+  "item_leather_armor": {
+    "src": "assets/ui/items/leather_armor.png",
+    "w": 64,
+    "h": 64,
+    "label": "가죽"
+  },
+  "item_knight_armor": {
+    "src": "assets/ui/items/knight_armor.png",
+    "w": 64,
+    "h": 64,
+    "label": "기사갑옷"
+  },
+  "item_dragon_mail": {
+    "src": "assets/ui/items/dragon_mail.png",
+    "w": 64,
+    "h": 64,
+    "label": "용린갑옷"
+  },
+  "item_swift_ring": {
+    "src": "assets/ui/items/swift_ring.png",
+    "w": 64,
+    "h": 64,
+    "label": "반지"
+  },
+  "item_power_ring": {
+    "src": "assets/ui/items/power_ring.png",
+    "w": 64,
+    "h": 64,
+    "label": "격노반지"
+  },
+  "item_potion": {
+    "src": "assets/ui/items/potion.png",
+    "w": 64,
+    "h": 64,
+    "label": "회복약"
+  },
+  "item_herb": {
+    "src": "assets/ui/items/herb.png",
+    "w": 64,
+    "h": 64,
+    "label": "약초"
+  },
+  "item_magic_stone": {
+    "src": "assets/ui/items/magic_stone.png",
+    "w": 64,
+    "h": 64,
+    "label": "마력석"
+  },
+  "item_demon_core": {
+    "src": "assets/ui/items/demon_core.png",
+    "w": 64,
+    "h": 64,
+    "label": "악마핵"
+  },
+  "item_slime_jelly": {
+    "src": "assets/ui/items/slime_jelly.png",
+    "w": 64,
+    "h": 64,
+    "label": "젤리"
+  },
+  "item_bat_fang": {
+    "src": "assets/ui/items/bat_fang.png",
+    "w": 64,
+    "h": 64,
+    "label": "송곳니"
+  },
+  "npc_alchemist": {
+    "src": "assets/sprites/npc/alchemist.png",
+    "w": 48,
+    "h": 64,
+    "label": "연금술사"
+  },
+  "item_speed_potion": {
+    "src": "assets/ui/items/speed_potion.png",
+    "w": 64,
+    "h": 64,
+    "label": "질주물약"
+  },
+  "npc_quest_board": {
+    "src": "assets/sprites/npc/quest_board.png",
+    "w": 52,
+    "h": 70,
+    "label": "게시판"
+  },
+  "item_club": {
+    "src": "assets/ui/items/club.png",
+    "w": 64,
+    "h": 64,
+    "label": "몽둥이"
+  },
+  "item_leather_pauldron": {
+    "src": "assets/ui/items/leather_pauldron.png",
+    "w": 64,
+    "h": 64,
+    "label": "가죽 어깨보호구"
+  },
+  "item_steel_pauldron": {
+    "src": "assets/ui/items/steel_pauldron.png",
+    "w": 64,
+    "h": 64,
+    "label": "강철 어깨갑옷"
+  },
+  "item_cloth_gloves": {
+    "src": "assets/ui/items/cloth_gloves.png",
+    "w": 64,
+    "h": 64,
+    "label": "천 장갑"
+  },
+  "item_steel_gauntlet": {
+    "src": "assets/ui/items/steel_gauntlet.png",
+    "w": 64,
+    "h": 64,
+    "label": "강철 건틀릿"
+  },
+  "item_leather_boots": {
+    "src": "assets/ui/items/leather_boots.png",
+    "w": 64,
+    "h": 64,
+    "label": "가죽 부츠"
+  },
+  "item_swift_boots": {
+    "src": "assets/ui/items/swift_boots.png",
+    "w": 64,
+    "h": 64,
+    "label": "질주의 부츠"
+  },
+  "item_leather_belt": {
+    "src": "assets/ui/items/leather_belt.png",
+    "w": 64,
+    "h": 64,
+    "label": "가죽 허리띠"
+  },
+  "item_mana_belt": {
+    "src": "assets/ui/items/mana_belt.png",
+    "w": 64,
+    "h": 64,
+    "label": "마력의 허리띠"
+  },
+  "item_wood_amulet": {
+    "src": "assets/ui/items/wood_amulet.png",
+    "w": 64,
+    "h": 64,
+    "label": "나무 부적"
+  },
+  "item_guard_amulet": {
+    "src": "assets/ui/items/guard_amulet.png",
+    "w": 64,
+    "h": 64,
+    "label": "수호의 목걸이"
+  },
+  "item_short_bow": {
+    "src": "assets/ui/items/short_bow.png",
+    "w": 64,
+    "h": 64,
+    "label": "낡은 사냥활"
+  },
+  "item_hunting_bow": {
+    "src": "assets/ui/items/hunting_bow.png",
+    "w": 64,
+    "h": 64,
+    "label": "사냥용 활"
+  },
+  "item_elven_bow": {
+    "src": "assets/ui/items/elven_bow.png",
+    "w": 64,
+    "h": 64,
+    "label": "바람의 장궁"
+  },
+  "item_gnarled_staff": {
+    "src": "assets/ui/items/gnarled_staff.png",
+    "w": 64,
+    "h": 64,
+    "label": "옹이 지팡이"
+  },
+  "item_apprentice_staff": {
+    "src": "assets/ui/items/apprentice_staff.png",
+    "w": 64,
+    "h": 64,
+    "label": "견습 지팡이"
+  },
+  "item_archmage_staff": {
+    "src": "assets/ui/items/archmage_staff.png",
+    "w": 64,
+    "h": 64,
+    "label": "대마법사의 지팡이"
+  },
+  "chr_ranger_field": {
+    "src": "assets/sprites/characters/ranger_field.png",
+    "w": 48,
+    "h": 64,
+    "label": "사냥꾼"
+  },
+  "chr_ranger_battle": {
+    "src": "assets/sprites/characters/ranger_battle.png",
+    "w": 192,
+    "h": 256,
+    "label": "사냥꾼"
+  },
+  "chr_mage_field": {
+    "src": "assets/sprites/characters/mage_field.png",
+    "w": 48,
+    "h": 64,
+    "label": "마법사"
+  },
+  "chr_mage_battle": {
+    "src": "assets/sprites/characters/mage_battle.png",
+    "w": 192,
+    "h": 256,
+    "label": "마법사"
+  },
+  "tile_dungeon_floor": {
+    "src": "assets/tiles/dungeon_floor.png",
+    "w": 32,
+    "h": 32,
+    "label": "감옥 바닥"
+  },
+  "tile_dungeon_wall": {
+    "src": "assets/tiles/dungeon_wall.png",
+    "w": 32,
+    "h": 32,
+    "label": "감옥 벽"
+  },
+  "tile_stairs_down": {
+    "src": "assets/tiles/stairs_down.png",
+    "w": 32,
+    "h": 32,
+    "label": "내려가는 계단"
+  },
+  "tile_stairs_up": {
+    "src": "assets/tiles/stairs_up.png",
+    "w": 32,
+    "h": 32,
+    "label": "올라가는 계단"
+  },
+  "tile_forge_hearth": {
+    "src": "assets/tiles/forge_hearth.png",
+    "w": 32,
+    "h": 32,
+    "label": "화덕"
+  },
+  "tile_forge_anvil": {
+    "src": "assets/tiles/forge_anvil.png",
+    "w": 32,
+    "h": 32,
+    "label": "모루"
+  },
+  "tile_waypoint_pad": {
+    "src": "assets/tiles/waypoint_pad.png",
+    "w": 32,
+    "h": 32,
+    "label": "웨이포인트"
+  },
+  "npc_waypoint": {
+    "src": "assets/sprites/npc/waypoint.png",
+    "w": 48,
+    "h": 64,
+    "label": "웨이포인트"
+  },
+  "npc_gate_merchant": {
+    "src": "assets/sprites/npc/gate_merchant.png",
+    "w": 48,
+    "h": 64,
+    "label": "무기상"
+  },
+  "item_dragon_helm": {
+    "src": "assets/ui/items/dragon_helm.png",
+    "w": 64,
+    "h": 64,
+    "label": "용린 투구"
+  },
+  "item_dragon_pauldron": {
+    "src": "assets/ui/items/dragon_pauldron.png",
+    "w": 64,
+    "h": 64,
+    "label": "용린 어깨갑옷"
+  },
+  "item_useless_sword": {
+    "src": "assets/ui/items/useless_sword.png",
+    "w": 64,
+    "h": 64,
+    "label": "쓸모없는 검"
+  },
+  "item_dragon_knight_sword": {
+    "src": "assets/ui/items/dragon_knight_sword.png",
+    "w": 64,
+    "h": 64,
+    "label": "용린 기사검"
+  },
+  "item_dragon_knight_bow": {
+    "src": "assets/ui/items/dragon_knight_bow.png",
+    "w": 64,
+    "h": 64,
+    "label": "용린 기사궁"
+  },
+  "item_dragon_knight_staff": {
+    "src": "assets/ui/items/dragon_knight_staff.png",
+    "w": 64,
+    "h": 64,
+    "label": "용린 기사장"
+  },
+  "item_magic_helm": {
+    "src": "assets/ui/items/magic_helm.png",
+    "w": 64,
+    "h": 64,
+    "label": "매직 투구"
+  },
+  "item_cloth_hood": {
+    "src": "assets/ui/items/cloth_hood.png",
+    "w": 64,
+    "h": 64,
+    "label": "천 두건"
+  },
+  "item_leather_cap": {
+    "src": "assets/ui/items/leather_cap.png",
+    "w": 64,
+    "h": 64,
+    "label": "가죽 모자"
+  },
+  "item_knight_helm": {
+    "src": "assets/ui/items/knight_helm.png",
+    "w": 64,
+    "h": 64,
+    "label": "기사 투구"
+  },
+  "item_rune_helm": {
+    "src": "assets/ui/items/rune_helm.png",
+    "w": 64,
+    "h": 64,
+    "label": "룬 투구"
+  },
+  "item_mega_potion": {
+    "src": "assets/ui/items/mega_potion.png",
+    "w": 64,
+    "h": 64,
+    "label": "거대 회복약"
+  },
+  "item_socket_drill": {
+    "src": "assets/ui/items/socket_drill.png",
+    "w": 64,
+    "h": 64,
+    "label": "악마의 파편"
+  },
+  "item_frost_blade": {
+    "src": "assets/ui/items/frost_blade.png",
+    "w": 64,
+    "h": 64,
+    "label": "서리검"
+  },
+  "item_storm_bow": {
+    "src": "assets/ui/items/storm_bow.png",
+    "w": 64,
+    "h": 64,
+    "label": "뇌전궁"
+  },
+  "item_ember_staff": {
+    "src": "assets/ui/items/ember_staff.png",
+    "w": 64,
+    "h": 64,
+    "label": "성염 지팡이"
+  },
+  "item_rune_mail": {
+    "src": "assets/ui/items/rune_mail.png",
+    "w": 64,
+    "h": 64,
+    "label": "룬 갑옷"
+  },
+  "item_rune_pauldron": {
+    "src": "assets/ui/items/rune_pauldron.png",
+    "w": 64,
+    "h": 64,
+    "label": "룬 어깨갑옷"
+  },
+  "item_rune_gauntlet": {
+    "src": "assets/ui/items/rune_gauntlet.png",
+    "w": 64,
+    "h": 64,
+    "label": "룬 건틀릿"
+  },
+  "item_rune_boots": {
+    "src": "assets/ui/items/rune_boots.png",
+    "w": 64,
+    "h": 64,
+    "label": "룬 부츠"
+  },
+  "item_rune_belt": {
+    "src": "assets/ui/items/rune_belt.png",
+    "w": 64,
+    "h": 64,
+    "label": "룬 허리띠"
+  },
+  "item_rune_amulet": {
+    "src": "assets/ui/items/rune_amulet.png",
+    "w": 64,
+    "h": 64,
+    "label": "룬 목걸이"
+  },
+  "item_greater_potion": {
+    "src": "assets/ui/items/greater_potion.png",
+    "w": 64,
+    "h": 64,
+    "label": "희귀 회복약"
+  },
+  "item_dragon_ring": {
+    "src": "assets/ui/items/dragon_ring.png",
+    "w": 64,
+    "h": 64,
+    "label": "용의 인장"
+  },
+  "tile_stall_weapon": {
+    "src": "assets/tiles/stall_weapon.png",
+    "w": 32,
+    "h": 32,
+    "label": "무기 가판대"
+  },
+  "tile_stall_armor": {
+    "src": "assets/tiles/stall_armor.png",
+    "w": 32,
+    "h": 32,
+    "label": "방어구 가판대"
+  },
+  "item_gem_ruby": {
+    "src": "assets/ui/items/gem_ruby.png",
+    "w": 64,
+    "h": 64,
+    "label": "루비"
+  },
+  "item_gem_sapphire": {
+    "src": "assets/ui/items/gem_sapphire.png",
+    "w": 64,
+    "h": 64,
+    "label": "사파이어"
+  },
+  "item_gem_emerald": {
+    "src": "assets/ui/items/gem_emerald.png",
+    "w": 64,
+    "h": 64,
+    "label": "에메랄드"
+  },
+  "item_gem_topaz": {
+    "src": "assets/ui/items/gem_topaz.png",
+    "w": 64,
+    "h": 64,
+    "label": "토파즈"
+  },
+  "item_gem_amethyst": {
+    "src": "assets/ui/items/gem_amethyst.png",
+    "w": 64,
+    "h": 64,
+    "label": "자수정"
+  },
+  "item_gem_onyx": {
+    "src": "assets/ui/items/gem_onyx.png",
+    "w": 64,
+    "h": 64,
+    "label": "오닉스"
+  },
+  "item_gem_diamond": {
+    "src": "assets/ui/items/gem_diamond.png",
+    "w": 64,
+    "h": 64,
+    "label": "다이아몬드"
+  },
+  "tile_ash": {
+    "src": "assets/tiles/ash.png",
+    "w": 32,
+    "h": 32,
+    "label": "잿더미"
+  },
+  "tile_ash_path": {
+    "src": "assets/tiles/ash_path.png",
+    "w": 32,
+    "h": 32,
+    "label": "굳은 용암 길"
+  },
+  "tile_charred": {
+    "src": "assets/tiles/charred.png",
+    "w": 32,
+    "h": 32,
+    "label": "타 버린 나무"
+  },
+  "tile_basalt": {
+    "src": "assets/tiles/basalt.png",
+    "w": 32,
+    "h": 32,
+    "label": "검은 현무암"
+  },
+  "tile_magma": {
+    "src": "assets/tiles/magma.png",
+    "w": 32,
+    "h": 32,
+    "label": "마그마"
+  },
+  "tile_ember": {
+    "src": "assets/tiles/ember.png",
+    "w": 32,
+    "h": 32,
+    "label": "불씨"
+  },
+  "tile_waste": {
+    "src": "assets/tiles/waste.png",
+    "w": 32,
+    "h": 32,
+    "label": "마른 땅"
+  },
+  "tile_cliff": {
+    "src": "assets/tiles/cliff.png",
+    "w": 32,
+    "h": 32,
+    "label": "낭떠러지"
+  },
+  "tile_cliff_edge": {
+    "src": "assets/tiles/cliff_edge.png",
+    "w": 32,
+    "h": 32,
+    "label": "절벽 끝"
+  },
+  "tile_wind_rock": {
+    "src": "assets/tiles/wind_rock.png",
+    "w": 32,
+    "h": 32,
+    "label": "바람바위"
+  },
+  "mon_great_dragon_field": {
+    "src": "assets/sprites/monsters/great_dragon_field.png",
+    "w": 48,
+    "h": 48,
+    "label": "큰 용"
+  },
+  "mon_great_dragon_battle": {
+    "src": "assets/sprites/monsters/great_dragon_battle.png",
+    "w": 256,
+    "h": 256,
+    "label": "큰 용"
+  },
+  "npc_witch": {
+    "src": "assets/sprites/npc/witch.png",
+    "w": 48,
+    "h": 64,
+    "label": "마녀"
+  },
+  "npc_royal_smith": {
+    "src": "assets/sprites/npc/royal_smith.png",
+    "w": 48,
+    "h": 64,
+    "label": "왕실 대장장이"
+  },
+  "item_dragon_token": {
+    "src": "assets/ui/items/dragon_token.png",
+    "w": 64,
+    "h": 64,
+    "label": "용의 징표"
+  },
+  "item_dragon_gate_key": {
+    "src": "assets/ui/items/dragon_gate_key.png",
+    "w": 64,
+    "h": 64,
+    "label": "용의 열쇠"
+  },
+  "tile_lair_gate": {
+    "src": "assets/tiles/lair_gate.png",
+    "w": 32,
+    "h": 32,
+    "label": "잠긴 동굴문"
+  },
+  "mon_elder_dragon_field": {
+    "src": "assets/sprites/monsters/elder_dragon_field.png",
+    "w": 48,
+    "h": 48,
+    "label": "잠겨 있던 용"
+  },
+  "mon_elder_dragon_battle": {
+    "src": "assets/sprites/monsters/elder_dragon_battle.png",
+    "w": 256,
+    "h": 256,
+    "label": "잠겨 있던 용"
+  },
+  "chr_hero_attack": {
+    "src": "assets/sprites/characters/hero_attack.png",
+    "w": 192,
+    "h": 256,
+    "label": "용사 — 공격"
+  },
+  "chr_ranger_attack": {
+    "src": "assets/sprites/characters/ranger_attack.png",
+    "w": 192,
+    "h": 256,
+    "label": "사냥꾼 — 공격"
+  },
+  "chr_mage_attack": {
+    "src": "assets/sprites/characters/mage_attack.png",
+    "w": 192,
+    "h": 256,
+    "label": "마법사 — 공격"
+  },
+  "chr_hero_stance": {
+    "src": "assets/sprites/characters/hero_stance.png",
+    "w": 192,
+    "h": 256,
+    "label": "용사 — 전투 자세"
+  },
+  "chr_ranger_stance": {
+    "src": "assets/sprites/characters/ranger_stance.png",
+    "w": 192,
+    "h": 256,
+    "label": "사냥꾼 — 전투 자세"
+  },
+  "chr_mage_stance": {
+    "src": "assets/sprites/characters/mage_stance.png",
+    "w": 192,
+    "h": 256,
+    "label": "마법사 — 전투 자세"
+  },
+  "mon_slime_attack": {
+    "src": "assets/sprites/monsters/slime_attack.png",
+    "w": 256,
+    "h": 256,
+    "label": "슬라임 — 공격"
+  },
+  "mon_bat_attack": {
+    "src": "assets/sprites/monsters/bat_attack.png",
+    "w": 256,
+    "h": 256,
+    "label": "박쥐 — 공격"
+  },
+  "mon_mushroom_attack": {
+    "src": "assets/sprites/monsters/mushroom_attack.png",
+    "w": 256,
+    "h": 256,
+    "label": "버섯 — 공격"
+  },
+  "mon_wolf_attack": {
+    "src": "assets/sprites/monsters/wolf_attack.png",
+    "w": 256,
+    "h": 256,
+    "label": "늑대 — 공격"
+  },
+  "mon_imp_attack": {
+    "src": "assets/sprites/monsters/imp_attack.png",
+    "w": 256,
+    "h": 256,
+    "label": "꼬마악마 — 공격"
+  },
+  "mon_skeleton_attack": {
+    "src": "assets/sprites/monsters/skeleton_attack.png",
+    "w": 256,
+    "h": 256,
+    "label": "해골 — 공격"
+  },
+  "mon_demon_soldier_attack": {
+    "src": "assets/sprites/monsters/demon_soldier_attack.png",
+    "w": 256,
+    "h": 256,
+    "label": "악마병사 — 공격"
+  },
+  "mon_imp_captain_attack": {
+    "src": "assets/sprites/monsters/imp_captain_attack.png",
+    "w": 256,
+    "h": 256,
+    "label": "정찰대장 — 공격"
+  },
+  "mon_demon_general_attack": {
+    "src": "assets/sprites/monsters/demon_general_attack.png",
+    "w": 256,
+    "h": 256,
+    "label": "악마장군 — 공격"
+  },
+  "mon_great_dragon_attack": {
+    "src": "assets/sprites/monsters/great_dragon_attack.png",
+    "w": 256,
+    "h": 256,
+    "label": "큰 용 — 공격"
+  },
+  "mon_elder_dragon_attack": {
+    "src": "assets/sprites/monsters/elder_dragon_attack.png",
+    "w": 256,
+    "h": 256,
+    "label": "잠겨 있던 용 — 공격"
+  },
+  "fx_slash": {
+    "src": "assets/fx/fx_slash.png",
+    "w": 128,
+    "h": 128,
+    "label": "벰"
+  },
+  "fx_pierce": {
+    "src": "assets/fx/fx_pierce.png",
+    "w": 128,
+    "h": 128,
+    "label": "꿰뚫음"
+  },
+  "fx_magic": {
+    "src": "assets/fx/fx_magic.png",
+    "w": 128,
+    "h": 128,
+    "label": "마법"
+  },
+  "fx_fire": {
+    "src": "assets/fx/fx_fire.png",
+    "w": 128,
+    "h": 128,
+    "label": "불덩이"
+  },
+  "fx_impact": {
+    "src": "assets/fx/fx_impact.png",
+    "w": 128,
+    "h": 128,
+    "label": "충격"
+  },
+  "fx_guard": {
+    "src": "assets/fx/fx_guard.png",
+    "w": 128,
+    "h": 128,
+    "label": "막음"
+  }
+}
