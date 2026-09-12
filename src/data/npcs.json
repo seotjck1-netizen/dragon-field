@@ -1,0 +1,440 @@
+{
+  "shopkeeper": {
+    "name": "잡화상 마르타",
+    "sprite": "npc_shopkeeper",
+    "quick": true,
+    "lines": [
+      "어서 오세요, 포이노 잡화점입니다.",
+      "…요즘 동쪽에서 오는 손님이 뚝 끊겼어요.\n들판 너머에서 붉은 불빛이 보인다더군요.",
+      "악마들이 포이노로 처들어오고 있다는 소문,\n설마 진짜는 아니겠죠?",
+      "필요한 게 있으면 말씀하세요. 약은 넉넉히 챙기시고요."
+    ],
+    "action": {
+      "type": "shop",
+      "label": "상점 열기"
+    },
+    "stock": [
+      "potion",
+      "speed_potion",
+      "herb",
+      "wooden_sword",
+      "short_bow",
+      "gnarled_staff",
+      "cloth_armor",
+      "cloth_hood",
+      "cloth_gloves",
+      "leather_boots",
+      "leather_belt",
+      "wood_amulet",
+      "iron_sword",
+      "leather_armor",
+      "leather_cap",
+      "leather_pauldron",
+      "hunting_bow",
+      "apprentice_staff",
+      "dragon_helm",
+      "dragon_mail",
+      "dragon_pauldron"
+    ]
+  },
+  "blacksmith": {
+    "name": "대장장이 고르드",
+    "sprite": "npc_blacksmith",
+    "quick": true,
+    "lines": [
+      "왔는가. 강화는 여기서만 해준다.\n대장간 불 없이 되는 일이 아니야.",
+      "+5 까지는 웬만하면 붙는다.\n문제는 그 위지. 각오는 하고 오게.",
+      "+7 을 넘기면 검이 스스로 성질을 갖는다.\n예기, 흡혈, 관통… 그 다음은 각성이야.",
+      "동쪽 들판에서 마력석과 악마의 핵을 주워오게.",
+      "내 망치는 +10 까지다. 그 너머는 성 안 왕실 대장간으로 가게.\n도르한이라고, 내 스승이지. 보석을 챙겨 가게."
+    ],
+    "action": {
+      "type": "forge",
+      "label": "강화하기"
+    }
+  },
+  "royal_smith": {
+    "name": "왕실 대장장이 도르한",
+    "sprite": "npc_royal_smith",
+    "quick": true,
+    "lines": [
+      "성 안까지 올라왔나. 그 물건, +10 인가.\n고르드의 망치는 거기까지다. 여기서부터는 내 일이야.",
+      "값은 골드가 아니라 보석으로 받는다.\n무기는 루비, 방어구는 에메랄드, 장신구는 오닉스. 하나면 된다.",
+      "실패해도 부서지지 않고 내려가지도 않아.\n보석만 사라지지. 그러니 겁내지 말고 계속 가져오게.",
+      "+11 은 열에 아홉, +15 는 둘에 하나.\n뒤로 갈수록 어렵지만 앞으로만 간다. 남은 건 시간뿐이야."
+    ],
+    "action": {
+      "type": "transcend",
+      "label": "초월 강화"
+    }
+  },
+  "alchemist": {
+    "name": "연금술사 세피",
+    "sprite": "npc_alchemist",
+    "quick": true,
+    "lines": [
+      "잡동사니 모아 왔어요? 쓸 만하게 바꿔 드릴게요.",
+      "젤리든 송곳니든 약초든, 뭐든 재료가 됩니다.\n버리지 말고 가져오세요.",
+      "요즘 악마의 핵을 찾는 사람이 많던데…\n대장간 영감이 뭘 만들려는 걸까요."
+    ],
+    "action": {
+      "type": "exchange",
+      "label": "재료 교환"
+    },
+    "recipes": [
+      {
+        "give": [
+          {
+            "id": "slime_jelly",
+            "count": 8
+          }
+        ],
+        "get": {
+          "id": "magic_stone",
+          "count": 1
+        }
+      },
+      {
+        "give": [
+          {
+            "id": "bat_fang",
+            "count": 6
+          }
+        ],
+        "get": {
+          "id": "magic_stone",
+          "count": 1
+        }
+      },
+      {
+        "give": [
+          {
+            "id": "herb",
+            "count": 5
+          }
+        ],
+        "get": {
+          "id": "magic_stone",
+          "count": 1
+        }
+      },
+      {
+        "give": [
+          {
+            "id": "slime_jelly",
+            "count": 30
+          },
+          {
+            "id": "bat_fang",
+            "count": 24
+          }
+        ],
+        "get": {
+          "id": "demon_core",
+          "count": 1
+        }
+      },
+      {
+        "give": [
+          {
+            "id": "magic_stone",
+            "count": 10
+          }
+        ],
+        "get": {
+          "id": "demon_core",
+          "count": 1
+        }
+      },
+      {
+        "_왜": "희귀 회복약 열 병 → 거대 회복약 하나. 회복량은 210×10=2100 이 아니라 700 이다 — 가방 한 칸으로 700 을 쓰는 값이지, 총량을 늘려 주는 교환이 아니다.",
+        "give": [
+          {
+            "id": "greater_potion",
+            "count": 10
+          }
+        ],
+        "get": {
+          "id": "mega_potion",
+          "count": 1
+        }
+      }
+    ]
+  },
+  "innkeeper": {
+    "name": "여관 주인 리사",
+    "sprite": "npc_innkeeper",
+    "quick": true,
+    "lines": [
+      "쉬어 가시겠어요? 20골드예요.\n푹 자고 나면 한동안 몸이 가벼울 거예요.",
+      "어젯밤에도 동쪽 하늘이 붉게 물들었어요.\n손님들이 다 짐을 싸서 서쪽으로 떠났죠.",
+      "저는 여기 남을 거예요. 포이노는 제 고향이니까요."
+    ],
+    "action": {
+      "type": "inn",
+      "label": "휴식하기 (20골드)"
+    }
+  },
+  "villager_elder": {
+    "name": "촌장 하렌",
+    "sprite": "npc_elder",
+    "lines": [
+      "젊은이, 조심하게.",
+      "포이노에 악마들이 처들어오고 있다…\n동쪽 들판 열 곳을 지나면 놈들의 관문이 있네.",
+      "다섯 번째 들판엔 정찰대장이,\n마지막 열 번째엔 장군이 버티고 있다고 들었네.",
+      "…성문은 굳게 닫혔네. 왕께서는\n레벨 50이 안 되는 자는 들이지 말라 하셨어."
+    ],
+    "lines2": [
+      "…아직 여기 있었나. 그럼 하나 더 들려주지.",
+      "내가 어릴 적에 말이야, 용을 물리쳤다는 기사 이야기가 있었네.\n용린 기사검이라고… 비늘로 벼려 만든 검이었다더군.",
+      "그런데 그게 처음부터 검이었던 게 아니라는 게야.\n아무도 안 사는 이 빠진 쇳덩이였는데, 어느 날 갑자기…",
+      "붉은 돌 하나, 푸른 돌 하나.\n순서가 있었다는데 그건 나도 잊었네. 늙으면 그렇다네."
+    ]
+  },
+  "villager_kid": {
+    "name": "마을 아이",
+    "sprite": "npc_kid",
+    "lines": [
+      "형아, 저기 동쪽 문 봤어?",
+      "어제 밤에 뿔 달린 그림자가\n울타리 위를 지나갔어. 진짜야!",
+      "…아빠는 그냥 박쥐라고 했는데,\n박쥐가 그렇게 크진 않잖아."
+    ]
+  },
+  "gate_guard": {
+    "name": "성문 위병",
+    "sprite": "npc_guard",
+    "lines": [
+      "멈춰라. 여기서부터는 포이노 성이다.",
+      "왕명이다 — 레벨 25에 이르지 못한 자는\n성문을 통과할 수 없다.",
+      "전선이 밀리고 있어. 이제는 손이 모자라\n쓸 만한 자는 안으로 들이라는 명이 내려왔다.",
+      "안에 들어가거든 오른쪽 아래 좌판을 보게.\n무기상 카일이 룬 장비를 팔고 있다."
+    ]
+  },
+  "king": {
+    "name": "포이노 국왕",
+    "sprite": "npc_king",
+    "lines": [
+      "잘 왔다, 용사여.",
+      "악마 장군 발가르가 열 번째 들판에서\n포이노를 향해 군을 모으고 있다.",
+      "성문을 지나온 그대라면 믿을 수 있겠지.\n부디 이 땅을 지켜다오."
+    ]
+  },
+  "waypoint_stone": {
+    "name": "웨이포인트 돌",
+    "sprite": "npc_waypoint",
+    "quick": true,
+    "lines": [
+      "광장 한가운데 박힌 검은 돌.\n표면에 별자리 같은 선이 새겨져 있다.",
+      "보스를 쓰러뜨린 땅의 선이 하나씩 밝아진다.\n밝아진 선에 손을 대면 그곳으로 갈 수 있다."
+    ],
+    "action": {
+      "type": "waypoint",
+      "label": "웨이포인트 열기"
+    }
+  },
+  "gate_merchant": {
+    "name": "무기상 카일",
+    "sprite": "npc_gate_merchant",
+    "quick": true,
+    "lines": [
+      "성 안에 좌판을 폈네. 위병들이 눈감아 준 덕이지.",
+      "여기 물건은 전부 룬을 먹인 것일세.\n동쪽 깊은 곳 — 11단계 너머로 갈 거라면 이게 없인 못 버텨.",
+      "약도 한 병 챙기게. 성 밖에서 파는 것과는 물건이 달라.",
+      "한 가지만 말해 두지. 무기는 반드시 +9까지 올려 두게.\n그러지 않고 20단계 끝의 그놈 앞에 서면… 말 안 해도 알겠지."
+    ],
+    "action": {
+      "type": "shop",
+      "label": "상점 열기"
+    },
+    "stock": [
+      "greater_potion",
+      "potion",
+      "speed_potion",
+      "magic_helm",
+      "useless_sword",
+      "frost_blade",
+      "storm_bow",
+      "ember_staff",
+      "rune_mail",
+      "rune_helm",
+      "rune_pauldron",
+      "rune_gauntlet",
+      "rune_boots",
+      "rune_belt",
+      "rune_amulet",
+      "magic_stone"
+    ]
+  },
+  "dungeon_warden": {
+    "name": "지하감옥 간수",
+    "sprite": "npc_guard",
+    "lines": [
+      "성 아래에는 지하감옥이 있네.\n악마 군단이 몰려오기 전부터 있던 곳이지.",
+      "아래로 내려가려면 레벨 40은 되어야 해.\n그 밑은… 위병들도 안 내려간다네.",
+      "계단은 옥좌 뒤편일세. 정 가겠다면 말리진 않겠네."
+    ]
+  },
+  "witch": {
+    "name": "마녀 이올린",
+    "sprite": "npc_witch",
+    "quick": true,
+    "lines": [
+      "골드는 됐어. 그런 건 마을 사람들끼리나 쓰라지.",
+      "내가 받는 건 하나뿐이야 — 용의 징표.\n서쪽 절벽에 반 시간마다 한 번, 그놈이 내려앉거든.",
+      "한 번에 눕힐 생각은 말고. 몇 번이고 물어뜯어 놓으면\n상처는 그대로 남아 있으니까.",
+      "징표 하나면 보석 하나. 셋이면 전설의 무기, 둘이면 전설의 갑옷을 줄게.\n전설은 네가 익힌 재주를 두 배로 되돌려 주지 — 그게 값이야.",
+      "+10 에서 멈춘 물건? 그건 이제 내 일이 아니야.\n성 안 왕실 대장간으로 가. 도르한이 보석을 받고 두들겨 줄 거야.",
+      "아, 그리고 하나 더.\n서쪽 절벽 끝에 큰 문이 하나 있어. 아무도 못 열었지.\n징표 열 개를 가져오면 그 열쇠를 내주마 — 안에 뭐가 있는지는 나도 몰라."
+    ],
+    "action": {
+      "type": "exchange",
+      "label": "징표 교환"
+    },
+    "recipes": [
+      {
+        "give": [
+          {
+            "id": "dragon_token",
+            "count": 10
+          }
+        ],
+        "get": {
+          "id": "dragon_gate_key",
+          "count": 1
+        }
+      },
+      {
+        "give": [
+          {
+            "id": "dragon_token",
+            "count": 1
+          }
+        ],
+        "get": {
+          "id": "gem_ruby",
+          "count": 1
+        }
+      },
+      {
+        "give": [
+          {
+            "id": "dragon_token",
+            "count": 1
+          }
+        ],
+        "get": {
+          "id": "gem_sapphire",
+          "count": 1
+        }
+      },
+      {
+        "give": [
+          {
+            "id": "dragon_token",
+            "count": 1
+          }
+        ],
+        "get": {
+          "id": "gem_emerald",
+          "count": 1
+        }
+      },
+      {
+        "give": [
+          {
+            "id": "dragon_token",
+            "count": 1
+          }
+        ],
+        "get": {
+          "id": "gem_topaz",
+          "count": 1
+        }
+      },
+      {
+        "give": [
+          {
+            "id": "dragon_token",
+            "count": 1
+          }
+        ],
+        "get": {
+          "id": "gem_amethyst",
+          "count": 1
+        }
+      },
+      {
+        "give": [
+          {
+            "id": "dragon_token",
+            "count": 1
+          }
+        ],
+        "get": {
+          "id": "gem_onyx",
+          "count": 1
+        }
+      },
+      {
+        "give": [
+          {
+            "id": "dragon_token",
+            "count": 1
+          }
+        ],
+        "get": {
+          "id": "gem_diamond",
+          "count": 1
+        }
+      },
+      {
+        "give": [
+          {
+            "id": "dragon_token",
+            "count": 3
+          }
+        ],
+        "get": {
+          "id": "dragonslayer",
+          "count": 1
+        }
+      },
+      {
+        "give": [
+          {
+            "id": "dragon_token",
+            "count": 3
+          }
+        ],
+        "get": {
+          "id": "skypiercer",
+          "count": 1
+        }
+      },
+      {
+        "give": [
+          {
+            "id": "dragon_token",
+            "count": 3
+          }
+        ],
+        "get": {
+          "id": "worldtree_staff",
+          "count": 1
+        }
+      },
+      {
+        "give": [
+          {
+            "id": "dragon_token",
+            "count": 2
+          }
+        ],
+        "get": {
+          "id": "dragonscale_plate",
+          "count": 1
+        }
+      }
+    ]
+  }
+}

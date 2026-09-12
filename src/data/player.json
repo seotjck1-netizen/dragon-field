@@ -1,0 +1,39 @@
+{
+  "id": "hero",
+  "name": "용사",
+  "sprite": "chr_hero_field",
+  "battleSprite": "chr_hero_battle",
+  "startLevel": 1,
+  "startGold": 140,
+  "startMap": "poino",
+  "startTile": {
+    "x": 20,
+    "y": 20
+  },
+  "baseStats": {
+    "hp": 48,
+    "atk": 11,
+    "def": 6,
+    "spd": 9,
+    "crit": 0.06
+  },
+  "startItems": [
+    {
+      "id": "wooden_sword",
+      "count": 1
+    },
+    {
+      "id": "cloth_armor",
+      "count": 1
+    },
+    {
+      "id": "herb",
+      "count": 4
+    },
+    {
+      "id": "potion",
+      "count": 2
+    }
+  ],
+  "autoEquipStart": true
+}
