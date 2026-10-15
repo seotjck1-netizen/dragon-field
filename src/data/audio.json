@@ -1,0 +1,37 @@
+{
+  "_읽는법": [
+    "만들어 받은 배경 음악. 이름 → 파일 · 되풀이 여부.",
+    "",
+    "이 표가 왜 따로 있나 (0.59):",
+    "  manifest.json 은 **그림**을 싣는다(AssetLoader 가 Image 로 읽는다).",
+    "  소리를 거기 섞으면 이미지로 읽으려다 전부 '없는 그림'이 된다. 그래서 따로 둔다.",
+    "",
+    "  loop=false 는 한 번만 울리고 끝난다(죽었을 때).",
+    "  여기 없는 이름을 걸면 core/Sound.js 가 예전처럼 **그 자리에서 하프를 뜯는다** —",
+    "  파일을 못 받아 오는 자리에서도 접속 화면에 음악이 끊기지 않게 하는 뒷길이다.",
+    "",
+    "한 장짜리 html 을 구우면 이 mp3 들도 파일 안에 data: 주소로 박힌다",
+    "(tools/build-single-file.js). 그래서 파일 하나로 오프라인에서 도는 성질은 그대로다."
+  ],
+
+  "곡": {
+    "login": {
+      "src": "assets/bgm/login.mp3",
+      "loop": true,
+      "title": "Charge at the Iron Gate",
+      "note": "접속 화면. 20초부터 3초 동안 잦아들게 구워 23초에서 잘랐다 — 그 자리에서 처음으로 되돌아간다."
+    },
+    "castle": {
+      "src": "assets/bgm/castle.mp3",
+      "loop": true,
+      "title": "The Silver King's Departure",
+      "note": "성 안에 있는 동안. 성을 나가면 멈춘다."
+    },
+    "death": {
+      "src": "assets/bgm/death.mp3",
+      "loop": false,
+      "title": "Stone Well Water",
+      "note": "쓰러졌을 때 한 번. 결과창을 닫으면 멈춘다."
+    }
+  }
+}
