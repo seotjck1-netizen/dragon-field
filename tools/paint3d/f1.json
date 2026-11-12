@@ -1,0 +1,110 @@
+{
+ "front_src": "art/reference/body_f1.png",
+ "back_src": "art/views/f1_back.png",
+ "front_mask": "art/reference/body_f1.png",
+ "res": 640,
+ "elev": 20,
+ "view": 8.22,
+ "cx": 384.5,
+ "foot_y": 987,
+ "top_y": 94,
+ "height": 5.9,
+ "cuts": {
+  "hip": 600,
+  "waist": 520,
+  "chest": 430,
+  "neck": 335,
+  "chin": 308,
+  "shoulder": 368,
+  "sh_col_R": 272,
+  "elbow": 525,
+  "el_col_R": 258,
+  "wrist": 600,
+  "wr_col_R": 253,
+  "hand_end": 668,
+  "torso_l": [
+   [
+    350,
+    296
+   ],
+   [
+    380,
+    300
+   ],
+   [
+    430,
+    308
+   ],
+   [
+    480,
+    312
+   ],
+   [
+    520,
+    300
+   ],
+   [
+    545,
+    290
+   ],
+   [
+    700,
+    290
+   ]
+  ],
+  "crotch": 640,
+  "leg_col_R": 336,
+  "knee": 760,
+  "ankle": 905,
+  "leg_lo": 278
+ },
+ "depth": {
+  "head": 0.85,
+  "neck": 0.8,
+  "torso": 0.85,
+  "chest_top": 0.8,
+  "uarm": 1.05,
+  "farm": 1.0,
+  "leg": 1.0
+ },
+ "hair": {
+  "lum": 0.42,
+  "rb": 0.08,
+  "lock_from": 268,
+  "lock_to": 495,
+  "lock_depth": 0.7,
+  "lock_yoff": 0.18,
+  "lock_gap": 40,
+  "head_clip": [
+   [
+    300,
+    298,
+    471
+   ],
+   [
+    318,
+    322,
+    447
+   ]
+  ],
+  "head_ramp": 36
+ },
+ "clean": [
+  11,
+  50,
+  8,
+  2
+ ],
+ "erode": 6,
+ "actions": {
+  "idle": 2,
+  "walk": 8,
+  "run": 8
+ },
+ "smooth": 2,
+ "hand_at": [
+  250,
+  636
+ ],
+ "foot_margin": 0.4
+}
