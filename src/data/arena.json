@@ -1,0 +1,30 @@
+{
+  "_읽는법": [
+    "0.80.24 — 결투장. 규칙은 src/systems/DuelSystem.js(싸움 · 점수) · server/arena.js(주간 기록 · 상대 고르기). 게임과 서버가 함께 읽는다.",
+    "구글 시트에는 없다 — 이 파일을 고친다.",
+    "",
+    "  unlockLevel     이 레벨부터 들어간다",
+    "  dailyFights     하루(한국 0시 기준)에 걸 수 있는 판 수. 받는 판은 세지 않는다",
+    "  offerCount      한 번에 보여 주는 상대 수(내 점수 근처)",
+    "  start · k       점수 — 처음 점수와 엘로 K. 받는 쪽은 defend 만큼만 움직인다(0.5 = 절반)",
+    "  winGoldPerLevel 걸어서 이기면 레벨 × 이 값의 골드",
+    "  weekly          주가 바뀔 때 지난 주 1 ~ 5위에게 우편(한 판이라도 건 사람만 순위에 오른다)",
+    "",
+    "  한 주 = 월요일 0시(한국 시각) — 끝없는 탑과 같다. 점수는 주마다 처음부터. 운영자는 표에 오르지 않는다.",
+    "  직업 보정 없음(사용자 답) — 장비 · 몸 그대로 싸운다. 물약은 안 쓴다."
+  ],
+  "unlockLevel": 20,
+  "dailyFights": 5,
+  "offerCount": 3,
+  "start": 1000,
+  "k": 32,
+  "defend": 0.5,
+  "winGoldPerLevel": 300,
+  "weekly": [
+    { "gold": 5000000, "items": [{ "id": "gem_diamond", "count": 1 }, { "id": "demon_core", "count": 10 }] },
+    { "gold": 3000000, "items": [{ "id": "gem_ruby", "count": 1 }, { "id": "demon_core", "count": 6 }] },
+    { "gold": 2000000, "items": [{ "id": "demon_core", "count": 4 }] },
+    { "gold": 1000000, "items": [{ "id": "demon_core", "count": 2 }] },
+    { "gold": 1000000, "items": [{ "id": "magic_stone", "count": 5 }] }
+  ]
+}

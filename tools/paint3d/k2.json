@@ -1,0 +1,75 @@
+{
+ "front_mask": "{work}/k2_front_160.png",
+ "res": 640,
+ "elev": 20,
+ "view": 7.6,
+ "cx": 479,
+ "foot_y": 922,
+ "top_y": 240,
+ "height": 5.9,
+ "cuts": {
+  "hip": 648,
+  "waist": 588,
+  "chest": 528,
+  "neck": 432,
+  "chin": 408,
+  "head_top": 192,
+  "shoulder": 468,
+  "sh_col_R": 387,
+  "sh_col_L": 570,
+  "elbow": 576,
+  "el_col_R": 390,
+  "el_col_L": 588,
+  "wrist": 624,
+  "wr_col_R": 378,
+  "wr_col_L": 609,
+  "hand_end": 684,
+  "torso_l": 405,
+  "torso_r": 552,
+  "crotch": 702,
+  "leg_col_R": 438,
+  "leg_col_L": 516,
+  "knee": 768,
+  "ankle": 858,
+  "leg_lo": 396
+ },
+ "depth": {
+  "head": 1.0,
+  "neck": 0.8,
+  "torso": 0.88,
+  "chest_top": 0.8,
+  "uarm": 1.05,
+  "farm": 1.0,
+  "leg": 1.0
+ },
+ "weapon": {
+  "img": "{work}/sword_v.png",
+  "len": 2.5,
+  "grip": 0.2,
+  "at": [
+   372,
+   654
+  ],
+  "rot": [
+   90,
+   -8,
+   -15
+  ],
+  "step": 3
+ },
+ "actions": {
+  "idle": 2,
+  "walk": 8,
+  "run": 8
+ },
+ "front_src": "{work}/k2_front_960.png",
+ "back_src": "{work}/k2_back_960.png",
+ "erode": 7,
+ "smooth": 2,
+ "clean": [
+  9,
+  40,
+  6,
+  1
+ ]
+}
