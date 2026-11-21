@@ -4862,5 +4862,17 @@
     "h": 757,
     "lazy": true,
     "label": "갑옷 한 벌 8방향 — f2 · dragon"
+  },
+  "bld_tower": {
+    "src": "assets/town/tower.webp",
+    "w": 180,
+    "h": 240,
+    "label": "끝없는 탑(성 왼쪽)"
+  },
+  "bld_arena": {
+    "src": "assets/town/arena.webp",
+    "w": 260,
+    "h": 200,
+    "label": "결투장(성 오른쪽)"
   }
 }

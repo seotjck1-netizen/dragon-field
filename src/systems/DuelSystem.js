@@ -89,11 +89,24 @@ export function sanitizeSnapshot(raw) {
 
 /**
  * 1 대 1. a 가 거는 쪽, b 가 받는 쪽.
- * @param {{a:object, b:object, seed:number, maxActions?:number}} args  a · b 는 sanitizeSnapshot 모양
+ * @param {{a:object, b:object, seed:number, maxActions?:number, scale?:object}} args  a · b 는 sanitizeSnapshot 모양
+ *   scale — 0.80.27 결투장 시안(**기본 꺼짐**, 결투장은 준비 중 · docs/ARENA-SIM.md · tools/arena-sim.js).
+ *     { hp, dmg }            양쪽 HP × hp · 한 대(가시 포함) × dmg — 판이 길어져 첫 손의 무게가 준다
+ *     speedK                 0 이 아니면 각자 따로 친다: 공격 간격 = 기준 × (두 사람 공속 평균 / 내 공속)^speedK
+ *     classDmg · classSpd    직업마다 주는 피해 · 공속 배율(예: { mage: 2 } · { ranger: 1.2 })
+ *     magicIgnoreDef         마법은 방어를 무시(피해 감소 · 마법 저항은 그대로)
+ *   scale 이 없으면 예전과 한 대 · 난수 하나까지 같다.
  * @returns {{winner:'a'|'b'|'draw', duration:number, seed:number, turns:object[], finalHp:{a:number,b:number}, maxHp:{a:number,b:number}}}
  */
-export function simulateDuel({ a, b, seed = 1, maxActions = null }) {
-  const CAP = maxActions > 0 ? maxActions : BALANCE.MAX_BATTLE_ACTIONS;
+export function simulateDuel({ a, b, seed = 1, maxActions = null, scale = null }) {
+  // 결투장 시안(기본 꺼짐) — 양쪽 HP × hp, 한 대 × dmg. 판이 길어지면 손 수 상한도 그만큼 늘린다
+  const HPX = (scale && scale.hp > 0) ? scale.hp : 1;
+  const DMGX = (scale && scale.dmg > 0) ? scale.dmg : 1;
+  // 직업 보정(시안) — classDmg: 그 직업이 주는 피해 배율 · classSpd: 공속 배율 · magicIgnoreDef: 마법은 방어를 무시
+  const CDMG = (scale && scale.classDmg) || {};
+  const CSPD = (scale && scale.classSpd) || {};
+  const MAGIC_NODEF = !!(scale && scale.magicIgnoreDef);
+  const CAP = maxActions > 0 ? maxActions : BALANCE.MAX_BATTLE_ACTIONS * Math.max(1, Math.round(HPX / DMGX / 5));
   const rng = createRng(seed);
   const T = BALANCE.TIMING;
 
@@ -102,10 +115,11 @@ export function simulateDuel({ a, b, seed = 1, maxActions = null }) {
     const tr = resolveTraits(snap.traits, mods, snap.weaponShape);
     return {
       name: snap.name,
+      cls: snap.classId,
       side,
       index: side === 'player' ? -1 : 0,
-      maxHp: snap.stats.hp,
-      hp: snap.stats.hp,
+      maxHp: Math.round(snap.stats.hp * HPX),
+      hp: Math.round(snap.stats.hp * HPX),
       atk: snap.stats.atk,
       def: snap.stats.def,
       spd: snap.stats.spd,
@@ -165,7 +179,7 @@ export function simulateDuel({ a, b, seed = 1, maxActions = null }) {
 
     const share = shareOf(att);
     const effPierce = Math.min(BALANCE.PIERCE_CAP, aM.pierce + BALANCE.MAGIC_PIERCE * share);
-    const effDef = def.def * (1 - effPierce);
+    const effDef = MAGIC_NODEF && share > 0 ? 0 : def.def * (1 - effPierce);
     let dmg = damage(att.atk, effDef, rng(), isCrit, aM.critMult + critBonus);
     if (power !== 1) dmg = Math.max(BALANCE.MIN_DAMAGE, Math.round(dmg * power));
     if (share > 0) {
@@ -196,6 +210,8 @@ export function simulateDuel({ a, b, seed = 1, maxActions = null }) {
       dmg = Math.max(BALANCE.MIN_DAMAGE, Math.round(dmg * (1 - dt.duelReduction)));
       duelGuarded = true;
     }
+    if (DMGX !== 1) dmg = Math.max(BALANCE.MIN_DAMAGE, Math.round(dmg * DMGX));
+    if (CDMG[att.cls] && CDMG[att.cls] !== 1) dmg = Math.max(BALANCE.MIN_DAMAGE, Math.round(dmg * CDMG[att.cls]));
     let survived = false;
     if (dmg >= def.hp && dt.lastStand > 0) {
       const sure = def.st.lastStand === 0;
@@ -233,7 +249,7 @@ export function simulateDuel({ a, b, seed = 1, maxActions = null }) {
     }
     let thornsBack = 0;
     if (dmg > 0 && dM.thorns > 0 && att.hp > 0) {
-      thornsBack = Math.max(1, Math.round(def.def * dM.thorns));
+      thornsBack = Math.max(1, Math.round(def.def * dM.thorns * DMGX)); // 한 대와 같이 줄인다(결투장 배율)
       att.hp = Math.max(0, att.hp - thornsBack);
     }
     push({
@@ -315,7 +331,28 @@ export function simulateDuel({ a, b, seed = 1, maxActions = null }) {
   }
 
   let winner = 'draw';
-  battle: while (!over() && actions < CAP) {
+  const SK = scale && scale.speedK > 0 ? scale.speedK : 0;
+  if (SK) {
+    // 시안 — 각자 따로 움직인다. 한 사람의 공격 간격 = 기준 × (두 사람 공속 평균 / 내 공속)^k
+    //   빠른 쪽이 더 자주 친다(k = 1 이면 공속에 비례). 첫 공격은 각자 간격 안의 아무 때(거는 쪽이 먼저 치는 쏠림이 없다).
+    const BASE = T.ACTION_GAP * 2;
+    const spdOf = (x) => Math.max(1, x.spd * (CSPD[x.cls] || 1));
+    const mean = (spdOf(A) + spdOf(B)) / 2;
+    const gapOf = (x) => BASE * Math.pow(mean / spdOf(x), SK);
+    const t0 = t;
+    A.nextAt = t0 + gapOf(A) * (0.35 + 0.65 * rng());
+    B.nextAt = t0 + gapOf(B) * (0.35 + 0.65 * rng());
+    while (!over() && actions < CAP) {
+      const x = A.nextAt <= B.nextAt ? A : B;
+      t = Math.max(t, Math.round(x.nextAt));
+      actions++;
+      const y = foeOf(x);
+      const before = y.hp;
+      if (turnOf(x)) break;
+      maybeCounter(y, before);
+      x.nextAt += gapOf(x);
+    }
+  } else battle: while (!over() && actions < CAP) {
     for (const x of [first, foeOf(first)]) {
       actions++;
       const y = foeOf(x);
