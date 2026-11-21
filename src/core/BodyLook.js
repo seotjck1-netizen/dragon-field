@@ -219,8 +219,8 @@ export class BodyLook {
 
   // ── 0.80.01 시안③ — 맨몸 8방향(진짜로 돌린 그림) ─────────────────────────
   //   src/data/dir8.json(tools/paint3d/atlas.py). 몸 넷의 서기 · 걷기 8장 · 달리기 8장 × 8방향.
-  //   **맨몸일 때만** 쓴다 — 갑옷 · 신발 · 장갑 · 어깨 · 투구 · 벨트 · 목걸이 · 망토 층이 하나라도 보이면
-  //   예전 그림(앞모습에 장비 층을 겹친 것)이다. 등급별 한 벌을 구운 뒤에 넓힌다.
+  //   맨몸이면 맨몸 그림, **갑옷을 입었으면 그 등급 한 벌 그림**(0.80.27 — bodies.<몸>.outfits, dir8_<등급>.webp).
+  //   갑옷 없이 신발 · 투구 따위만 보이면 예전 그림(앞모습에 장비 층을 겹친 것)이다.
   //   무기는 지금 몸 층의 앞모습 무기 조각을 **오른손에 쥐여** 그린다 — 장마다 구워 둔 손 자리 ·
   //   무기 방향(칼 · 활 · 지팡이)으로 돌리고(앞으로 향하면 짧아진다), 몸 앞인지 뒤인지도 장마다 정해 두었다.
 
@@ -234,11 +234,40 @@ export class BodyLook {
     return !!(A && ((A.assets && A.assets.has(B.image)) || (A.lazy && A.lazy.has(B.image))));
   }
 
-  /** 8방향 그림을 쓸 겉모습인가 — 무기 말고는 보이는 장비 층이 없다. */
+  /** 그림 표(manifest)가 이 그림을 아는가 — 모르면(서버가 옛 표를 내려줌) 그 그림을 쓰지 않는다. */
+  _knows(key) {
+    const A = this.assets;
+    return !!(A && ((A.assets && A.assets.has(key)) || (A.lazy && A.lazy.has(key))));
+  }
+
+  /**
+   * 0.80.27 — 갑옷 등급별 한 벌 8방향(사용자 규칙: 장비는 갑옷 등급별 한 벌 + 무기).
+   * 갑옷 층이 보이면 그 꼬리(0~4 · dragon)의 한 벌 그림 — 맨몸 + 그 등급의 갑옷 · 장화 · 장갑 · 어깨 · 띠 · 투구.
+   * 실제로 낀 투구 · 장화 등은 보지 않는다(한 벌로 그린다). 갑옷이 없거나 한 벌 그림이 없으면 null.
+   */
+  dir8Outfit(bodyId, look) {
+    const B = this.db && this.db.dir8 && this.db.dir8.bodies && this.db.dir8.bodies[bodyId];
+    if (!B || !B.outfits) return null;
+    const ak = this.layerKeys(bodyId, 'stand', look).find((k) => k.startsWith('armor_'));
+    if (!ak) return null;
+    const t = ak.slice('armor_'.length);
+    const O = B.outfits[t];
+    return O && O.frames && this._knows(O.image) ? t : null;
+  }
+
+  /** 8방향 그림을 쓸 겉모습인가 — 무기 말고는 보이는 장비 층이 없거나(맨몸), 갑옷 한 벌 그림이 있다. */
   dir8Eligible(bodyId, look) {
     if (!this.hasDir8(bodyId) || !this.has(bodyId)) return false;
     const keys = this.layerKeys(bodyId, 'stand', look);
-    return keys.every((k) => k === 'base' || k.startsWith('weapon_'));
+    if (keys.every((k) => k === 'base' || k.startsWith('weapon_'))) return true;
+    return this.dir8Outfit(bodyId, look) != null;
+  }
+
+  /** 그 겉모습이 쓰는 8방향 그림 묶음 — {image, frames, hand}(맨몸 또는 한 벌) · 한 벌 꼬리 */
+  _dir8Sheet(bodyId, look) {
+    const B = this.db.dir8.bodies[bodyId];
+    const t = this.dir8Outfit(bodyId, look);
+    return t != null ? { S: B.outfits[t], t } : { S: B, t: '' };
   }
 
   /** 그 겉모습이 손에 쥘 무기 층(앞모습에 있는 것) — 없으면 null */
@@ -255,11 +284,11 @@ export class BodyLook {
    */
   getDir8(bodyId, action, k, yaw, look) {
     const d = this.db.dir8;
-    const B = d.bodies[bodyId];
+    const { S, t } = this._dir8Sheet(bodyId, look);
     const name = `${action}_${k}_${String(yaw).padStart(3, '0')}`;
-    if (!B.frames[name]) return null;
+    if (!S.frames[name]) return null;
     const wk = this.dir8Weapon(bodyId, look);
-    const cacheKey = `${bodyId}|${name}|${wk || ''}`;
+    const cacheKey = `${bodyId}|${t}|${name}|${wk || ''}`;
     this.dir8Cache = this.dir8Cache || new Map();
     const hit = this.dir8Cache.get(cacheKey);
     if (hit) {
@@ -273,13 +302,13 @@ export class BodyLook {
     canvas.height = size;
     const logical = Math.round(80 * FIELD_SCALE);
     const entry = {
-      bodyId, name, wk, canvas, dir8: true, pending: new Set(),
+      bodyId, name, wk, sheet: S, canvas, dir8: true, pending: new Set(),
       asset: {
         key: `dir8:${cacheKey}`, image: canvas, w: logical, h: logical, srcW: size, srcH: size,
         frames: 1, frameWidth: size, frameHeight: size, label: bodyId, ok: true,
       },
     };
-    const need = [B.image];
+    const need = [S.image];
     if (wk) need.push(`body:${bodyId}:${wk}`);
     for (const ak of need) {
       const a = this.assets.assets.get(ak);
@@ -301,7 +330,7 @@ export class BodyLook {
   /** 8방향 그림 · 무기 그림을 미리 읽어 둔다. */
   prefetchDir8(bodyId, look) {
     if (!this.hasDir8(bodyId)) return Promise.resolve();
-    const keys = [this.db.dir8.bodies[bodyId].image];
+    const keys = [this._dir8Sheet(bodyId, look).S.image];
     const wk = this.dir8Weapon(bodyId, look);
     if (wk) keys.push(`body:${bodyId}:${wk}`);
     return Promise.all(keys.map((ak) => (this.assets.loadLazy ? this.assets.loadLazy(ak) : null)));
@@ -309,13 +338,14 @@ export class BodyLook {
 
   _drawDir8(entry) {
     const B = this.db.dir8.bodies[entry.bodyId];
+    const S = entry.sheet || B;   // 0.80.27 — 맨몸 또는 갑옷 한 벌(무기 표는 몸 것)
     const ctx = entry.canvas.getContext('2d');
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, entry.canvas.width, entry.canvas.height);
-    const sheet = this.assets.assets.get(B.image);
+    const sheet = this.assets.assets.get(S.image);
     if (!sheet || !sheet.ok) return;
-    const f = B.frames[entry.name];
-    const hand = B.hand && B.hand[entry.name];
+    const f = S.frames[entry.name];
+    const hand = S.hand && S.hand[entry.name];
     let weapon = null;
     if (entry.wk && hand) {
       const kind = entry.wk.split('_')[1];

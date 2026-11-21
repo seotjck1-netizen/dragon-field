@@ -361,6 +361,23 @@ if HAIR is not None:
         loft(f'lock_{side}', rows_between(HCFG['lock_from'], HCFG['lock_to'], 4, lambda y, s=sgn: lock_run(y, s)), chest,
              depth=HCFG.get('lock_depth', 0.75), yoff=lock_y)
 
+# 0.80.27 — 머리 옆으로 떨어진 토막(투구 날개 · 뿔). 머리 조각은 가운데 토막만 잡으니 이것들이 빠졌다.
+#   설정 head_side: {"from": 줄, "to": 줄, "depth": 두께} — 그 줄들에서 머리 토막 바깥에 따로 있는 토막을 왼 · 오 한 조각씩, 머리에 붙여 함께 돈다.
+HS = CFG.get('head_side')
+if HS:
+    def hside_run(y, sgn):
+        c = central(y)
+        got = [r for r in runs(y) if c is None or (r[1] < c[0] if sgn < 0 else r[0] > c[1])]
+        if c is None:
+            got = [r for r in got if (r[1] < CX if sgn < 0 else r[0] > CX)]
+        if not got:
+            return None
+        return (min(r[0] for r in got), max(r[1] for r in got))
+    for side, sgn in (('R', -1), ('L', 1)):
+        hs_rows = rows_between(HS['from'], HS['to'], 2, lambda y, s=sgn: hside_run(y, s))
+        if len(hs_rows) >= 2:
+            loft(f'hside_{side}', hs_rows, head, depth=HS.get('depth', 0.45))
+
 LEG_LO = C.get('leg_lo', TLf(C['crotch']) - 25)   # 다리 바깥 끝 열(손이 끼지 않게)
 def leg_run(y, sgn):
     return side_run(y, sgn, CX, LEG_LO if sgn < 0 else 2 * CX - LEG_LO)

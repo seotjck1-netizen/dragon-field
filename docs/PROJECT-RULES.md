@@ -2,7 +2,7 @@
 
 > 새 대화(또는 압축된 대화)는 **이 문서 → `docs/HANDOFF-0.80.md` → `docs/SPEC-0.80.md`** 순서로 읽고 시작한다.
 > 여기 적힌 것은 사용자가 정했거나, 어기면 사고가 났던 것들이다. 바꾸려면 **먼저 사용자에게 묻는다.**
-> (2026-11-11 · 0.80.03 기준으로 정리 · 2026-11-12 0.80.20 본편을 넣으며 고침 · 0.80.21 와우식 어그로 · 도감 · 업적 · 0.80.22 끝없는 탑 · 0.80.23 손 수 상한 · 0.80.24 결투장 · 0.80.25 탑 보상 · 보스 특성 · 0.80.26 장비 단계 · 홈 · 물약 % · 획득 창)
+> (2026-11-11 · 0.80.03 기준으로 정리 · 2026-11-12 0.80.20 본편을 넣으며 고침 · 0.80.21 와우식 어그로 · 도감 · 업적 · 0.80.22 끝없는 탑 · 0.80.23 손 수 상한 · 0.80.24 결투장 · 0.80.25 탑 보상 · 보스 특성 · 0.80.26 장비 단계 · 홈 · 물약 % · 획득 창 · 0.80.27 갑옷 한 벌 8방향 · html 압축 · 새 시트 문서)
 
 ## 1. 사용자와 일하는 법
 
@@ -21,8 +21,8 @@
 
 | 무엇 | 규칙 |
 |---|---|
-| zip | **30MB 이하**, `upload.bat` 꼭 포함. 목록 = `git ls-files -co --exclude-standard`(있는 파일만) − `dragon-field-tables.xlsx`. 압축 안 맨 위에 폴더 없이 |
-| 한 장짜리 html | **20MB 미만** — `node tools/build-single-file.js` → `dist/dragon-field.html`. base64 라 그림은 1.33배로 붙는다. 넘으면 `python3 tools/pack-webp.py` 로 png → webp |
+| zip | **30MB 이하**(0.80.27 에 29.84MB — 빠듯하다), `upload.bat` 꼭 포함. 목록 = `git ls-files -co --exclude-standard`(있는 파일만) − `dragon-field-tables.xlsx`. 압축 안 맨 위에 폴더 없이 |
+| 한 장짜리 html | **20MB 미만** — `node tools/build-single-file.js` → `dist/dragon-field.html`. base64 라 그림은 1.33배로 붙는다. 0.80.27 부터 굽는 길에 그림(몸 · 몬스터 · 옛 직업 · 마을 사람 · 타이틀)을 **품질 60 · 투명 75 로 다시 압축해 박는다**(`tools/pack-single.py` — 사용자가 고른 B안, 저장소 그림은 원본 그대로 · python3 + PIL 필요). 갑옷 한 벌 8방향(`dir8:<몸>:<등급>`)은 html 에 넣지 않는다(`SINGLE_SKIP` — 넣으면 21MB). 그래도 넘으면 `python3 tools/pack-webp.py` 로 png → webp |
 | xlsx | 표가 바뀐 판에만 — `node tools/sheets.js export && node tools/make-xlsx.js` |
 | 미리보기 | 바뀐 것을 보여 주는 그림 한두 장 |
 | 판 번호 | `src/config.js` 의 `GAME_VERSION` · `package.json` 의 `version` 을 함께. **판 번호가 바뀌어야 서버가 `server/content` 를 새 표로 다시 깐다**(`server/content.js` 의 `initFromSource`). 이미 내보낸 번호를 다시 쓰지 않는다. 0.80 수정안 본편은 **0.80.20** 부터(그다음 0.80.21 …) |
@@ -44,8 +44,8 @@
 
 | 무엇 | 규칙 |
 |---|---|
-| 시트 | `1hH3d13kXe0QLsQHdcOX1OWb37SQWWw51k-d-s6lxgQI` (이름 `dragon-field-tables-0_80_03`, 2026-11-11 에 0.80.03 표로 통째로 바꿈). 「링크가 있는 모든 사용자 · 뷰어」로 공개되어 있어야 서버가 읽는다. **새 문서를 만들지 말고 같은 문서에 덮어쓴다**(문서 아이디가 바뀌면 서버가 멎는다) |
-| 탭 | items · monsters · drops · quests · skills · classes · traits · stats · engrave · config · npcs (+ 읽어보기). 서버는 탭 **이름**으로 찾는다 |
+| 시트 | `1KrkahJ2fQOComINbVPNf2xd4h0ybhwe28tTSqO_iF2c` (이름 `dragon-field-tables-0_80_26`, 2026-11-21 에 사용자가 새로 만듦 — 옛 문서 `1hH3d13k…` 는 휴지통 · 운영자 창 주소 저장 완료). 「링크가 있는 모든 사용자 · 뷰어」로 공개되어 있어야 서버가 읽는다. **새 문서를 만들지 말고 같은 문서에 덮어쓴다**(문서 아이디가 바뀌면 서버가 멎는다) |
+| 탭 | items · monsters · drops · quests · skills · classes · traits · stats · engrave · config · npcs · tower · tower_boss (+ 읽어보기). 서버는 탭 **이름**으로 찾는다 |
 | 서버 자동 반영 | 서버가 시트를 주기적으로 읽어 `server/content` 를 덮는다. 그래서 **시트가 옛 판이면 새 값이 옛 값으로 돌아간다** — 판을 낼 때 표가 바뀌었으면 시트도 같이 바꾼다. 트리 전 옛 skills 탭은 반영을 막아 두었다(`staleSkills`) |
 | JSON | `drops.json` · `quests.json` 을 `JSON.stringify` 로 통째로 다시 쓰지 않는다(손으로 맞춘 서식 · 주석이 깨진다). 표 서식은 `server/sheets.js` 의 `format*` 로 |
 | 고친 뒤 | `src/data/*.json` 을 고치면 `server/content/` 도 같게. `node tools/sheets.js check` |
@@ -59,7 +59,8 @@
 ## 6. 그림
 
 - 캐릭터 8방향 · 무기는 오른손 · 뒤에서는 망토 · 남녀 몸매(가슴 강조 금지 — 인물이 어려 보인다) · 마을 사람 얼굴은 서로 다르게: **`docs/CHARACTER-VIEWS.md`**.
-- 맨몸 8방향은 `tools/paint3d/`(블렌더) → `atlas.py` → `assets/bodies/*/dir8.webp` + `src/data/dir8.json`. 장비가 보이면 예전 그림(앞모습 + 층)이다.
+- 맨몸 8방향은 `tools/paint3d/`(블렌더) → `atlas.py` → `assets/bodies/*/dir8.webp` + `src/data/dir8.json`. **갑옷 한 벌 8방향(0.80.27)** 은 `outfit.py` → `proj3d.py` → `toon.py --cel 1` → `atlas.py --outfits` → `dir8_<등급>.webp` · `dir8.json outfits`(갑옷 등급별 한 벌 + 무기 — 사용자 규칙). 갑옷 없이 다른 장비만 보이면 예전 그림(앞모습 + 층)이다.
+- 블렌더는 저장소에 넣지 않는다 — 세션의 임시 폴더에 `uv venv` + `bpy==5.2.3 OpenEXR numpy pillow scipy opencv-python-headless`.
 - 큰 그림을 더하면 html 20MB 를 먼저 계산한다.
 
 ## 7. 게임 규칙 가운데 갈아엎으면 일이 큰 것 (지금 값)

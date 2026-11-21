@@ -1,6 +1,7 @@
 """시안③ 8방향 그림(toon.py 160) → 게임 그림(assets/bodies/<몸>/dir8.webp) + src/data/dir8.json + manifest.
 
   python3 tools/paint3d/atlas.py PNG_ROOT [--bodies m1,m2,f1,f2] [--quality 82]
+  python3 tools/paint3d/atlas.py PNG_ROOT --outfits [--bodies …] [--tiers 0,1,2,3,4,dragon]   갑옷 한 벌(0.80.27 — outfit.py)
   PNG_ROOT 안: png_<몸>/ (toon.py --size 160 --cel 1) — 그 옆 exr_<몸>/meta.json 에 오른손 자리가 있다.
 
 - 장마다 투명한 둘레를 잘라 한 장(가로 1024)에 채워 넣는다. 좌표는 [x, y, w, h, 틀 속 x, y](160 틀).
@@ -69,6 +70,85 @@ def weapon_axis(img, ox, oy, kind):
     f = lambda p: [round(float(p[0] + ox), 2), round(float(p[1] + oy), 2)]
     return {'tip': f(tip), 'pommel': f(pom), 'grip': f(grip)}
 
+
+def pack_outfits(bodies, tiers):
+    """0.80.27 — 갑옷 등급별 한 벌(outfit.py → proj3d → toon). png_o_<몸>_<등급>/ → assets/bodies/<몸>/dir8_<등급>.webp,
+    dir8.json 의 bodies.<몸>.outfits.<등급> = {image, frames, hand}. 맨몸 그림 · 무기 표는 그대로 둔다(맨몸을 다시 굽지 않는다).
+    자리는 지금 게임의 그 한 벌 앞모습(stand — 맨몸 + 그 등급 층)과 발바닥 · 가운데를 맞춘다."""
+    d8_path = os.path.join(ROOT, 'src/data/dir8.json')
+    d8 = json.load(open(d8_path))
+    total = 0
+    for b in bodies:
+        layers = D['bodies'][b]['layers']
+        for t in tiers:
+            tag = f'o_{b}_{t}'
+            pdir = os.path.join(PNG_ROOT, f'png_{tag}')
+            meta = json.load(open(os.path.join(PNG_ROOT, f'exr_{tag}', 'meta.json')))
+            names, rename = [], {}
+            for n in sorted(meta['frames']):
+                f = meta['frames'][n]
+                lim, step = KEEP.get(f['action'], (99, 1))
+                if f['k'] % step or f['k'] // step >= lim:
+                    continue
+                names.append(n)
+                rename[n] = f"{f['action']}_{f['k'] // step}_{f['yaw']:03d}"
+            keys = ['base'] + [f'{s}_{t}' if f'{s}_{t}' in layers else f'{s}_4' for s in ('armor', 'boots', 'gloves', 'pads', 'belt', 'helmet')]
+            old = np.zeros((FRAME, FRAME), bool)
+            for k in keys:
+                img, r = stand_piece(b, k)
+                if img is None:
+                    continue
+                old[r[5]:r[5] + r[3], r[4]:r[4] + r[2]] |= np.asarray(img)[..., 3] > 100
+            ox0, ox1, oy0, oy1 = bbox(old)
+            ref = np.asarray(Image.open(os.path.join(pdir, 'idle_0_000.png')))[..., 3] > 100
+            nx0, nx1, ny0, ny1 = bbox(ref)
+            dx = int(round((ox0 + ox1) / 2 - (nx0 + nx1) / 2))
+            dy = int(oy1 - ny1)
+            pieces = []
+            for n in names:
+                im = Image.open(os.path.join(pdir, n + '.png')).convert('RGBA')
+                x0, x1, y0, y1 = bbox(np.asarray(im)[..., 3] > 0)
+                pieces.append((n, im.crop((x0, y0, x1 + 1, y1 + 1)), int(x0) + dx, int(y0) + dy))
+            W = 1024
+            x = y = rowh = 0
+            place = {}
+            for i in sorted(range(len(pieces)), key=lambda i: -pieces[i][1].height):
+                n, im = pieces[i][0], pieces[i][1]
+                if x + im.width + 1 > W:
+                    x, y, rowh = 0, y + rowh + 1, 0
+                place[n] = (x, y)
+                x += im.width + 1
+                rowh = max(rowh, im.height)
+            H = y + rowh
+            sheet = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+            frames = {}
+            for n, im, fx, fy in pieces:
+                px, py = place[n]
+                sheet.alpha_composite(im, (px, py))
+                frames[rename[n]] = [px, py, im.width, im.height, fx, fy]
+            dst = os.path.join(ROOT, f'assets/bodies/{b}/dir8_{t}.webp')
+            sheet.save(dst, 'WEBP', quality=QUALITY, method=6)
+            total += os.path.getsize(dst)
+            hand = {}
+            for n in names:
+                h = meta['frames'][n].get('hand')
+                if h:
+                    hand[rename[n]] = [round(h['at'][0] + dx, 1), round(h['at'][1] + dy, 1)] + h['sword'] + h['bow'] + h['staff']
+            d8['bodies'][b].setdefault('outfits', {})[t] = {'image': f'dir8:{b}:{t}', 'frames': frames, 'hand': hand}
+            man[f'dir8:{b}:{t}'] = {'src': f'assets/bodies/{b}/dir8_{t}.webp', 'w': W, 'h': H, 'lazy': True,
+                                    'label': f'갑옷 한 벌 8방향 — {b} · {t}'}
+            print(f'  {tag}: {len(frames)}장 · {W}x{H} · {os.path.getsize(dst) // 1024}KB · 자리 {dx},{dy}')
+    d8['_comment'] = d8['_comment'].split(' outfits:')[0] + (
+        ' outfits: 갑옷 꼬리(0~4 · dragon) → 그 등급 한 벌(맨몸 + 갑옷 · 장화 · 장갑 · 어깨 · 띠 · 투구)의 8방향 — frames · hand 는 맨몸과 같은 꼴(0.80.27).')
+    json.dump(d8, open(d8_path, 'w'), ensure_ascii=False, separators=(',', ':'))
+    json.dump(man, open(MAN_PATH, 'w'), ensure_ascii=False, indent=2)
+    open(MAN_PATH, 'a').write('\n')
+    print(f'✓ 한 벌 8방향 · dir8.json · manifest · 그림 {total // 1024}KB')
+
+
+if '--outfits' in ARGS:
+    pack_outfits(BODIES, opt('--tiers', '0,1,2,3,4,dragon').split(','))
+    sys.exit(0)
 
 out = {
     '_comment': 'tools/paint3d/atlas.py 가 만든다 — 손으로 고치지 말 것. 시안③(0.80.01) 맨몸 8방향 서기 · 걷기 · 달리기. '
@@ -157,6 +237,13 @@ for b in BODIES:
             continue
         weapons[k] = weapon_axis(img, r[4], r[5], kind)
     out['bodies'][b] = {'image': f'dir8:{b}', 'frames': frames, 'hand': hand, 'weapons': weapons}
+    # 0.80.27 — 맨몸만 다시 구워도 한 벌 8방향(--outfits 로 구운 것)은 그대로 둔다
+    try:
+        prev = json.load(open(os.path.join(ROOT, 'src/data/dir8.json')))['bodies'][b].get('outfits')
+    except (OSError, KeyError, ValueError):
+        prev = None
+    if prev:
+        out['bodies'][b]['outfits'] = prev
     man[f'dir8:{b}'] = {'src': f'assets/bodies/{b}/dir8.webp', 'w': W, 'h': H, 'lazy': True,
                         'label': f'시안③ 맨몸 8방향 — {b}'}
     print(f'  {len(frames)}장 · {W}x{H} · {size // 1024}KB · 무기 {len(weapons)}')

@@ -1,7 +1,7 @@
 // 시안③ 맨몸 8방향 (0.80.01) — 진짜로 돌린 그림(tools/paint3d) 을 들판에서 쓴다.
 //
 // ⚠ 성질을 잰다: "몸 넷 모두 8방향 × 서기 · 걷기 · 달리기 그림이 있다", "맨몸(무기만 쥔 것 포함)이면 새 그림,
-//   갑옷 같은 장비가 보이면 예전 그림", "바라보는 쪽대로 방향이 고른다", "걸으면 장이 넘어간다",
+//   갑옷을 입으면 그 등급 한 벌 8방향(0.80.27), 갑옷 없이 투구 따위만 보이면 예전 그림", "바라보는 쪽대로 방향이 고른다", "걸으면 장이 넘어간다",
 //   "무기는 손에 쥐여 그린다(쥔 것과 안 쥔 것이 다르다)", "새 몸 그림이 예전 그림과 키 · 서는 자리가 같다",
 //   "필드 전투는 전투 그림, 그 그림이 없을 때만 8방향".
 //   픽셀 값을 적어 두지 않는다.
@@ -46,6 +46,32 @@ const ROOT = path.resolve(__dirname, '..');
   check('칼 · 활 · 지팡이 무기 그림마다 쥐는 자리를 잰다', ['sword', 'bow', 'staff'].every((k) => wk.some((x) => x.startsWith(`weapon_${k}_`))), wk.slice(0, 6).join(' '));
   check('서버가 내려주는 그림 표에도 8방향 그림이 있다', bodies.every((b) => srv[`dir8:${b}`]), '');
 
+  // ①-2 갑옷 등급별 한 벌(0.80.27) — 몸 넷 × 0 ~ 4 · 용린, 맨몸과 같은 장 이름 · 손 자리
+  const TIERS = ['0', '1', '2', '3', '4', 'dragon'];
+  const oMiss = [];
+  const oOut = [];
+  let oFrames = 0;
+  for (const b of bodies) {
+    const O = (d8.bodies[b] || {}).outfits || {};
+    for (const t of TIERS) {
+      const S = O[t];
+      if (!S) { oMiss.push(`${b}:${t}`); continue; }
+      const m = man[S.image];
+      if (!m || !fs.existsSync(path.join(ROOT, m.src)) || !m.lazy) oMiss.push(`${b}:${t}:그림`);
+      if (!srv[S.image]) oMiss.push(`${b}:${t}:서버 표`);
+      for (const name of Object.keys(d8.bodies[b].frames)) {
+        const f = S.frames[name];
+        if (!f) { oMiss.push(`${b}:${t}:${name}`); continue; }
+        oFrames++;
+        if (m && (f[0] + f[2] > m.w || f[1] + f[3] > m.h)) oOut.push(`${b}:${t}:${name}`);
+        if (!S.hand[name] || S.hand[name].length !== 11) oOut.push(`${b}:${t}:${name}:손`);
+      }
+    }
+  }
+
+  check('몸 넷 × 갑옷 여섯(0 ~ 4 · 용린) 한 벌마다 맨몸과 같은 장 · 손 자리가 있다', oMiss.length === 0 && oFrames > 0, `${oFrames}장 · ${oMiss.slice(0, 4).join(' ')}`);
+  check('한 벌 조각이 그림 밖으로 나가지 않는다', oOut.length === 0, oOut.slice(0, 4).join(' '));
+
   // ② 게임 안
   const { browser, page, errs } = await boot('dir8');
   const r = await page.evaluate(async () => {
@@ -72,6 +98,11 @@ const ROOT = path.resolve(__dirname, '..');
     out.eligBare = bl.dir8Eligible(body, bare);
     out.eligClub = bl.dir8Eligible(body, club);
     out.eligArmor = bl.dir8Eligible(body, armored);
+    // 0.80.27 — 갑옷 한 벌: 갑옷의 등급 꼬리를 따른다(용린 갑옷은 dragon). 갑옷 없이 투구만이면 예전 그림
+    const armorTier = (lk) => (bl.layerKeys(body, 'stand', lk).find((k) => k.startsWith('armor_')) || '').slice(6);
+    out.outfitKnight = bl.dir8Outfit(body, armored) === armorTier(armored) && armorTier(armored) !== '';
+    out.outfitDragon = bl.dir8Outfit(body, { armor: 'dragon_mail' });
+    out.eligHelmOnly = bl.dir8Eligible(body, { weapon: 'club', helmet: 'knight_helm' });
     // 방향
     const F = (o) => fsn._dir8Frame({ body, stepMs: 170, walkT: 0, ...o });
     out.yaw = {};
@@ -110,6 +141,28 @@ const ROOT = path.resolve(__dirname, '..');
     const w0 = opaque(pix(bl.getDir8(body, 'walk', 2, 90, bare)));
     const w1 = opaque(pix(bl.getDir8(body, 'walk', 2, 90, club)));
     out.weaponPx = w1 - w0;
+    // 갑옷 한 벌 그림 — 맨몸과 다르고, 지금 게임의 갑옷 입은 앞모습과 발바닥 · 가운데가 맞다
+    {
+      // 한 벌과 같은 등급의 갑옷 · 장화 · 장갑 · 띠 · 투구(어깨는 망토가 붙으므로 뺀다)
+      const full = { weapon: '', armor: 'knight_armor', boots: 'swift_boots', gloves: 'steel_gauntlet', belt: 'mana_belt', helmet: 'knight_helm' };
+      await bl.prefetchDir8(body, full);
+      await bl.prefetch(body, full);
+      await wait(300);
+      const a = bl.getDir8(body, 'idle', 0, 0, full);
+      const b0 = bl.getDir8(body, 'idle', 0, 0, bare);
+      await wait(100);
+      const ap = pix(a), bp = pix(b0);
+      let dd = 0;
+      for (let i = 3; i < ap.length; i += 4) if (ap[i] > 100 && bp[i] > 100 && Math.abs(ap[i - 3] - bp[i - 3]) + Math.abs(ap[i - 2] - bp[i - 2]) + Math.abs(ap[i - 1] - bp[i - 1]) > 90) dd++;
+      out.outfitDiff = dd;
+      const ab = box(ap, a.srcW);
+      const ob2 = box(pix(bl.get(body, 'stand', full)), 160);
+      out.outfitFoot = Math.abs(ab.y1 - ob2.y1);
+      out.outfitCx = Math.abs((ab.x0 + ab.x1) / 2 - (ob2.x0 + ob2.x1) / 2);
+      const side = bl.getDir8(body, 'walk', 2, 90, { ...full, weapon: 'club' });
+      await wait(100);
+      out.outfitWeapon = opaque(pix(side)) - opaque(pix(bl.getDir8(body, 'walk', 2, 90, full)));
+    }
     // 들판에서 실제로 쓰는가 — 지금 내 몸(시작 무기만 쥔 맨몸)
     out.cacheBefore = bl.dir8Cache ? bl.dir8Cache.size : 0;
     g.scenes.render(g.renderer);
@@ -136,7 +189,12 @@ const ROOT = path.resolve(__dirname, '..');
     return out;
   });
   check('몸에 8방향 그림이 있다', r.has, r.body);
-  check('맨몸 · 무기만 쥔 몸은 새 그림, 갑옷이 보이면 예전 그림', r.eligBare && r.eligClub && !r.eligArmor, `${r.eligBare} ${r.eligClub} ${r.eligArmor}`);
+  check('맨몸 · 무기만 쥔 몸 · 갑옷 입은 몸은 8방향 그림, 갑옷 없이 투구만 보이면 예전 그림',
+    r.eligBare && r.eligClub && r.eligArmor && !r.eligHelmOnly, `${r.eligBare} ${r.eligClub} ${r.eligArmor} ${r.eligHelmOnly}`);
+  check('갑옷 한 벌은 입은 갑옷의 등급을 따른다(용린 갑옷은 용린 한 벌)', r.outfitKnight && r.outfitDragon === 'dragon', `${r.outfitKnight} ${r.outfitDragon}`);
+  check('갑옷 한 벌 그림은 맨몸과 다르고, 지금 갑옷 입은 앞모습과 발바닥 · 가운데가 맞다',
+    r.outfitDiff > 300 && r.outfitFoot <= 2 && r.outfitCx <= 3, `다름 ${r.outfitDiff} 발 ${r.outfitFoot} 가운데 ${r.outfitCx}`);
+  check('갑옷을 입어도 무기는 손에 쥐여 그린다', r.outfitWeapon > 30, String(r.outfitWeapon));
   check('바라보는 쪽대로 방향을 고른다(아래 0 · 오른쪽 90 · 위 180 · 왼쪽 270, 대각은 그 사이)',
     JSON.stringify(r.yaw) === JSON.stringify({ down: 0, downright: 45, right: 90, upright: 135, up: 180, upleft: 225, left: 270, downleft: 315 }), JSON.stringify(r.yaw));
   check('서면 서기 · 걸으면 걷기 · 빠르면 달리기', r.standAct === 'idle' && r.walkAct === 'walk' && r.runAct === 'run', `${r.standAct} ${r.walkAct} ${r.runAct}`);
