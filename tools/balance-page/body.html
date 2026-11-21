@@ -1,0 +1,185 @@
+<div class="bd">
+  <header class="bd-head" id="top">
+    <h1 class="bd-title">드래곤 필드 밸런스</h1>
+    <p class="bd-take dash-skeleton" id="takeaway" data-source="goals consts">—</p>
+  </header>
+
+  <div class="bd-bar" id="controls">
+    <div class="bd-seg" role="group" aria-label="직업" id="cls-seg">
+      <button type="button" data-cls="warrior" aria-pressed="true">용사</button>
+      <button type="button" data-cls="ranger" aria-pressed="false">사냥꾼</button>
+      <button type="button" data-cls="mage" aria-pressed="false">마법사</button>
+    </div>
+    <div class="bd-seg" role="group" aria-label="시간 축" id="span-seg">
+      <button type="button" data-span="first" aria-pressed="false">처음 5시간</button>
+      <button type="button" data-span="all" aria-pressed="true">전부</button>
+    </div>
+    <button type="button" class="bd-btn bd-toggle" id="before-toggle" aria-pressed="true"><i></i>0.70.38 겹쳐 보기</button>
+    <button type="button" class="bd-btn" id="knob-toggle" aria-expanded="false" aria-controls="knobs">수치 바꿔 보기</button>
+    <span class="bd-changed" id="changed" hidden>
+      <span class="bd-pill"><i></i><span id="changed-n">바꾼 값</span></span>
+      <button type="button" class="bd-btn" id="knob-reset">처음 값으로</button>
+    </span>
+  </div>
+
+  <section class="bd-card bd-knobs" id="knobs" hidden data-source="consts">
+    <h2>수치 바꿔 보기</h2>
+    <p class="bd-note">값을 바꾸면 흉내를 처음부터 다시 돌려 모든 그래프에 <b>붉은 점선(바꾼 값)</b>을 겹칩니다. 실선은 지금 게임의 값, 회색 선은 바꾸기 전(0.70.38) 값입니다. 전투 승률은 게임의 전투 계산기로 미리 잰 표에서 읽습니다.</p>
+    <div class="bd-row" id="presets" role="group" aria-label="빠른 설정"></div>
+    <div class="bd-knob-groups" id="knob-groups"></div>
+  </section>
+
+  <div class="bd-kpis" id="kpis">
+    <div class="bd-kpi" id="kpi-45">
+      <span class="bd-kpi-label">Lv.45까지</span>
+      <span class="bd-kpi-val"><span class="bd-kpi-num dash-skeleton" data-source="goals" data-field="hours">—</span><span class="bd-kpi-unit">시간</span></span>
+      <span class="bd-kpi-sub"></span>
+    </div>
+    <div class="bd-kpi" id="kpi-50">
+      <span class="bd-kpi-label">Lv.50까지</span>
+      <span class="bd-kpi-val"><span class="bd-kpi-num dash-skeleton" data-source="goals" data-field="hours">—</span><span class="bd-kpi-unit">시간</span></span>
+      <span class="bd-kpi-sub"></span>
+    </div>
+    <div class="bd-kpi" id="kpi-10">
+      <span class="bd-kpi-label">룬 한 벌 +10까지</span>
+      <span class="bd-kpi-val"><span class="bd-kpi-num dash-skeleton" data-source="goals" data-field="hours">—</span><span class="bd-kpi-unit">시간</span></span>
+      <span class="bd-kpi-sub"></span>
+    </div>
+    <div class="bd-kpi" id="kpi-15">
+      <span class="bd-kpi-label">룬 한 벌 +15까지</span>
+      <span class="bd-kpi-val"><span class="bd-kpi-num dash-skeleton" data-source="goals" data-field="hours">—</span><span class="bd-kpi-unit">시간</span></span>
+      <span class="bd-kpi-sub"></span>
+    </div>
+    <div class="bd-kpi" id="kpi-boss">
+      <span class="bd-kpi-label">경험치 가운데 보스 몫</span>
+      <span class="bd-kpi-val"><span class="bd-kpi-num dash-skeleton" data-source="goals" data-field="value">—</span><span class="bd-kpi-unit">%</span></span>
+      <span class="bd-kpi-sub"></span>
+    </div>
+  </div>
+
+  <section class="bd-card" id="level-time">
+    <h2>시간에 따른 레벨</h2>
+    <p class="bd-note">새 캐릭터를 만든 뒤 흐른 시간마다의 레벨. 1분마다 그때 가장 빨리 크는 사냥(잡몹 · 보스 · 의뢰)을 고르고, 번 골드 · 재료로 장비를 사고 강화 · 초월합니다. 회색 선은 같은 직업을 바꾸기 전(0.70.38) 값으로 돌린 것, 별표는 사용자가 0.70.38 에서 직접 잰 값입니다.</p>
+    <div class="bd-legend" id="lg-lt"></div>
+    <div class="bd-chart tall" id="ch-lt" data-source="model consts"></div>
+  </section>
+
+  <div class="bd-grid">
+    <section class="bd-card" id="time">
+      <h2>레벨에 따른 시간</h2>
+      <p class="bd-note">그 레벨에 닿은 시각(선)과 그 레벨에 머문 시간(막대). 로그 눈금.</p>
+      <div class="bd-legend" id="lg-time"></div>
+      <div class="bd-chart" id="ch-time" data-source="milestones"></div>
+    </section>
+    <section class="bd-card" id="exp">
+      <h2>레벨에 따른 경험치</h2>
+      <p class="bd-note">다음 레벨까지 필요한 경험치와, 그 레벨에서 1분에 번 경험치(로그 눈금). 버는 선이 필요한 선에 붙을수록 레벨이 빨리 오릅니다.</p>
+      <div class="bd-legend" id="lg-exp"></div>
+      <div class="bd-chart" id="ch-exp" data-source="model consts"></div>
+    </section>
+  </div>
+
+  <section class="bd-card" id="source">
+    <h2>경험치는 어디서 오나</h2>
+    <p class="bd-note" id="src-note" data-source="consts">시간마다 모은 경험치를 잡몹 · 보스 · 의뢰로 나눈 몫.</p>
+    <div class="bd-legend" id="lg-src"></div>
+    <div class="bd-chart" id="ch-src" data-source="model"></div>
+  </section>
+
+  <section class="bd-card" id="compare">
+    <h2>모든 수치 비교</h2>
+    <p class="bd-note">고른 항목을 한 그림에 겹칩니다. 단위가 다른 값끼리 견주도록 <b>처음 대비 배수</b>(로그)나 <b>값 그대로</b>(로그)로 그립니다. 분당 경험치는 10분 평균입니다.</p>
+    <div class="bd-row">
+      <div class="bd-seg sm" role="group" aria-label="가로축" id="cmp-x"></div>
+      <div class="bd-seg sm" role="group" aria-label="비교 방식" id="cmp-mode"></div>
+    </div>
+    <div class="bd-row" id="cmp-chips" role="group" aria-label="비교할 항목"></div>
+    <div class="bd-chart tall" id="ch-cmp" data-source="model"></div>
+  </section>
+
+  <h2 class="bd-sec" id="detail">항목별</h2>
+  <div class="bd-grid">
+    <section class="bd-card" id="gear">
+      <h3>장비 한 벌과 강화</h3>
+      <p class="bd-note">부위 평균 강화 수치와 입고 있는 한 벌(아래 띠). +10 위로는 보석으로 초월합니다(성 안 · Lv.25). 새 한 벌은 강화가 옛 한 벌을 따라잡을 때 갈아입습니다.</p>
+      <div class="bd-legend" id="lg-gear"></div>
+      <div class="bd-chart" id="ch-gear" data-source="model consts"></div>
+    </section>
+    <section class="bd-card" id="power">
+      <h3>전투력 — 나와 상대</h3>
+      <p class="bd-note">내 전투력과 그 시간에 잡고 있는 상대(보스면 보스, 잡몹이면 평균)의 전투력. 아래 막대는 구간마다 오른 전투력.</p>
+      <div class="bd-legend" id="lg-power"></div>
+      <div class="bd-chart" id="ch-power" data-source="model"></div>
+    </section>
+    <section class="bd-card" id="attack">
+      <h3>공격력 · 체력</h3>
+      <p class="bd-note">장비 · 강화 · 스킬 · 특성을 모두 얹은 값. 아래 막대는 구간마다 오른 공격력.</p>
+      <div class="bd-legend" id="lg-attack"></div>
+      <div class="bd-chart" id="ch-attack" data-source="model"></div>
+    </section>
+    <section class="bd-card" id="gold">
+      <h3>골드</h3>
+      <p class="bd-note">번 골드(누적) · 쓴 골드(장비 · 강화 · 약초 · 보석) · 들고 있는 골드(로그 눈금).</p>
+      <div class="bd-legend" id="lg-gold"></div>
+      <div class="bd-chart" id="ch-gold" data-source="model"></div>
+    </section>
+    <section class="bd-card" id="hunt">
+      <h3>무엇을 잡고 있나</h3>
+      <p class="bd-note">시간마다 사냥한 곳의 단계(21~25는 지하감옥 1~5층)와 승률. 위쪽 눈금은 보스를 잡으러 간 분입니다.</p>
+      <div class="bd-legend" id="lg-hunt"></div>
+      <div class="bd-chart" id="ch-hunt" data-source="model"></div>
+    </section>
+    <section class="bd-card" id="bosses">
+      <h3>보스 잡은 수 · 의뢰</h3>
+      <p class="bd-note">눕힌 보스 수(누적)와 끝낸 의뢰 수. 보스가 다시 서는 시간이 짧을수록 같은 보스를 되풀이해 잡습니다.</p>
+      <div class="bd-legend" id="lg-bosses"></div>
+      <div class="bd-chart" id="ch-bosses" data-source="model"></div>
+    </section>
+    <section class="bd-card" id="monsters">
+      <h3>몬스터 세기 — 사냥터별</h3>
+      <p class="bd-note">사냥터마다 잡몹 평균 전투력과 보스 전투력(맵 배율을 먹인 값). 단계가 오를수록 세져야 사다리가 섭니다.</p>
+      <div class="bd-legend" id="lg-mon"></div>
+      <div class="bd-chart" id="ch-mon" data-source="targets"></div>
+    </section>
+    <section class="bd-card" id="mats">
+      <h3>재료 · 보석 — 모은 양</h3>
+      <p class="bd-note">사냥 · 의뢰로 얻은 악마의 핵 · 마력석 · 약초 · 보석(누적, 로그 눈금). 산 것 · 연금술사에게 바꾼 것은 뺍니다.</p>
+      <div class="bd-legend" id="lg-mats"></div>
+      <div class="bd-chart" id="ch-mats" data-source="model"></div>
+    </section>
+  </div>
+
+  <section class="bd-card" id="table">
+    <h2>레벨별 표</h2>
+    <p class="bd-note">고른 직업이 지금 값으로 그 레벨에 처음 닿은 순간의 모습과, 0.70.38 값으로 같은 레벨에 닿은 시각. 머리를 누르면 정렬합니다.</p>
+    <div class="bd-tablebox">
+      <table class="bd-table" id="tbl" data-source="milestones" data-row-key="class,level">
+        <thead><tr>
+          <th data-field="level"><button type="button" data-sort="level">레벨</button></th>
+          <th data-field="minute"><button type="button" data-sort="minute">닿은 시각(분)</button></th>
+          <th data-field="before_minute"><button type="button" data-sort="before_minute">0.70.38(분)</button></th>
+          <th data-field="stay"><button type="button" data-sort="stay">머문 시간(분)</button></th>
+          <th class="l" data-field="doing"><button type="button" data-sort="level">하고 있던 일</button></th>
+          <th data-field="win"><button type="button" data-sort="win">승률</button></th>
+          <th data-field="exp_min"><button type="button" data-sort="exp_min">분당 경험치</button></th>
+          <th class="l" data-field="set_name"><button type="button" data-sort="set">한 벌</button></th>
+          <th data-field="enh"><button type="button" data-sort="enh">강화</button></th>
+          <th data-field="cp"><button type="button" data-sort="cp">전투력</button></th>
+          <th data-field="gold_earned"><button type="button" data-sort="gold_earned">번 골드</button></th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="bd-card" id="method">
+    <h2>어떻게 쟀나</h2>
+    <ul class="bd-method" id="method-list" data-source="consts battle sets quests">
+      <li><b>전투</b> — 게임의 진짜 전투 계산기(CombatSystem)로 직업 셋 × 레벨 1~50 × 장비 한 벌 여섯 가지 × 강화 0 · 4 · 7 · 10 · 12 · 15마다, 사냥터의 잡몹과 보스 전부와 판을 돌린 표를 씁니다. 가방에는 그 한 벌을 입을 무렵의 회복약(뒤쪽은 거대 회복약)을 넣었습니다.</li>
+      <li><b>1분마다 고르기</b> — 들어갈 수 있는 곳(구간 문 보스를 잡았는지 · 성 Lv.25 · 지하감옥 Lv.40)에서 분당 경험치가 가장 많은 일. 보스는 다시 서는 시간마다 한 번 붙고(지면 곧바로 다시), 기다리는 동안 같은 맵의 잡몹을 잡거나 웨이포인트로 더 나은 사냥터에 다녀옵니다. 다음 구간 문 보스는 이길 만하면 먼저 잡습니다. 의뢰는 장비를 주거나, 2분 안에 끝나거나, 보상이 그 시간 사냥의 절반은 될 때 합니다. 만렙이면 골드 · 보석을 고릅니다.</li>
+      <li><b>장비</b> — 마을에는 10분마다(더 좋은 한 벌을 살 돈이 생기면 곧바로) 들릅니다. 다음 한 벌이 지금 입은 만큼 강화했을 때 더 세면 사고, 강화가 따라잡을 때까지는 옛 한 벌을 입습니다(상점에 없는 물건은 그 물건이 떨어지는 땅에 들어갈 수 있으면 주웠다고 봅니다). 강화는 가장 낮은 부위부터, 재료가 모자라면 약초를 사서 연금술사에게 바꿉니다. 초월(보석)은 더 얻을 한 벌이 없을 때만 하고, 남는 보석 셋을 하나로 바꾸고 그래도 모자라면 보석 노인에게서 삽니다.</li>
+      <li><b>견주기</b> — 같은 흉내를 바꾸기 전(0.70.38) 값으로 한 번 더 돌린 것이 회색 선입니다: <span id="method-old">—</span>.</li>
+      <li><b>기준</b> — <span id="method-asof">—</span>. 시트에서 표를 고친 뒤 "밸런스 대시보드 다시 계산해줘"라고 하시면 새 표로 전투 표를 다시 잽니다.</li>
+    </ul>
+  </section>
+</div>

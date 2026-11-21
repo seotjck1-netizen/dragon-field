@@ -1,0 +1,65 @@
+# Render 배포 설정.
+# 이 파일이 저장소에 있으면 Render 가 "Blueprint" 로 읽어 설정을 알아서 잡아 준다.
+#
+# 쓰는 법은 DEPLOY.md 를 보세요. 요약하면:
+#   1) 이 폴더를 GitHub 에 올린다
+#   2) Render 에서 New → Blueprint → 그 저장소를 고른다
+#   3) 아래 sync:false 로 표시된 값 두 개(Upstash 주소·토큰)를 화면에서 붙여 넣는다
+#
+# 주의: 무료 요금제는 15분간 아무도 접속하지 않으면 서버가 잠들고,
+#       다시 깨어나는 데 1분쯤 걸린다. 그동안 접속 화면이 늦게 뜬다.
+#       계정은 Upstash(바깥 데이터베이스)에 있으므로 잠들어도 사라지지 않는다.
+
+services:
+  - type: web
+    name: dragon-field
+    runtime: node
+    plan: free
+    region: singapore # 한국에서 가장 가까운 지역
+    buildCommand: echo "빌드할 것이 없습니다 — 의존성 0개"
+    startCommand: node server/server.js
+
+    # 잠들었다 깨어나는 동안 접속이 끊기지 않게 넉넉히 기다린다.
+    healthCheckPath: /api/ping
+
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+
+      # 세션 서명 키. Render 가 무작위로 만들어 주고, 그 뒤로 바뀌지 않는다.
+      # 이 값이 바뀌면 접속해 있던 사람들이 다시 로그인해야 한다.
+      - key: SESSION_SECRET
+        generateValue: true
+
+      # 계정을 둘 바깥 데이터베이스(Upstash). Render 화면에서 직접 붙여 넣는다.
+      # 이 둘이 없으면 서버는 파일에 저장하는데, 무료 요금제는 파일이 지워지므로
+      # 서버가 잠들 때마다 캐릭터가 사라진다.
+      - key: UPSTASH_REDIS_REST_URL
+        sync: false
+      - key: UPSTASH_REDIS_REST_TOKEN
+        sync: false
+
+      # 계정 수 상한. 모르는 사람이 계정을 무한정 만들지 못하게 막는 장치다.
+      - key: MAX_ACCOUNTS
+        value: "500"
+
+      # 표(아이템·몬스터·드랍·퀘스트)를 구글 시트에서 읽어 올 때만 채운다.
+      # 자세한 건 SHEETS.md. 비워 두면 그냥 안 쓰는 기능이다.
+      - key: SHEET_ID
+        sync: false
+      # 몇 분마다 시트를 볼지. 0 을 넣으면 아예 안 봅니다 — "고쳤는데 반영이 안 된다"의
+      # 가장 흔한 원인이 이것이었습니다. 값을 아예 지워도 5분마다 봅니다.
+      - key: SHEET_POLL_MIN
+        value: "5"
+      # 이벤트 우편을 보낼 때 쓰는 열쇠. Render 가 무작위로 만들어 준다.
+      # 값을 보려면 Render → Environment 에서 확인하고, 그 값으로 보낸다:
+      #   SERVER=https://내서버.onrender.com ADMIN_KEY=그값 node tools/event.js "제목" "내용"
+      # 아무에게도 알려 주지 말 것 — 이 값을 아는 사람은 전 유저에게 아이템을 뿌릴 수 있다.
+      - key: ADMIN_KEY
+        generateValue: true
+
+      # 한 IP 에서 시간당 만들 수 있는 계정 수.
+      # 공개 서버라면 5 그대로 두고, 친구들과 같은 공유기에서 놀 거라면 올린다.
+      - key: REGISTER_LIMIT
+        value: "5"
+

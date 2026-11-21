@@ -1,0 +1,60 @@
+{
+ "front_mask": "art/reference/body_m1.png",
+ "res": 640,
+ "elev": 20,
+ "view": 7.93,
+ "cx": 381.5,
+ "foot_y": 980,
+ "top_y": 68,
+ "height": 5.9,
+ "cuts": {
+  "hip": 645,
+  "waist": 520,
+  "chest": 420,
+  "neck": 330,
+  "chin": 300,
+  "shoulder": 372,
+  "sh_col_R": 292,
+  "elbow": 522,
+  "el_col_R": 262,
+  "wrist": 604,
+  "wr_col_R": 252,
+  "hand_end": 668,
+  "torso_l": 305,
+  "torso_r": 458,
+  "crotch": 636,
+  "leg_col_R": 336,
+  "knee": 795,
+  "ankle": 922,
+  "leg_lo": 280
+ },
+ "actions": {
+  "idle": 2,
+  "walk": 8,
+  "run": 8
+ },
+ "depth": {
+  "head": 1.0,
+  "neck": 0.8,
+  "torso": 0.88,
+  "chest_top": 0.8,
+  "uarm": 1.05,
+  "farm": 1.0,
+  "leg": 1.0
+ },
+ "front_src": "art/reference/body_m1.png",
+ "back_src": "art/views/m1_back.png",
+ "erode": 6,
+ "smooth": 2,
+ "hand_at": [
+  250,
+  640
+ ],
+ "foot_margin": 0.4,
+ "clean": [
+  11,
+  50,
+  8,
+  2
+ ]
+}
