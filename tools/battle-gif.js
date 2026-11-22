@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * 전투 동작을 움직이는 그림(GIF)으로 뽑는다.
+ * 전투 동작을 움직이는 그림으로 뽑는다(0.80.27 부터 WebP — GIF 를 구운 뒤 tools/anim-webp.py 로 바꾼다).
  *
  *   node tools/battle-gif.js                       세 직업을 각각 한 장씩
  *   node tools/battle-gif.js --class mage          한 직업만
@@ -11,7 +11,7 @@
  *   node tools/battle-gif.js --out /tmp            다른 곳에 뽑는다
  *   node tools/battle-gif.js --no-trail            달릴 때 잔상 없이 찍는다(견주기용)
  *
- * 나오는 곳: docs/battle-<직업>.gif
+ * 나오는 곳: docs/battle-<직업>.webp (python3 + PIL 이 없으면 .gif 그대로 — 넉 배 크다. zip 30MB 를 지키려고 바꿨다)
  *
  * ── 왜 필요한가 ────────────────────────────────────────────
  * 0.54 에서 전투에 동작을 넣었다(검을 휘두르고 · 마법과 화살이 날아가고 ·
@@ -158,8 +158,11 @@ function shrink(src, sw, sh, dw, dh) {
     }
 
     const size = { w: dw, h: dh };
-    const out = path.join(outDir, `battle-${cls}.gif`);
+    let out = path.join(outDir, `battle-${cls}.gif`);
     fs.writeFileSync(out, encodeGif(frames, size.w, size.h, { delayMs: step }));
+    const webp = out.replace(/\.gif$/, '.webp');
+    const cv = require('child_process').spawnSync('python3', [path.join(__dirname, 'anim-webp.py'), out, webp, '75'], { stdio: 'inherit' });
+    if (cv.status === 0 && fs.existsSync(webp)) { fs.unlinkSync(out); out = webp; }
     const kb = Math.round(fs.statSync(out).size / 1024);
     console.log(`  ✓ ${path.relative(ROOT, out)}  ${size.w}×${size.h} · ${frames.length}장 · ${kb}KB`
       + (errs.length ? `  ⚠ 오류 ${errs.length}건` : ''));

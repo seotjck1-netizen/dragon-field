@@ -915,6 +915,7 @@ function createWorld(store) {
       save: null,
       bornAt,
       firstKill: {},
+      reach: {}, // 0.80.27 — Lv.20 처음 닿은 시간도 다시(포이노 주말의 게임)
       eventsAt: Math.max(lastAt, now),
       restarts: (Number(acct.restarts) || 0) + 1,
       restartedAt: bornAt,

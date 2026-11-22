@@ -1,0 +1,11 @@
+{
+ "_comment": "outfit.py 의 손질 값. 몸(m1) → 한 벌(m1_2) 차례로 얹는다. cuts 의 \"+n\" / \"-n\" 은 맨몸 설정을 옮긴 값에 더하고, 숫자는 그대로 쓴다. 남자 갑옷은 치맛자락이 퍼져 가랑이 줄을 내리고 어깨 · 몸통 열을 넓힌다 — 0.80.01 시안의 기사 갑옷(k2.json, m1 2등급)에서 잰 값.",
+ "m1": {"cuts": {"hip": "-29", "waist": "+5", "chest": "+20", "neck": "-9", "chin": "-10", "shoulder": "-4",
+                 "sh_col_R": "-25", "sh_col_L": "+24", "elbow": "-9", "el_col_L": "+19", "wrist": "-22", "wr_col_R": "-4", "wr_col_L": "+33",
+                 "hand_end": "-10", "torso_l": "-17", "torso_r": "+15", "crotch": "+32", "leg_col_R": "-7", "leg_col_L": "+3",
+                 "knee": "-21", "ankle": "-27", "leg_lo": "-7"}},
+ "m2": {"cuts": {"hip": "-29", "waist": "+5", "chest": "+20", "neck": "-9", "chin": "-10", "shoulder": "-4",
+                 "sh_col_R": "-25", "sh_col_L": "+24", "elbow": "-9", "el_col_L": "+19", "wrist": "-22", "wr_col_R": "-4", "wr_col_L": "+33",
+                 "hand_end": "-10", "torso_l": "-17", "torso_r": "+15", "crotch": "+32", "leg_col_R": "-7", "leg_col_L": "+3",
+                 "knee": "-21", "ankle": "-27", "leg_lo": "-7"}}
+}

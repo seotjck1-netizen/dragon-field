@@ -9,13 +9,18 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const GEN = path.join(__dirname, '.entry.generated.js');
 
+// 0.80.27 — 한 장짜리 html 에 넣지 않는 그림. 갑옷 한 벌 8방향(dir8:<몸>:<등급>, 24장 · 5MB 남짓)을 넣으면 20MB 를 넘는다.
+// 그림 표에서 아예 빼므로 게임은 그 그림을 모른다 → 갑옷을 입으면 예전 그림(앞모습 + 층)으로 그린다(BodyLook.dir8Outfit).
+const SINGLE_SKIP = (key) => /^dir8:[^:]+:[^:]+$/.test(key);
+
 function makeEntry() {
   const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/manifest.json'), 'utf8'));
   const imports = [];
   const pairs = [];
+  const skip = Object.keys(manifest).filter(SINGLE_SKIP);
 
   Object.entries(manifest).forEach(([key, def], i) => {
-    if (!def.src) return;
+    if (!def.src || SINGLE_SKIP(key)) return;
     const varName = `a${i}`;
     imports.push(`import ${varName} from '../${def.src}';`);
     pairs.push(`  ${JSON.stringify(key)}: ${varName},`);
@@ -70,8 +75,11 @@ const INLINED_AUDIO = {
 ${audioPairs.join('\n')}
 };
 
+const SKIP = new Set(${JSON.stringify(skip)});
 const inlinedManifest = Object.fromEntries(
-  Object.entries(manifest).map(([key, def]) => [key, { ...def, src: INLINED[key] || def.src }])
+  Object.entries(manifest)
+    .filter(([key]) => !SKIP.has(key))
+    .map(([key, def]) => [key, { ...def, src: INLINED[key] || def.src }])
 );
 
 // 곡의 주소를 data: 로 갈아 끼운다. 나머지 칸(loop 등)은 그대로 둔다.
@@ -113,8 +121,60 @@ function dataStamp() {
   return `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())} ${p2(d.getHours())}:${p2(d.getMinutes())}`;
 }
 
+// 0.80.27 — 한 장짜리 html 에만 그림을 더 세게 압축해 박는다(사용자 답 "B안"). 저장소 그림은 그대로라
+// 웹 판(서버)은 원본 화질이다. 사본은 dist/.pack-q<품질>a<투명>/ 에 두고, 원본이 바뀌면 다시 굽는다.
+// python3 · PIL 이 없으면 원본을 그대로 박는다(그러면 20MB 를 넘을 수 있다 — 끝에 크기를 본다).
+const PACK = {
+  quality: 60,
+  alpha: 75,
+  prefixes: [
+    'assets/bodies/',
+    'assets/sprites/monsters/',
+    'assets/sprites/characters/',
+    'assets/sprites/npc/',
+    'assets/ui/title/',
+  ],
+};
+const PACK_DIR = path.join(ROOT, 'dist', `.pack-q${PACK.quality}a${PACK.alpha}`);
+
+function packImages() {
+  const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/manifest.json'), 'utf8'));
+  const list = [...new Set(
+    Object.values(manifest)
+      .map((d) => d && d.src)
+      .filter((s) => s && s.endsWith('.webp') && PACK.prefixes.some((p) => s.startsWith(p)))
+  )];
+  fs.mkdirSync(PACK_DIR, { recursive: true });
+  const listFile = path.join(PACK_DIR, 'list.json');
+  fs.writeFileSync(listFile, JSON.stringify(list));
+  const r = require('child_process').spawnSync(
+    'python3',
+    [path.join(__dirname, 'pack-single.py'), listFile, PACK_DIR, String(PACK.quality), String(PACK.alpha)],
+    { stdio: 'inherit' }
+  );
+  if (r.status !== 0) {
+    console.log('⚠ 그림 다시 압축을 못 했습니다(python3 · PIL) — 원본 그림을 그대로 박습니다.');
+    return new Set();
+  }
+  return new Set(list.filter((rel) => fs.existsSync(path.join(PACK_DIR, rel))));
+}
+
+function packPlugin(packed) {
+  return {
+    name: 'pack-single',
+    setup(build) {
+      build.onLoad({ filter: /\.webp$/ }, (args) => {
+        const rel = path.relative(ROOT, args.path).split(path.sep).join('/');
+        if (!packed.has(rel)) return undefined;
+        return { contents: fs.readFileSync(path.join(PACK_DIR, rel)), loader: 'dataurl' };
+      });
+    },
+  };
+}
+
 (async () => {
   fs.writeFileSync(GEN, makeEntry());
+  const packed = packImages();
 
   const result = await esbuild.build({
     entryPoints: [GEN],
@@ -122,6 +182,7 @@ function dataStamp() {
     write: false,
     format: 'iife',
     minify: true,
+    plugins: [packPlugin(packed)],
     loader: { '.png': 'dataurl', '.webp': 'dataurl', '.mp3': 'dataurl', '.json': 'json' },
     // 표의 기준 시각을 파일에 새긴다(config.js 의 DATA_STAMP 가 이걸 읽는다).
     define: { __DF_DATA_STAMP: JSON.stringify(dataStamp()) },

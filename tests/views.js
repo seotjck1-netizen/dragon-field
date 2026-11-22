@@ -17,11 +17,15 @@ const ROOT = path.resolve(__dirname, '..');
   const seen = new Set();
   let bytes = 0;
   const missing = [];
-  for (const d of Object.values(man)) {
+  // 0.80.27 — 갑옷 한 벌 8방향(dir8:<몸>:<등급>)은 한 장짜리 html 에 넣지 않는다(tools/build-single-file.js 의 SINGLE_SKIP).
+  //   있는지는 보되 크기에는 세지 않는다.
+  const singleSkip = (key) => /^dir8:[^:]+:[^:]+$/.test(key);
+  for (const [key, d] of Object.entries(man)) {
     if (!d.src || seen.has(d.src)) continue;
     seen.add(d.src);
     const f = path.join(ROOT, d.src);
-    if (fs.existsSync(f)) bytes += fs.statSync(f).size; else missing.push(d.src);
+    if (!fs.existsSync(f)) missing.push(d.src);
+    else if (!singleSkip(key)) bytes += fs.statSync(f).size;
   }
   for (const d of Object.values(audio['곡'] || {})) {
     if (d && d.src && fs.existsSync(path.join(ROOT, d.src))) bytes += fs.statSync(path.join(ROOT, d.src)).size;

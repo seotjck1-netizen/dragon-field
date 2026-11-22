@@ -651,10 +651,10 @@
         "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
         "TGGGGGGGGGGGG78YYYYYYYYYY78GGGGGGGGGGGGT",
         "TGGGGGGGGGGGG90CCCCCCCCCC90GGGGGGGGGGGGT",
-        "TGGGGGGGGTGGGCCCCCCCCCCCCCCGGGTGGGGGGGGT",
-        "TGGTGGGGGGGGGCCCECCCCCCECCCGGGGGGTGGGGGT",
-        "TGGGGGTGGgGGGCCCCCCCCCCCCCCGGGGGGGGGGGGT",
-        "TGGGGGGGGGGGhCCCCCC56CCCCCCGrGGGGGGGTGGT",
+        "TGGGGGGGGGGGGCCCCCCCCCCCCCCGGOOOOOOOGGGT",
+        "TGGGOOOOOGGGGCCCECCCCCCECCCGGOOOOOOOGGGT",
+        "TGGGOOOOOgGGGCCCCCCCCCCCCCCGGOOOOOOOGGGT",
+        "TGGGHHHHHGGGhCCCCCC56CCCCCCGrHHHHHHHGGGT",
         "TGGGGGGGGGGGGCCCCCCNMCCCCCCGGGGGGGGGGGGT",
         "TGGGGgGGGGGGGGGGGGSBBGGGGGGGGGGGGgGGGGGT",
         "TGGGGGOOOOOOGGGGGGGBBGGGGGGGOOOOOOGGGGGT",
@@ -737,6 +737,20 @@
           "w": 2,
           "h": 1,
           "sprite": "bld_stall_bread"
+        },
+        {
+          "x": 4,
+          "y": 4,
+          "w": 5,
+          "h": 3,
+          "sprite": "bld_tower"
+        },
+        {
+          "x": 29,
+          "y": 3,
+          "w": 7,
+          "h": 4,
+          "sprite": "bld_arena"
         }
       ],
       "spawns": [],
@@ -779,13 +793,13 @@
         },
         {
           "id": "tower_keeper",
-          "x": 30,
-          "y": 17
+          "x": 6,
+          "y": 7
         },
         {
           "id": "arena_master",
-          "x": 12,
-          "y": 17
+          "x": 32,
+          "y": 7
         }
       ],
       "portals": [

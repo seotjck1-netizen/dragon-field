@@ -8297,3 +8297,14 @@ body.is-portrait .tc-root > * {
 .loot-power .loot-up { color: #7ef0b0; }
 .loot-power em { font-style: normal; color: #7ef0b0; margin-left: 4px; font-weight: 700; }
 .loot-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+
+/* 0.80.27 — 포이노(poinolunch) 연결을 묻는 창 */
+.poino-ask { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(6, 8, 14, .55); z-index: 60; pointer-events: auto; }
+.poino-card { max-width: 340px; padding: 18px 18px 14px; line-height: 1.6; }
+.poino-card h3 { margin: 0 0 8px; color: #ffd98a; font-size: 16px; }
+.poino-card p { margin: 0 0 6px; font-size: 14px; }
+.poino-card .poino-was { color: #d9b57a; font-size: 12px; }
+.poino-card .poino-row { display: flex; gap: 8px; margin: 12px 0 6px; }
+.poino-card .poino-row button { flex: 1; }
+.poino-card .poino-no { filter: grayscale(.7) brightness(.85); }
+.poino-card small { color: #a9a28c; font-size: 11px; }

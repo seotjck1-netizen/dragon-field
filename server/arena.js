@@ -52,6 +52,10 @@ function createArena(store, { duel, sendMail, isAdmin = () => false, rules = nul
   const DAILY = Math.max(1, R.dailyFights || 5);
   const OFFER = Math.max(1, R.offerCount || 3);
   const UNLOCK = R.unlockLevel || 20;
+  // 0.80.27 — 결투장 '준비 중'(arena.json open: false). 몸 올리기 · 상대 받기 · 걸기를 받지 않는다.
+  //   지난 주 기록의 주간 우편(settle)은 그대로 돈다 — 이미 싸운 사람의 몫이다.
+  const OPEN = R.open !== false || process.env.ARENA_OPEN === '1';
+  const CLOSED = { ok: false, closed: true, reason: '결투장은 준비 중입니다. 곧 열립니다.' };
 
   async function weekDoc(week) {
     const raw = await store.getDoc(`arena:${week}`);
@@ -129,6 +133,7 @@ function createArena(store, { duel, sendMail, isAdmin = () => false, rules = nul
   }
 
   async function board(me = null, now = Date.now()) {
+    if (!OPEN) { await settle(now); return { closed: true, top: [], prev: { top: [] } }; }
     await settle(now);
     const week = weekOf(now);
     const doc = await weekDoc(week);
@@ -163,6 +168,7 @@ function createArena(store, { duel, sendMail, isAdmin = () => false, rules = nul
   }
 
   async function putSnapshot(id, acct, raw, now = Date.now()) {
+    if (!OPEN) return CLOSED;
     const snap = stamp(id, acct, raw);
     if (snap.level < UNLOCK) return { ok: false, reason: `결투장은 Lv.${UNLOCK} 부터입니다.` };
     await store.setDoc(`arenasnap:${id}`, { ...snap, at: now });
@@ -176,6 +182,7 @@ function createArena(store, { duel, sendMail, isAdmin = () => false, rules = nul
 
   /** 내 점수 근처의 상대 셋(위 · 비슷 · 아래가 섞이게). */
   async function offer(id, acct, now = Date.now()) {
+    if (!OPEN) return CLOSED;
     await settle(now);
     const week = weekOf(now);
     const doc = await weekDoc(week);
@@ -212,6 +219,7 @@ function createArena(store, { duel, sendMail, isAdmin = () => false, rules = nul
 
   /** 건다. 몸을 새로 올리고, 서버가 싸움을 계산해 점수를 적는다. */
   async function fight(id, acct, target, rawSnap, now = Date.now(), seed = null) {
+    if (!OPEN) return CLOSED;
     await settle(now);
     if (!target || target === id) return { ok: false, reason: '상대를 고르세요.' };
     const off = await store.getDoc(`arenaoffer:${id}`);

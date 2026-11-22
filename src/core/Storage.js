@@ -331,6 +331,17 @@ export class Storage {
     return this._post('/api/arena/snapshot', { id, token, snapshot });
   }
 
+  // 0.80.27 — 포이노 주말의 게임: 이 계정을 포이노 닉네임과 잇는다(서버가 주말 기록을 포이노에 올린다)
+  async poinoLink(id, token, name) {
+    if (!this.isServer) return { ok: false, offline: true, reason: '서버에 접속했을 때만 연결할 수 있습니다.' };
+    return this._post('/api/poino/link', { id, token, name });
+  }
+
+  async poinoUnlink(id, token) {
+    if (!this.isServer) return { ok: false, offline: true };
+    return this._post('/api/poino/unlink', { id, token });
+  }
+
   async arenaOffer(id, token) {
     if (!this.isServer) return { ok: false, offline: true };
     return this._post('/api/arena/offer', { id, token });

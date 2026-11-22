@@ -2,7 +2,7 @@
 
 > 새 대화(또는 압축된 대화)는 **이 문서 → `docs/HANDOFF-0.80.md` → `docs/SPEC-0.80.md`** 순서로 읽고 시작한다.
 > 여기 적힌 것은 사용자가 정했거나, 어기면 사고가 났던 것들이다. 바꾸려면 **먼저 사용자에게 묻는다.**
-> (2026-11-11 · 0.80.03 기준으로 정리 · 2026-11-12 0.80.20 본편을 넣으며 고침 · 0.80.21 와우식 어그로 · 도감 · 업적 · 0.80.22 끝없는 탑 · 0.80.23 손 수 상한 · 0.80.24 결투장 · 0.80.25 탑 보상 · 보스 특성 · 0.80.26 장비 단계 · 홈 · 물약 % · 획득 창)
+> (2026-11-11 · 0.80.03 기준으로 정리 · 2026-11-12 0.80.20 본편을 넣으며 고침 · 0.80.21 와우식 어그로 · 도감 · 업적 · 0.80.22 끝없는 탑 · 0.80.23 손 수 상한 · 0.80.24 결투장 · 0.80.25 탑 보상 · 보스 특성 · 0.80.26 장비 단계 · 홈 · 물약 % · 획득 창 · 0.80.27 갑옷 한 벌 8방향 · html 압축 · 새 시트 문서)
 
 ## 1. 사용자와 일하는 법
 
@@ -21,8 +21,8 @@
 
 | 무엇 | 규칙 |
 |---|---|
-| zip | **30MB 이하**, `upload.bat` 꼭 포함. 목록 = `git ls-files -co --exclude-standard`(있는 파일만) − `dragon-field-tables.xlsx`. 압축 안 맨 위에 폴더 없이 |
-| 한 장짜리 html | **20MB 미만** — `node tools/build-single-file.js` → `dist/dragon-field.html`. base64 라 그림은 1.33배로 붙는다. 넘으면 `python3 tools/pack-webp.py` 로 png → webp |
+| zip | **30MB 이하**(0.80.27 에 28.6MB), `upload.bat` 꼭 포함. 목록 = `git ls-files -co --exclude-standard`(있는 파일만) − `dragon-field-tables.xlsx`. 압축 안 맨 위에 폴더 없이 |
+| 한 장짜리 html | **20MB 미만** — `node tools/build-single-file.js` → `dist/dragon-field.html`. base64 라 그림은 1.33배로 붙는다. 0.80.27 부터 굽는 길에 그림(몸 · 몬스터 · 옛 직업 · 마을 사람 · 타이틀)을 **품질 60 · 투명 75 로 다시 압축해 박는다**(`tools/pack-single.py` — 사용자가 고른 B안, 저장소 그림은 원본 그대로 · python3 + PIL 필요). 갑옷 한 벌 8방향(`dir8:<몸>:<등급>`)은 html 에 넣지 않는다(`SINGLE_SKIP` — 넣으면 21MB). 그래도 넘으면 `python3 tools/pack-webp.py` 로 png → webp |
 | xlsx | 표가 바뀐 판에만 — `node tools/sheets.js export && node tools/make-xlsx.js` |
 | 미리보기 | 바뀐 것을 보여 주는 그림 한두 장 |
 | 판 번호 | `src/config.js` 의 `GAME_VERSION` · `package.json` 의 `version` 을 함께. **판 번호가 바뀌어야 서버가 `server/content` 를 새 표로 다시 깐다**(`server/content.js` 의 `initFromSource`). 이미 내보낸 번호를 다시 쓰지 않는다. 0.80 수정안 본편은 **0.80.20** 부터(그다음 0.80.21 …) |
@@ -40,15 +40,18 @@
 - `server/data-*/` 는 비밀 파일이다 — `.gitignore` · `tools/upload.js` 가 막는다.
 - 시험은 임시 폴더에서 돈다(`tests/lib/server.js` — `POINO_DATA_DIR` · `POINO_CONTENT_DIR`). 진짜 계정 폴더를 건드리는 시험을 만들지 않는다.
 
+- **포이노 주말의 게임(0.80.27)** — 포이노 Firebase 의 `leaderboards/dragonfield_weekend` 는 **이 서버만** 쓴다(포이노 규칙이 그 이메일 계정에만 연다). 값은 서버가 잰 것만(playclock · tower.clear). 포이노 닉네임으로 로그인하게 하지 않는다(비밀번호가 없다) — 로그인한 계정에 이름표만(`/api/poino/link`). 운영자는 잇지 않는다. 비밀번호 · 키는 Render 환경변수에만.
+
 ## 4. 표 · 구글 시트
 
 | 무엇 | 규칙 |
 |---|---|
-| 시트 | `1hH3d13kXe0QLsQHdcOX1OWb37SQWWw51k-d-s6lxgQI` (이름 `dragon-field-tables-0_80_03`, 2026-11-11 에 0.80.03 표로 통째로 바꿈). 「링크가 있는 모든 사용자 · 뷰어」로 공개되어 있어야 서버가 읽는다. **새 문서를 만들지 말고 같은 문서에 덮어쓴다**(문서 아이디가 바뀌면 서버가 멎는다) |
-| 탭 | items · monsters · drops · quests · skills · classes · traits · stats · engrave · config · npcs (+ 읽어보기). 서버는 탭 **이름**으로 찾는다 |
+| 시트 | `1KrkahJ2fQOComINbVPNf2xd4h0ybhwe28tTSqO_iF2c` (이름 `dragon-field-tables-0_80_26`, 2026-11-21 에 사용자가 새로 만듦 — 옛 문서 `1hH3d13k…` 는 휴지통 · 운영자 창 주소 저장 완료). 「링크가 있는 모든 사용자 · 뷰어」로 공개되어 있어야 서버가 읽는다. **새 문서를 만들지 말고 같은 문서에 덮어쓴다**(문서 아이디가 바뀌면 서버가 멎는다) |
+| 탭 | items · monsters · drops · quests · skills · classes · traits · stats · engrave · config · npcs · tower · tower_boss (+ 읽어보기). 서버는 탭 **이름**으로 찾는다 |
 | 서버 자동 반영 | 서버가 시트를 주기적으로 읽어 `server/content` 를 덮는다. 그래서 **시트가 옛 판이면 새 값이 옛 값으로 돌아간다** — 판을 낼 때 표가 바뀌었으면 시트도 같이 바꾼다. 트리 전 옛 skills 탭은 반영을 막아 두었다(`staleSkills`) |
 | JSON | `drops.json` · `quests.json` 을 `JSON.stringify` 로 통째로 다시 쓰지 않는다(손으로 맞춘 서식 · 주석이 깨진다). 표 서식은 `server/sheets.js` 의 `format*` 로 |
 | 고친 뒤 | `src/data/*.json` 을 고치면 `server/content/` 도 같게. `node tools/sheets.js check` |
+| 참고 칸 | 탭의 「…(참고)」 칸(예: npcs 의 첫 대사 · 보이는 이름)은 **게임이 읽지 않는다** — 사람이 보라고 붙인 것. 대사는 `npcs.json` 에서 고친다(0.80.27 — 사용자가 시트 참고 칸에서 고친 탑지기 대사를 파일로 옮겼다) |
 
 ## 5. 시험
 
@@ -59,7 +62,8 @@
 ## 6. 그림
 
 - 캐릭터 8방향 · 무기는 오른손 · 뒤에서는 망토 · 남녀 몸매(가슴 강조 금지 — 인물이 어려 보인다) · 마을 사람 얼굴은 서로 다르게: **`docs/CHARACTER-VIEWS.md`**.
-- 맨몸 8방향은 `tools/paint3d/`(블렌더) → `atlas.py` → `assets/bodies/*/dir8.webp` + `src/data/dir8.json`. 장비가 보이면 예전 그림(앞모습 + 층)이다.
+- 맨몸 8방향은 `tools/paint3d/`(블렌더) → `atlas.py` → `assets/bodies/*/dir8.webp` + `src/data/dir8.json`. **갑옷 한 벌 8방향(0.80.27)** 은 `outfit.py` → `proj3d.py` → `toon.py --cel 1` → `atlas.py --outfits` → `dir8_<등급>.webp` · `dir8.json outfits`(갑옷 등급별 한 벌 + 무기 — 사용자 규칙). 갑옷 없이 다른 장비만 보이면 예전 그림(앞모습 + 층)이다.
+- 블렌더는 저장소에 넣지 않는다 — 세션의 임시 폴더에 `uv venv` + `bpy==5.2.3 OpenEXR numpy pillow scipy opencv-python-headless`.
 - 큰 그림을 더하면 html 20MB 를 먼저 계산한다.
 
 ## 7. 게임 규칙 가운데 갈아엎으면 일이 큰 것 (지금 값)
@@ -77,7 +81,7 @@
 | 전투 | 잡몹은 **필드 실시간**(350ms). 0.80.21 와우식 — **닿아야 열린다**, 선공은 6칸 안에서 보면 쫓고 9칸 넘게 따돌리면 놓는다, 열릴 때 2칸 안의 쫓던 놈은 **애드**(최대 둘), 싸우며 걸으면 0.45배, 사거리(검 1 · 지팡이 3 · 활 4) + 2칸 밖이면 멈추고 이어서. 보스 · 고룡은 전투 화면(620ms · Shift · 돌입 소리). `?field=0` 이면 모두 전투 화면. 한 판의 손 수 상한 260(0.80.23 — 140 에서; 상한에 걸리면 무승부 = 진 판), **깎아 눕히는 고룡 둘만 140**(`MAX_BATTLE_ACTIONS_CHIP` — 한 번에 깎는 양) | `BALANCE.FIELD` · `BALANCE.MAX_BATTLE_ACTIONS` · `CONFIG.MONSTER_SIGHT_TILES` · `MovementSystem.updateMonster` · `FieldFight.js` · `FieldScene.js` · `EncounterSystem.js` · `main.js battleParty` |
 | 도감 · 업적(0.80.21) | 세이브 `codex`(mon · item · stat · done). 잡은 수 · 상자 · 번 골드 · 만난 것 · 얻은 것만 적고 레벨 · 강화 · 세트 · 의뢰는 지금 상태에서 읽는다. store.notify 마다 한 번 훑어 새로 해낸 것의 보상을 그 자리에서 넣는다(두 번 안 들어간다). 업적 id 를 바꾸면 해낸 것이 사라진다. 표는 시트에 없다 | `src/data/achievements.json` · `CodexSystem.js` · `CodexPanel.js` · `main.js checkAchievements` |
 | 끝없는 탑(0.80.22) | 한 층 = 전투 화면 한 판, 층 짜기는 `TowerSystem.floorPlan`(주 번호 + 층으로 굴려 누구에게나 같은 상대). HP 는 도전이 기억한다(run.hp) — 보스 층을 깨면 채운다. 보상은 이번 주에 처음 깬 층만(표 `floors` — 시트 tower 탭, 보스 층 장비는 몫만 주고 main.js 가 굴린다). 지면 값 없음. 서버는 층을 하나씩 · 최소 간격으로만 받고 주간 1 ~ 5위에게 우편(settle — 여러 번 불려도 한 번). 주의 셈(월요일 0시 KST)은 게임 `TowerSystem.weekOf` 와 서버 `tower.js weekOf` 가 같아야 한다. **보스 특성(0.80.25)** 은 주 + 층으로 굴리고(누구에게나 같다) 값 배율은 `TowerSystem` 이 미리 얹고, 싸움 규칙은 `CombatSystem` 의 `aff` — **aff 가 없으면 난수 하나도 달라지지 않게** 둔다. 적정 레벨은 `tools/tower-rec.js` | `src/data/tower.json` · `TowerSystem.js` · `server/tower.js` · `TowerPanel.js` · `main.js 끝없는 탑` · `tools/tower.js` · `tools/tower-rec.js` |
-| 결투장(0.80.24) | 몸(스냅샷)은 게임이 만들어 올리고(세이브와 같은 믿음) **싸움은 서버가 계산**한다(`DuelSystem.simulateDuel` — 서버 · 게임 같은 코드). 한 대의 규칙은 `CombatSystem.strike` 와 같아야 한다(그쪽을 고치면 여기도). 양쪽 모두 직업 특성 · 물약 없음 · 직업 보정 없음(사용자 답). 엘로 K32 · 받는 쪽 절반 · 하루 5판 · 보여 준 셋 가운데서만 · 주간 1 ~ 5위 우편(건 사람만). 운영자는 후보 · 표에 없다 | `src/data/arena.json` · `DuelSystem.js` · `server/arena.js` · `ArenaPanel.js` · `main.js 결투장` |
+| 결투장(0.80.24) | **0.80.27 부터 준비 중** — `arena.json` `open: false`(서버 창구 거절 · 창은 안내만, `ARENA_OPEN=1` 서버만 연다). 다시 열기 전에 `docs/ARENA-SIM.md` 의 물음을 정한다(시안 `DuelSystem scale` 은 기본 꺼짐 — 넘기지 않으면 한 대 · 난수까지 예전과 같아야 한다). 몸(스냅샷)은 게임이 만들어 올리고(세이브와 같은 믿음) **싸움은 서버가 계산**한다(`DuelSystem.simulateDuel` — 서버 · 게임 같은 코드). 한 대의 규칙은 `CombatSystem.strike` 와 같아야 한다(그쪽을 고치면 여기도). 양쪽 모두 직업 특성 · 물약 없음 · 직업 보정 없음(사용자 답). 엘로 K32 · 받는 쪽 절반 · 하루 5판 · 보여 준 셋 가운데서만 · 주간 1 ~ 5위 우편(건 사람만). 운영자는 후보 · 표에 없다 | `src/data/arena.json` · `DuelSystem.js` · `server/arena.js` · `ArenaPanel.js` · `main.js 결투장` |
 
 ## 8. 도구 (다시 만들지 말고 쓸 것)
 

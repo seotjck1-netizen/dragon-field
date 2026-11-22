@@ -46,8 +46,12 @@ export class ArenaPanel {
     const classes = (state.db.classes && state.db.classes.list) || {};
     const clsName = (c) => (classes[c] ? classes[c].name : c || '');
 
+    // 0.80.27 — '준비 중'(arena.json open: false). 서버가 닫혔다고 하면, 또는 서버 없이 표가 닫혀 있으면 안내만 한다
+    const closed = !!board.closed || (R.open === false && (board.offline || board.loading));
     let body;
-    if (board.offline) {
+    if (closed) {
+      body = '<p class="wp-note arena-note arena-closed">결투장은 <b>준비 중</b>입니다. 곧 열립니다.</p>';
+    } else if (board.offline) {
       body = '<p class="wp-note arena-note">결투장은 <b>서버에 접속했을 때만</b> 열립니다 — 상대가 다른 사람이라서요.</p>';
     } else if (locked) {
       body = `<p class="wp-note arena-note">Lv.${unlock} 부터 결투장에 설 수 있습니다.</p>`;
@@ -89,14 +93,14 @@ export class ArenaPanel {
         </header>
         <div class="tower-body">
           ${body}
-          <div class="rank-eras tower-eras">
+          ${closed ? '' : `<div class="rank-eras tower-eras">
             <button data-era="now" class="${this.era === 'now' ? 'is-on' : ''}">이번 주</button>
             <button data-era="prev" class="${this.era === 'prev' ? 'is-on' : ''}">지난 주</button>
             <button data-era="log" class="${this.era === 'log' ? 'is-on' : ''}">내 기록</button>
           </div>
-          ${this.era === 'log' ? this._logHtml(board, clsName) : this._listHtml(board, clsName)}
-          <p class="wp-note">싸움은 서버가 계산합니다 · 상대는 접속해 있지 않아도 됩니다(마지막으로 올린 몸으로 막는다) ·
-            물약은 안 씁니다 · 직업 보정 없음 · 하루 ${R.dailyFights || 5}판 · 주가 바뀌면 1 ~ ${(R.weekly || []).length || 5}위에게 우편</p>
+          ${this.era === 'log' ? this._logHtml(board, clsName) : this._listHtml(board, clsName)}`}
+          ${closed ? '' : `<p class="wp-note">싸움은 서버가 계산합니다 · 상대는 접속해 있지 않아도 됩니다(마지막으로 올린 몸으로 막는다) ·
+            물약은 안 씁니다 · 직업 보정 없음 · 하루 ${R.dailyFights || 5}판 · 주가 바뀌면 1 ~ ${(R.weekly || []).length || 5}위에게 우편</p>`}
         </div>
       </div>`);
 

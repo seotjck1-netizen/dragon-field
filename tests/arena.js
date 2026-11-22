@@ -56,8 +56,44 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   const even = D.ratingDelta(1000, 1000, 'a');
   check('센 상대를 이기면 더 오르고, 받는 쪽은 절반만 잃는다', up.a > even.a && even.a === 16 && even.b === -8, JSON.stringify({ up, even }));
 
+  // ══ 1-1. 결투장 시안(0.80.27 · 기본 꺼짐 — docs/ARENA-SIM.md) ══
+  {
+    const war = body('warrior', { stats: { spd: 20 } });
+    const rng2 = body('ranger', { stats: { spd: 40 } });
+    let n0 = 0, n5 = 0;
+    for (let i = 0; i < 20; i++) {
+      n0 += D.simulateDuel({ a: war, b: rng2, seed: i }).turns.length;
+      n5 += D.simulateDuel({ a: war, b: rng2, seed: i, scale: { hp: 5, dmg: 0.2 } }).turns.length;
+    }
+    check('시안: 체력 ×5 · 피해 ×1/5 면 판이 길어진다', n5 > n0 * 3, `${n0 / 20} → ${n5 / 20}손`);
+    const r = D.simulateDuel({ a: war, b: rng2, seed: 3, scale: { hp: 5, dmg: 0.2, speedK: 1 } });
+    const cnt = { player: 0, monster: 0 };
+    for (const t of r.turns) if ((t.type === 'hit' || t.type === 'miss') && !t.tag) cnt[t.actor]++;
+    const mono = r.turns.every((t, i) => i === 0 || t.t >= r.turns[i - 1].t);
+    check('시안: 각자 따로 치면 공속이 두 배인 쪽이 두 배쯤 친다(시간 순서는 그대로)', cnt.monster > cnt.player * 1.6 && mono, JSON.stringify(cnt));
+  }
+
+  // ══ 1-2. 준비 중(0.80.27 — arena.json open: false) ══════════
+  {
+    const docs = {};
+    const store = { getDoc: async (k) => (k in docs ? docs[k] : null), setDoc: async (k, v) => { docs[k] = v; } };
+    const ar = createArena(store, { duel: D, rules: { open: false, unlockLevel: 1 } });
+    const acc = { name: 'c', save: { level: 50, classId: 'warrior' } };
+    const body = { name: 'c', level: 50, stats: { hp: 100, atk: 10, def: 1, spd: 1, crit: 0 }, mods: {}, traits: {} };
+    const put = await ar.putSnapshot('c1', acc, body);
+    const off = await ar.offer('c1', acc);
+    const fi = await ar.fight('c1', acc, 'c2', body);
+    const bd = await ar.board('c1');
+    check('준비 중이면 몸 올리기 · 상대 받기 · 걸기를 받지 않고 표는 닫혔다고만 한다',
+      [put, off, fi].every((r) => r.ok === false && r.closed && /준비 중/.test(r.reason)) && bd.closed === true && !Object.keys(docs).some((k) => k.startsWith('arenasnap')),
+      JSON.stringify({ put, bd: { closed: bd.closed } }));
+    const rules = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'src', 'data', 'arena.json'), 'utf8'));
+    check('지금 결투장은 준비 중이다(arena.json open: false)', rules.open === false);
+  }
+
   // ══ 2. 서버 창구 ═════════════════════════════════════════
-  const srv = await startServer();
+  // 결투장은 준비 중이지만(open: false) 규칙은 그대로 잰다 — 시험 서버만 ARENA_OPEN=1 로 연다.
+  const srv = await startServer({ ARENA_OPEN: '1' });
   const { call } = srv;
   const mk = async (id, name, cls, level) => {
     const r = await call('/api/register', { id, hash: hashPw(id, 'pw1234'), name });
@@ -160,6 +196,15 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
       if (gm.panels.classPickPanel && gm.panels.classPickPanel.open) gm.panels.classPickPanel.close();
       const out = {};
       out.npc = s.npcs.some((n) => (n.id || n.defId) === 'arena_master');
+      // 준비 중 — 서버가 닫혔다고 하면 창은 안내만 한다(버튼 · 표 없음)
+      s.arenaBoard = { closed: true, top: [], prev: { top: [] } };
+      gm.panels.arenaPanel.open = true;
+      gm.panels.arenaPanel.root.hidden = false;
+      gm.panels.arenaPanel.render();
+      const cp = document.querySelector('#arena-panel');
+      out.closedText = /준비 중/.test(cp.innerText) && !cp.querySelector('[data-offer]') && !cp.querySelector('[data-era]');
+      gm.panels.arenaPanel.close();
+      s.arenaBoard = null;
       s.player.level = 30;
       gm.store.notify();
       await gm.saveNow();
@@ -189,6 +234,7 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
       return out;
     });
     check('결투장 관리인이 마을에 있다', g.npc);
+    check('준비 중이면 결투장 창은 안내만 보인다(상대 받기 · 표 없음)', g.closedText);
     check('창이 열리고 상대를 받는다', g.panel && g.offer.length >= 1 && g.btn >= 1, JSON.stringify({ offer: g.offer, btn: g.btn }));
     check('걸면 전투 화면 — 상대는 사람 그림을 뒤집어 마주 세운다', g.scene && g.mirror);
     check('결과창에 점수가 나온다', /점수/.test(g.card) && /오늘 남은 판 4/.test(g.card), g.card.slice(0, 80));
