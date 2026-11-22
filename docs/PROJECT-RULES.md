@@ -2,7 +2,7 @@
 
 > 새 대화(또는 압축된 대화)는 **이 문서 → `docs/HANDOFF-0.80.md` → `docs/SPEC-0.80.md`** 순서로 읽고 시작한다.
 > 여기 적힌 것은 사용자가 정했거나, 어기면 사고가 났던 것들이다. 바꾸려면 **먼저 사용자에게 묻는다.**
-> (2026-11-11 · 0.80.03 기준으로 정리 · 2026-11-12 0.80.20 본편을 넣으며 고침 · 0.80.21 와우식 어그로 · 도감 · 업적 · 0.80.22 끝없는 탑 · 0.80.23 손 수 상한 · 0.80.24 결투장 · 0.80.25 탑 보상 · 보스 특성 · 0.80.26 장비 단계 · 홈 · 물약 % · 획득 창 · 0.80.27 갑옷 한 벌 8방향 · html 압축 · 새 시트 문서 · 0.80.28 포이노 연결 시험)
+> (2026-11-11 · 0.80.03 기준으로 정리 · 2026-11-12 0.80.20 본편을 넣으며 고침 · 0.80.21 와우식 어그로 · 도감 · 업적 · 0.80.22 끝없는 탑 · 0.80.23 손 수 상한 · 0.80.24 결투장 · 0.80.25 탑 보상 · 보스 특성 · 0.80.26 장비 단계 · 홈 · 물약 % · 획득 창 · 0.80.27 갑옷 한 벌 8방향 · html 압축 · 새 시트 문서 · 0.80.28 포이노 연결 시험 · 0.80.29 스킬 트리 다시 짜기 · 싸울 때도 8방향)
 
 ## 1. 사용자와 일하는 법
 
@@ -16,6 +16,7 @@
 | 쓰지 말 것 | Gemini · 브라우저(사용자 지정). 다운로드 폴더는 Gemini 그림 때문에만 허락받았다 — 둘러보지 않는다 |
 | 사용량 | 큰 일은 시작 전에 어림(5시간 한도 창 몇 개)을 보여 준다. 대화가 길면 한도가 빨리 찬다 — 압축을 권한다 |
 | 아티팩트 | 예전에 만든 아티팩트 · 그림을 허락 없이 지우지 않는다 |
+| 화면의 수 | **소수는 두 자리까지**(사용자 규칙 2026-11-22) — 0.1 씩 더해 가면 `8.399999999999999` 같은 꼬리가 붙는다. 화면에 찍는 수는 `fmtStat`(statLabels) · `round2`(CharacterPanel) 처럼 반올림을 거친다. `toFixed(3)` 이상은 계산 · 저장용 값에만 |
 
 ## 2. 판 내기 (매 판 같다)
 
@@ -62,7 +63,7 @@
 ## 6. 그림
 
 - 캐릭터 8방향 · 무기는 오른손 · 뒤에서는 망토 · 남녀 몸매(가슴 강조 금지 — 인물이 어려 보인다) · 마을 사람 얼굴은 서로 다르게: **`docs/CHARACTER-VIEWS.md`**.
-- 맨몸 8방향은 `tools/paint3d/`(블렌더) → `atlas.py` → `assets/bodies/*/dir8.webp` + `src/data/dir8.json`. **갑옷 한 벌 8방향(0.80.27)** 은 `outfit.py` → `proj3d.py` → `toon.py --cel 1` → `atlas.py --outfits` → `dir8_<등급>.webp` · `dir8.json outfits`(갑옷 등급별 한 벌 + 무기 — 사용자 규칙). 갑옷 없이 다른 장비만 보이면 예전 그림(앞모습 + 층)이다.
+- 맨몸 8방향은 `tools/paint3d/`(블렌더) → `atlas.py` → `assets/bodies/*/dir8.webp` + `src/data/dir8.json`. **갑옷 한 벌 8방향(0.80.27)** 은 `outfit.py` → `proj3d.py` → `toon.py --cel 1` → `atlas.py --outfits` → `dir8_<등급>.webp` · `dir8.json outfits`(갑옷 등급별 한 벌 + 무기 — 사용자 규칙). 갑옷 없이 다른 장비만 보이면 예전 그림(앞모습 + 층)이다. **싸울 때도(0.80.29)** 8방향 그림을 쓰는 몸이면 그 그림 — 필드 싸움 · 보스 화면 모두 상대 쪽 3/4, 칼로 벨 때 달리기 한 장, 쓰러지면 눕힌다(예전 전투 그림에는 새 갑옷 · 투구가 없다).
 - 블렌더는 저장소에 넣지 않는다 — 세션의 임시 폴더에 `uv venv` + `bpy==5.2.3 OpenEXR numpy pillow scipy opencv-python-headless`.
 - 큰 그림을 더하면 html 20MB 를 먼저 계산한다.
 
@@ -70,12 +71,12 @@
 
 | 무엇 | 지금 | 어디 |
 |---|---|---|
-| 스킬 트리 | 와우식 — 직업 포인트 25점(2레벨마다) + 공용 9점(10레벨마다 · 보스 의뢰 넷). 갈래 20점(1단 4+4 · 2단 4 · 3단 3 · 궁극 1 · 숙련 4), 문턱 3 · 6 · 12 · 16, 궁극 Lv.25. 올인 또는 1.5갈래 | `src/data/skills.json` · `SkillSystem.js` · `tools/synergy.js` |
+| 스킬 트리 | 와우식 — 직업 포인트 25점(2레벨마다) + 공용 9점(10레벨마다 · 보스 의뢰 넷). 갈래 20점(1단 4+4 · 2단 4 · 3단 3 · 궁극 1 · 숙련 4), 문턱 3 · 6 · 12 · 16, 궁극 Lv.25. 올인 또는 1.5갈래. **숫자 규칙(0.80.29 · 사용자)**: 같은 갈래에서 깊은 단일수록 한 점이 세다(1단 1 · 2단 1.25 · 3단 1.5 · 궁극 4 · 숙련 1.25 목표) · 같은 직업의 갈래 셋은 다 찍은 세기가 같다 · 뿌리는 그대로. 칸 숫자를 고치면 `tools/skill-value.js` 로 재고 `tests/skill-balance.js` 를 돌린다 | `src/data/skills.json` · `SkillSystem.js` · `tools/synergy.js` · `tools/skill-value.js` · `tools/skill-rescale.js` |
 | 장비(0.80.20 · 0.80.26) | 무기 대미지 · 방어구 방어 = **단계 기본값 × 등급 배율** + 덤 + 강화 × 단계마다의 한 걸음(0.80.26 — `GEAR.W_TIER` · `A_TIER` · `ENH_TIER` · `GRADES.mult`, items.json `tier`). 몸 공격력 = (몸 + W × `W_FLAT` + 스킬 `atkFlat`) × % 배율 × (1 + W × 4%) · 방어력 × (1 + A × 1.2%) · HP × (1 + A × 3%). 드롭 · 상자의 물건 단계는 땅마다 천장(drops '물건 단계' · 상자 '단계'), 등급은 따로 굴린다. 보석 홈 = 대장장이에게 골드로 하나(강화와 상관없이, 모든 부위, 한 번 — `DRILL_COST`) + +8 에 하나(affixes '홈'), 둘까지. 물약 = 회복약은 고정, 희귀 이상은 최대 HP 의 몫(`use.hpPct` · 천장 `hpMax` · 다음 약까지 `POTION_PCT_COOLDOWN_MS`). 몬스터를 잡고 얻은 장비가 전투력을 올리면 획득 창(`LootPanel` · `main.js offerLoot` — 싸움 · 결과창 · 다른 창이 없을 때). 장신구는 줄만(강화 +5%/단계). **등급은 물건마다**(inst.grade · plus · affixes · special · ups). 표의 stats 는 쓰지 않는다 | `src/data/gear.js` · `AffixSystem.rollGear` · `StatBlock` · `tools/balance.js statsOf` |
 | 강화(0.80.20) | C 규칙 — +10 끝, +8 부터 실패하면 −1, +7 부터 덤. 초월 없음(`TRANSCEND_MAX = ENHANCE_MAX`) | `formulas.js` · `EquipmentSystem.applyEnhance` |
 | 드롭 · 상자 | 잡몹 2% · 보스 30% · 구간 등급표 · 상자 셋 — `drops.json` 의 「장비」(시트에 없다). 세트(용린 · 룬)와 이름 붙은 장비(`named`)는 정해진 몬스터만 | `LootSystem.js` |
 | 몬스터 배율 | `maps.json` 의 `mult` · `bossMult`(hp · def · atk). 경험치 · 골드는 power 만. `tools/rescale80.js` 로 풀었다(옛 판 몸과 같은 승률 · 처치 시간) — `tools/gen-maps.js` 는 옛 파일에서 옮겨 온다 | `formulas.stageMult` |
-| 세이브 판 | `SAVE_VERSION = 8` — 바뀌면 옛 세이브의 스킬 · 특성 점수를 돌려주고 공짜 초기화 한 번 | `AccountSystem.js` |
+| 세이브 판 | `SAVE_VERSION = 8` — 바뀌면 옛 세이브의 스킬 · 특성 점수를 돌려주고 공짜 초기화 한 번. 칸은 그대로 두고 숫자만 크게 바꾼 판은 `RESET_GRANT` 를 그 판 번호로(0.80.29) — 처음 들어올 때 공짜 초기화가 한 번 이상 남는다(쌓이지 않는다) | `AccountSystem.js` |
 | 경험치 | `EXP_GAIN 0.33`(0.80.20 — 0.6 에서) · 보스 ×0.5 · 의뢰 ×0.5. Lv.50 흉내 용사 13.9h · 사냥꾼 18.1h · 마법사 13.9h(목표: 350ms 수정안 15.7 · 17.9 · 15.5h) | `formulas.js` · `docs/BALANCE-REVIEW.md` |
 | 이동 | 기본 1.2배 고정, 날랜 발로 천장 150%. 질주의 물약 없음 | `formulas.js` · `BuffSystem.js` |
 | 전투 | 잡몹은 **필드 실시간**(350ms). 0.80.21 와우식 — **닿아야 열린다**, 선공은 6칸 안에서 보면 쫓고 9칸 넘게 따돌리면 놓는다, 열릴 때 2칸 안의 쫓던 놈은 **애드**(최대 둘), 싸우며 걸으면 0.45배, 사거리(검 1 · 지팡이 3 · 활 4) + 2칸 밖이면 멈추고 이어서. 보스 · 고룡은 전투 화면(620ms · Shift · 돌입 소리). `?field=0` 이면 모두 전투 화면. 한 판의 손 수 상한 260(0.80.23 — 140 에서; 상한에 걸리면 무승부 = 진 판), **깎아 눕히는 고룡 둘만 140**(`MAX_BATTLE_ACTIONS_CHIP` — 한 번에 깎는 양) | `BALANCE.FIELD` · `BALANCE.MAX_BATTLE_ACTIONS` · `CONFIG.MONSTER_SIGHT_TILES` · `MovementSystem.updateMonster` · `FieldFight.js` · `FieldScene.js` · `EncounterSystem.js` · `main.js battleParty` |
@@ -86,6 +87,7 @@
 ## 8. 도구 (다시 만들지 말고 쓸 것)
 
 - 밸런스: `node tools/balance-dash.js` → `node tools/balance-page/run.js`(Lv.50 시간) · `node tools/synergy.js`(빌드 세기) · `docs/BALANCE-DASH.md`.
+- 스킬 한 점의 값: `node tools/skill-value.js [직업]`(버티기 k · 사냥 반반, 칸마다 · 단마다의 비) · 맞추기 `node tools/skill-rescale.js [--write]`(0.80.29).
   0.80.20 부터 대시보드의 시간은 실제 시간이다(잡몹 필드 350ms · 보스 Shift 4배 · `BATTLE_SPEED` 1). 상점은 장비를 안 팔지만 흉내는 「한 벌 사다리를 옛 값으로 산다」로 둔다(`LADDER_SHOP`).
 - 몬스터 배율 다시 풀기: `OLD_ROOT=<옛 판 사본> node tools/rescale80.js [--write]` — 옛 판에서 balance-dash 를 먼저 돌려 둔다(`git worktree add <폴더> <옛 커밋>`).
 - 표: `tools/sheets.js`(export · check · import · pull) · `tools/make-xlsx.js` · `tools/print-tables.js`.

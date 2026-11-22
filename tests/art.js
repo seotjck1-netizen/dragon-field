@@ -44,7 +44,8 @@ const { check, done } = tally();
     out.runVsWalk = diff(await shot('run_l', {}), await shot('walk1', {}));
     // ③ 맞기 · 쓰러짐
     const looks = g.battleLooks(s);
-    out.hasHurt = !!(looks.hurtSprite && looks.downSprite);
+    // 0.80.29 — 8방향 몸(맨몸 · 갑옷 한 벌)은 전투 화면에서도 8방향 그림이라 맞는 그림이 없고, 쓰러지면 선 그림을 눕힌다(downRot)
+    out.hasHurt = !!(looks.downSprite && (looks.hurtSprite || looks.downRot));
     await wait(300);
     const down = pix(bl.get(body, 'down', {}));
     const stand = pix(bl.get(body, 'bstand', {}));
@@ -91,7 +92,7 @@ const { check, done } = tally();
     `${r.walkPhase} ${r.runPhase} ${r.runPhase2}`);
   check('뛰어오른 동안은 공중 자세', r.jumpPhase === 'jump', r.jumpPhase);
   check('달리기 그림은 걷기 그림과 다르다', r.runVsWalk > 200, `${r.runVsWalk}`);
-  check('전투에 맞는 그림 · 쓰러진 그림이 넘어간다', r.hasHurt);
+  check('전투에 쓰러진 그림이 넘어간다(옛 몸은 맞는 그림도 · 8방향 몸은 선 그림을 눕혀서)', r.hasHurt);
   check('맞는 순간은 서 있는 몸과 다르다', r.hurtVsStand > 300, `${r.hurtVsStand}`);
   check('쓰러진 몸은 누워 있다(가로가 세로보다 길다)', r.downBox.w > r.downBox.h && r.standBox.h > r.standBox.w,
     `${JSON.stringify(r.downBox)} ${JSON.stringify(r.standBox)}`);

@@ -268,6 +268,8 @@ function createInitialState(db, playerName, classId, body = null) {
       skillPoints: 0,
       // 0.80.02 — 처음 한 번의 초기화는 공짜(스킬 트리)
       freeResets: 1,
+      // 0.80.29 — 새 캐릭터는 이미 공짜 한 번을 받았다(숫자를 다시 짠 판의 몫을 겹쳐 주지 않는다)
+      resetGrant: Account.RESET_GRANT,
     },
   });
 
@@ -610,6 +612,24 @@ async function runGame({ db, assets, bus, storage, account, save, viewport, soun
   function battleLooks(state) {
     const look = computeLook(state);
     const p = state.player;
+    // 0.80.29 — 8방향 그림을 쓰는 겉모습(맨몸 · 갑옷 한 벌)이면 전투 화면도 그 그림 — 오른쪽 아래를 보는 3/4.
+    //   예전 전투 그림(앞모습 + 장비 층)에는 새 갑옷 · 투구가 없어, 걸을 때와 싸울 때 모습이 달랐다(사용자).
+    //   칼(맨손)은 달리기 한 장으로 내딛고, 활 · 지팡이는 선 채로 쏜다. 누운 그림이 없어 선 그림을 눕힌다.
+    //   몸 키가 예전 전투 그림의 0.3 쯤(250 / 352 칸 ↔ 74 / 92 칸)이라 몸 그림만 2.1 / 0.62 배로 키운다.
+    if (!p.rawSprite && bodyLook.dir8Eligible(p.body, look)) {
+      const d8 = (action, k) => bodyLook.getDir8(p.body, action, k, 45, look);
+      const idle = d8('idle', 0);
+      const melee = ['sword', 'fist'].includes(bodyLook.weaponKind(look.weapon));
+      return {
+        sprite: idle,
+        stanceSprite: idle,
+        attackSprite: melee ? d8('run', 1) : idle,
+        hurtSprite: null,
+        downSprite: idle,
+        downRot: -1.45,
+        scaleK: 2.1 / 0.62,
+      };
+    }
     if (!p.rawSprite && bodyLook.has(p.body)) {
       return {
         sprite: bodyLook.get(p.body, 'bstand', look),
@@ -5174,6 +5194,14 @@ async function runGame({ db, assets, bus, storage, account, save, viewport, soun
           : refund.reborn
           ? `특성과 스킬이 개편되었습니다.\n찍어 두었던 ${back}포인트를 모두 돌려드렸습니다 — 캐릭터 창에서 다시 골라 주세요.`
           : `스킬·특성 표가 바뀌어 ${back}포인트를 돌려드렸습니다.\n최대 단계가 줄어든 것이 있습니다 — 캐릭터 창에서 다시 찍어 주세요.`,
+        tone: 'rare',
+      });
+    }, 1200);
+  } else if (save && refund.granted) {
+    // 0.80.29 — 스킬 숫자를 다시 짠 판(찍어 둔 칸은 그대로)
+    setTimeout(() => {
+      bus.emit('toast', {
+        text: '스킬 트리의 숫자를 다시 짰습니다 — 깊은 단일수록 한 점이 세고, 갈래 셋의 세기가 비슷해졌습니다.\n찍어 둔 칸은 그대로이고, 공짜 초기화를 한 번 드립니다 — 캐릭터 창 \'스킬 트리\'에서 다시 고를 수 있습니다.',
         tone: 'rare',
       });
     }, 1200);

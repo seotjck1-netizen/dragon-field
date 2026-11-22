@@ -602,7 +602,20 @@ export class FieldScene {
       if (isPlayer) {
         const useBody = this.bodyLook && actor.body && !actor.rawSprite && this.bodyLook.has(actor.body);
         if (useBody && frame && frame !== 'walk') {
-          const scene = frame === 'stance' || frame === 'windup' ? this.bodyLook.battleScene('stance', myLook)
+          // 0.80.29 — 8방향 그림을 쓰는 겉모습(맨몸 · 갑옷 한 벌)이면 싸울 때도 그 그림 — 상대 쪽 3/4(45° · 315°).
+          //   예전 전투 그림에는 새 갑옷 · 투구가 없어 걸을 때와 싸울 때 모습이 달랐다(사용자).
+          //   칼(맨손)로 벨 때는 달리기 한 장(내딛음), 그 밖(겨누기 · 움츠림 · 맞음 · 활 · 지팡이)은 선 그림, 쓰러지면 눕힌다.
+          if (this.bodyLook.dir8Eligible && this.bodyLook.dir8Eligible(actor.body, myLook)) {
+            const yaw = pose.face < 0 ? 315 : 45;
+            const lunge = frame === 'attack' && ['sword', 'fist'].includes(this.bodyLook.weaponKind(myLook && myLook.weapon));
+            const b = this.bodyLook.getDir8(actor.body, lunge ? 'run' : 'idle', lunge ? 1 : 0, yaw, myLook);
+            if (b) {
+              // 쓰러지면 눕힌다 — 발을 축으로 돌리므로 몸 길이의 절반쯤 되돌려 제자리에 눕힌다
+              const rot = frame === 'down' ? 1.45 * (pose.face < 0 ? 1 : -1) : 0;
+              return { sprite: b, scale: 1, flipX: false, drop: 0, rot, dx: rot ? -Math.sign(rot) * 0.4 * (b.h || 0) : 0 };
+            }
+          }
+          const scene =frame === 'stance' || frame === 'windup' ? this.bodyLook.battleScene('stance', myLook)
             : frame === 'attack' ? this.bodyLook.battleScene('attack', myLook) : frame;
           if (this.bodyLook.hasScene(actor.body, scene)) {
             const sp = this.bodyLook.get(actor.body, scene, myLook);
@@ -649,16 +662,16 @@ export class FieldScene {
       const r = resolve(g.frame);
       renderer.drawSprite(r.sprite, actor.px + g.x, actor.py + g.y + 4 + r.drop - (g.lift || 0), {
         anchor: 'bottom', scale: r.scale, alpha: g.alpha * pose.alpha, flipX: r.flipX,
-        rotate: g.rot || 0, sx: g.sx || 1, sy: g.sy || 1, flash: 0.35,
+        rotate: (g.rot || 0) + (r.rot || 0), sx: g.sx || 1, sy: g.sy || 1, flash: 0.35,
       });
     }
     const r = resolve(pose.frame);
-    renderer.drawSprite(r.sprite, x, y + 4 + r.drop - pose.lift, {
+    renderer.drawSprite(r.sprite, x + (r.dx || 0), y + 4 + r.drop - pose.lift, {
       anchor: 'bottom',
       scale: r.scale,
       alpha: pose.alpha,
       flipX: r.flipX,
-      rotate: pose.rot,
+      rotate: pose.rot + (r.rot || 0),
       sx: pose.sx,
       sy: pose.sy,
       flash: Math.min(1, pose.flash),

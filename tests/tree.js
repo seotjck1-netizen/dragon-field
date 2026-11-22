@@ -138,6 +138,16 @@ const { check, done } = tally();
     const v8 = { ...A.serializeSave(s), skills: { battle_sense: 2 }, traits: {}, freeResets: 0 };
     A.applySave(s, v8);
     out.v8 = { kept: s.player.skills.battle_sense, free: s.player.freeResets, sv: A.SAVE_VERSION };
+    // 0.80.29 — 숫자를 다시 짠 판: 표시(resetGrant)가 없는 세이브는 공짜 초기화가 한 번 이상 남는다 · 한 번만 · 쌓이지 않는다
+    {
+      const old = { ...A.serializeSave(s), skills: { battle_sense: 2 }, traits: {}, freeResets: 0, resetGrant: null };
+      A.applySave(s, old);
+      const first = { free: s.player.freeResets, kept: s.player.skills.battle_sense, granted: !!(s.rankRefund && s.rankRefund.granted) };
+      A.applySave(s, { ...A.serializeSave(s), freeResets: 0 });
+      const again = s.player.freeResets;
+      A.applySave(s, { ...old, freeResets: 2 });
+      out.grant = { ...first, again, stack: s.player.freeResets };
+    }
 
     // ⑥ 새 규칙 다섯 — 진짜 전투 계산기로
     const sim = (mods, traits, opts = {}) => {
@@ -219,6 +229,8 @@ const { check, done } = tally();
   check('그 뒤로는 비용(resetCost) · 골드가 모자라면 막힌다', !r.reset2.free && r.reset2.gold === r.reset2.want && r.reset2.want > 0 && !r.reset3, JSON.stringify(r.reset2));
   check('옛 세이브(v7 — 한 주머니)는 스킬 · 특성을 다 돌려받고 공짜 초기화 한 번', r.migrate.skills === 0 && r.migrate.traits === 0 && r.migrate.sp === r.migrate.wantS && r.migrate.free === 1 && r.migrate.tree, JSON.stringify(r.migrate));
   check('새 판(v8) 세이브는 찍은 그대로 · 남은 공짜 그대로', r.v8.kept === 2 && r.v8.free === 0 && r.v8.sv === 8, JSON.stringify(r.v8));
+  check('0.80.29 — 숫자를 다시 짠 판의 공짜 초기화: 찍은 칸은 그대로 · 한 번 · 두 번 주지 않고 쌓이지 않는다',
+    r.grant.free === 1 && r.grant.kept === 2 && r.grant.granted && r.grant.again === 0 && r.grant.stack === 2, JSON.stringify(r.grant));
   check('반격 확률(counterBonus) · 반격 피해(counterPowerBonus)가 먹힌다', r.counter.more > r.counter.base && r.counter.dmgPow > r.counter.dmgBase, JSON.stringify(r.counter));
   check('처형(executeBonus) — 상대 HP 30% 아래에서 피해가 오른다', r.execute.more > r.execute.base, JSON.stringify(r.execute));
   check('위기 치명타(lowHpCrit 1) — 위기선 아래면 모든 공격이 치명타', r.lowHpCrit.rate === 1 && r.lowHpCrit.base < 0.5, JSON.stringify(r.lowHpCrit));

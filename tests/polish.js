@@ -9,6 +9,7 @@
 // ⑦ 굳은 용암 길은 여러 장 · 잿더미 가장자리 그림이 있다
 // ⑧ 칸보다 큰 그림은 바닥을 다 깐 뒤에 굽는다(오른쪽이 다음 칸 바닥에 잘리지 않게)
 // ⑨ 캐릭터 창 패시브 설명은 접혀 있고 화살표로 펼친다(0.80.22)
+// ⑩ 화면의 소수는 두 자리까지 — 캐릭터 창 세 칸(0.80.29 · 사용자 규칙)
 //
 // ⚠ 성질을 잰다 — 좌표 · 픽셀 값을 적어 두지 않는다.
 const fs = require('fs');
@@ -196,6 +197,28 @@ const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
   });
   check('패시브 설명은 접혀 있다(한 줄 — 창의 10% 아래)', pas.closed && pas.closedH < pas.panelH * 0.1, JSON.stringify(pas));
   check('화살표로 펼치고 다시 접는다(** 가 그대로 찍히지 않는다)', pas.opened && pas.closedAgain && !pas.raw);
+
+  // ⑩ 0.80.29 — 화면의 소수는 두 자리까지(사용자 규칙). 0.1 씩 더한 값은 18.300000000000001 같은 꼬리가 붙는다
+  const dec = await page.evaluate(async () => {
+    const g = window.__game, s = g.store.state;
+    const wait = (ms) => new Promise((res) => setTimeout(res, ms));
+    const keep = { ...(s.player.stats || {}) };
+    s.player.stats = { ...keep, agility: 18.1 + 0.2, intellect: 0.1 + 0.2 };
+    g.store.notify();
+    const long = [];
+    for (const tab of ['gear', 'stat', 'tree']) {
+      g.panels.characterPanel.show(tab);
+      await wait(150);
+      const t = document.querySelector('.char-panel').innerText;
+      for (const m of t.match(/\d+\.\d{3,}/g) || []) long.push(`${tab}:${m}`);
+    }
+    const shown = document.querySelector('.char-panel').innerText.length > 0;
+    g.panels.characterPanel.close();
+    s.player.stats = keep;
+    g.store.notify();
+    return { long, shown };
+  });
+  check('캐릭터 창(장비 · 스탯 · 스킬 트리)에 소수 셋째 자리 이상이 없다', dec.shown && dec.long.length === 0, dec.long.join(' '));
 
   check('콘솔 오류 없음', errs.length === 0, errs.slice(0, 3).join(' | '));
   await browser.close();

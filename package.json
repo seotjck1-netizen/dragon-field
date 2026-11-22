@@ -1,6 +1,6 @@
 {
   "name": "dragon-field",
-  "version": "0.80.28",
+  "version": "0.80.29",
   "private": true,
   "description": "드래곤 필드 — HTML/Canvas RPG. 서버는 의존성 0개(순수 Node).",
   "engines": {

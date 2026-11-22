@@ -642,6 +642,9 @@ export class BattleScene {
       attackSprite: this.payload.player.attackSprite,
       hurtSprite: this.payload.player.hurtSprite,
       downSprite: this.payload.player.downSprite,
+      // 0.80.29 — 8방향 한 벌 그림은 작게 구워져 있어 몸 그림만 키운다 · 누운 그림 대신 눕힌다(main.js battleLooks)
+      scaleK: this.payload.player.scaleK,
+      downRot: this.payload.player.downRot,
     });
 
     // 이펙트는 **맨 마지막에** 그린다. 사람을 그리는 도중에 끼워 넣으면
@@ -909,7 +912,11 @@ export class BattleScene {
     const stanceY = breath * (opts.idleY ?? 2.4) + hurtY;
     // 막는 동안은 상대 쪽으로 버틴다(맞은 것 · 피한 것과 모양이 달라야 한다)
     const guardRot = guardP * 0.06 * opts.lungeDir;
-    const rotate = lungeRot + stanceRot + hurtRot + dodgeRot + poseRot + guardRot;
+    // 0.80.29 — 누운 그림이 없는 몸(8방향 한 벌)은 선 그림을 눕힌다(downRot)
+    const downRot = downImg && opts.downRot ? opts.downRot * opts.lungeDir : 0;
+    //   발을 축으로 돌리므로 몸이 한쪽으로 쏠린다 — 몸 길이의 절반쯤 되돌려 그림자 위에 눕힌다
+    const downX = downRot ? -Math.sign(downRot) * 0.4 * (shown.h || 0) * opts.scale * (opts.scaleK || 1) : 0;
+    const rotate = lungeRot + stanceRot + hurtRot + dodgeRot + poseRot + guardRot + downRot;
     // 늘이고 누르기 — 몸짓의 토막(위) + 맞는 순간 살짝 눌린다
     const drawSx = poseSx * (1 + hurtP * 0.03);
     const drawSy = poseSy * (1 - hurtP * 0.045);
@@ -982,7 +989,7 @@ export class BattleScene {
         renderer.drawSprite(shown, x + stanceX - back, y + stanceY, {
           anchor: 'bottom',
           world: false,
-          scale: opts.scale,
+          scale: opts.scale * (opts.scaleK || 1),
           alpha: (opts.dead ? 0.35 : 1) * TRAIL_ALPHA * (1 - i / (TRAIL_COUNT + 1)),
           rotate,
           sx: drawSx,
@@ -992,10 +999,10 @@ export class BattleScene {
       }
     }
 
-    renderer.drawSprite(shown, x + stanceX, y + stanceY - dodgeHop, {
+    renderer.drawSprite(shown, x + stanceX + downX, y + stanceY - dodgeHop, {
       anchor: 'bottom',
       world: false,
-      scale: opts.scale,
+      scale: opts.scale * (opts.scaleK || 1),
       // 누운 그림이 있으면 흐리게 하지 않는다 — 쓰러진 것은 자세가 말해 준다
       alpha: opts.dead ? (downImg ? 0.92 : 0.35) : 1,
       flash: fx.flash > 0 ? Math.min(1, (fx.flash / 400) * 0.9) : 0,
