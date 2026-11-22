@@ -168,7 +168,8 @@ const ROOT = path.resolve(__dirname, '..');
     g.scenes.render(g.renderer);
     out.cacheAfter = bl.dir8Cache ? bl.dir8Cache.size : 0;
     out.mine = bl.dir8Eligible(body, window.__game && g.store && (await import('/src/entities/StatBlock.js')).computeLook(s));
-    // 필드 전투(?field=1) — 전투 그림이 있으면 그것, 없으면(옛 그림 파일) 들판처럼 8방향 그림으로 상대를 본다
+    // 필드 전투(?field=1) — 0.80.29 부터 8방향 그림을 쓰는 몸이면 싸울 때도 그 그림(상대 쪽 3/4 — 오른쪽이면 45°).
+    //   예전 전투 그림에는 새 갑옷 · 투구가 없어 걸을 때와 싸울 때 모습이 달랐다(사용자). 전투 그림이 있든 없든 같다.
     {
       const look = (await import('/src/entities/StatBlock.js')).computeLook(s);
       const actor = s.player;
@@ -180,10 +181,10 @@ const ROOT = path.resolve(__dirname, '..');
       Object.assign(actor, { face8: 'right', dir: 'right', moving: false });
       try {
         fsn._drawFighter(g.renderer, s, actor, pose, look, 32);
-        out.fightStance = calls.length;
+        out.fightStance = calls.slice();
         bl.hasScene = (b, sc) => (/^(stance|attack)_/.test(sc) ? false : oh(b, sc));
         fsn._drawFighter(g.renderer, s, actor, pose, look, 32);
-        out.fightFallback = calls.slice(out.fightStance);
+        out.fightFallback = calls.slice(out.fightStance.length);
       } finally { bl.getDir8 = og; bl.hasScene = oh; Object.assign(actor, keep); }
     }
     return out;
@@ -203,8 +204,9 @@ const ROOT = path.resolve(__dirname, '..');
   check('옆모습 · 뒷모습은 앞모습과 다르다(진짜로 돈다)', r.sideDiff > 300 && r.backDiff > 300, `${r.sideDiff} ${r.backDiff}`);
   check('무기를 쥐면 손에 무기가 그려진다', r.weaponPx > 30, String(r.weaponPx));
   check('시작 무기만 쥔 내 몸은 들판에서 새 그림으로 그린다', r.mine && r.cacheAfter >= 1, `${r.mine} ${r.cacheBefore}→${r.cacheAfter}`);
-  check('필드 전투는 전투 그림 그대로, 전투 그림이 없으면 8방향 그림으로 상대(오른쪽)를 본다',
-    r.fightStance === 0 && r.fightFallback.length === 1 && r.fightFallback[0] === 'idle/0/90', `${r.fightStance} ${JSON.stringify(r.fightFallback)}`);
+  check('필드 전투도 8방향 그림 — 상대(오른쪽) 쪽 3/4(45°)를 보고 선다 · 전투 그림이 있든 없든 같다',
+    JSON.stringify(r.fightStance) === '["idle/0/45"]' && JSON.stringify(r.fightFallback) === '["idle/0/45"]',
+    `${JSON.stringify(r.fightStance)} ${JSON.stringify(r.fightFallback)}`);
   check('오류가 없다', errs.length === 0, errs.join(' | '));
   await browser.close();
   done();

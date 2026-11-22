@@ -130,7 +130,18 @@
 - 사용자가 Firebase 사용자 `dragonfield@poinolunch.app` · DB 규칙 · Render `POINO_FB_*` 넷을 넣었다. 「맞는지 확인, 연결시험」 →
   **운영자 창 → 랭킹 → 「포이노 연결 시험」**(`server/poino.js` `test()` · `/api/admin/poino-test`) — 평일에도 로그인 · 시험 칸 쓰기 · 지우기를 해 보고 무엇이 틀렸는지 알린다.
   환경변수는 앞뒤 빈칸을 지우고 읽는다. README 「0.80.28」.
-- 포이노 1.21(주말의 게임 화면)은 11/23 23:00 에 포이노 main 에 올린다(사용자 지정 — 예약해 둠).
+- 포이노 1.21(주말의 게임 화면)은 사용자 「지금 배포」로 **11/22 에 올렸다**(예약은 지웠다) — [seotjck1-netizen/poinolunch#1](https://github.com/seotjck1-netizen/poinolunch/pull/1).
+  이어서 1.21 대규모 공지(1.20 주간 증강 두 줄 함께 · [#2](https://github.com/seotjck1-netizen/poinolunch/pull/2)) · 드래곤필드 카드의 「주말의 게임」 표시를 늘([#3](https://github.com/seotjck1-netizen/poinolunch/pull/3)).
+
+## 0.80.29 에 넣은 것 (2026-11-22)
+
+- **스킬 트리 57칸 다시 짜기** — 사용자: 「굳센 몸이 불굴의 심장보다 안 좋다 — 밸런스가 개판」 → 「57개 전부 다시 짜기」. README 「0.80.29」.
+  잣대 `tools/skill-value.js`(버티기 k · 사냥 반반) · 맞추기 `tools/skill-rescale.js --write`(effect · steps · desc 줄만 고친다 — long 은 손으로) · 시험 `tests/skill-balance.js`.
+  처음에 「한 목숨에 몇 마리」로 재 봤다가 방어가 문턱을 넘으면 값이 끝없이 커져서(0.1 ~ 1000 마리) 버렸다 — 「반반으로 이기는 상대의 세기 k」는 그런 문턱이 없다.
+  **시트 skills 탭은 배포 허락을 받은 뒤 고친다**(서버가 5분마다 시트를 읽어 그대로 반영하므로 시트를 먼저 고치면 그때 새 수치가 나간다). 칸 모양은 그대로라 옛 서버도 읽는다.
+- **공짜 초기화 한 번**(사용자 「줌」) — `AccountSystem.RESET_GRANT = '0.80.29'`, 세이브의 `resetGrant`. 찍어 둔 칸은 그대로.
+- **싸울 때도 8방향 갑옷 한 벌** — 사용자: 「기사 갑옷 · 용린 투구인데 인게임 스킨 및 색이 그대로」(일반 캐릭터) → 미리보기로 원인(싸움 · 보스 화면은 예전 그림)을 보이고 「코드로 바로」.
+- **화면의 소수는 두 자리** — 사용자: 「모든 소수점은 2자리까지만 (md)」 — 규칙을 PROJECT-RULES 1 에 적었다.
 
 ## 같이 정해진 것 (Fable 몫의 물음에 대한 답)
 

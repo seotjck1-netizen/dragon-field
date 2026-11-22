@@ -29,6 +29,13 @@ export const SAVE_VERSION = 8;
 export const SAVE_EPOCH = '0.80.20';
 
 /**
+ * 0.80.29 — 스킬 트리 57칸의 숫자를 다시 짰다(사용자 「57개 전부 다시 짜기」 · 「공짜 초기화 한 번 줌」).
+ * 찍어 둔 칸은 그대로 두고, 이 표시가 없는 세이브에는 처음 들어올 때 **공짜 초기화가 한 번 이상** 남게 한다(쌓이지 않는다).
+ * 숫자를 또 크게 바꾸는 판이면 이 값을 그 판 번호로 바꾼다 — 그러면 모두에게 한 번 더.
+ */
+export const RESET_GRANT = '0.80.29';
+
+/**
  * 아이디를 쓸 수 있나.
  *
  * @param {string} id
@@ -129,6 +136,8 @@ export function serializeSave(state) {
     skillPoints: p.skillPoints || 0,
     // 0.80.02 — 남은 공짜 초기화(스킬 트리로 바뀌는 날 모두에게 한 번)
     freeResets: p.freeResets || 0,
+    // 0.80.29 — 받은 공짜 초기화 판(RESET_GRANT)
+    resetGrant: p.resetGrant || null,
     quickSlots: [...(state.quickSlots || [])],
     quests: state.quests ? JSON.parse(JSON.stringify(state.quests)) : null,
     returnGate: state.returnGate ? { ...state.returnGate } : null,
@@ -280,6 +289,10 @@ export function applySave(state, save) {
   p.skillPoints = (save.skillPoints || 0) + skillMove.refunded;
   // 공짜 초기화 — 트리로 바뀐 날 한 번. 그 뒤 판은 남은 몫을 그대로 읽는다.
   p.freeResets = tree ? 1 : Math.max(0, Math.floor(Number(save.freeResets) || 0));
+  // 0.80.29 — 숫자를 다시 짠 판의 공짜 초기화(한 사람에게 한 번 · 쌓이지 않는다)
+  const granted = save.resetGrant !== RESET_GRANT && !tree;
+  if (granted) p.freeResets = Math.max(1, p.freeResets);
+  p.resetGrant = RESET_GRANT;
 
   // 돌려준 포인트가 있으면 알려 줄 수 있게 남긴다.
   // 표에서 어떤 스킬의 최대 단계를 낮추면(예: 5 → 3) 이미 그만큼 찍어 둔 사람은
@@ -289,6 +302,7 @@ export function applySave(state, save) {
     skill: skillMove.refunded,
     reborn,
     tree,
+    granted,
   };
 
   state.inventory = (save.inventory || [])

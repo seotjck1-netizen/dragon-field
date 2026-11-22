@@ -389,7 +389,8 @@ export class CharacterPanel {
       if (id.startsWith('_')) continue;
       const own = p.stats?.[id] || 0;
       const total = eff[id] || 0;
-      const fromGear = total - own;
+      // 화면의 소수는 두 자리까지(사용자 규칙) — 0.1 을 더해 가면 8.399999999999999 같은 꼬리가 붙는다
+      const fromGear = Number(round2(total - own));
       // 0.42 — 표의 숫자는 '몇 레벨마다' 가 아니라 **차례**(1등·2등·3등)다.
       // 화면에는 사람이 바로 쓰는 말로 옮긴다 — 열 레벨에 몇 점 오르는지.
       const share = shares[id] || 0;
@@ -403,7 +404,7 @@ export class CharacterPanel {
       setHtml(li, `
         <span class="char-icon">${def.icon || '·'}</span>
         <div class="char-text">
-          <span class="char-name">${def.name} <b>${total}</b></span>
+          <span class="char-name">${def.name} <b>${round2(total)}</b></span>
           <span class="char-desc">${def.desc}</span>
           ${def.long ? `<span class="char-long">${def.long}</span>` : ''}
           <span class="char-total">${rate}${
