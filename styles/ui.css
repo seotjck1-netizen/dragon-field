@@ -5602,7 +5602,8 @@ body.is-portrait .tc-root > * {
    눈에 들어와야 한다 — 글씨로만 적어 두면 못 보고 초기화를 누른다. */
 /* 리젠 상자(0.70.18)는 시즌 상자와 생김새만 같다 — 이름은 다르다. */
 .admin-seasonbox,
-.admin-regenbox {
+.admin-regenbox,
+.admin-poinobox {
   margin-bottom: 16px;
   padding: 12px 14px;
   border: 1px solid rgba(255, 255, 255, 0.12);

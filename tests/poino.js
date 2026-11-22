@@ -8,6 +8,7 @@
 //   · 로그인한 계정을 포이노 닉네임과 잇는다 · 한 이름에는 한 계정만 · 로그인 응답에 이어 둔 이름이 온다
 //   · Lv.20 에 처음 닿으면 · 5단계 보스를 처음 눕히면 · 탑 층을 오르면 그 주말 자리에 올라간다(서버가 잰 값)
 //   · 운영자는 잇지 못한다
+//   연결 시험(0.80.28) — 빈 환경변수를 이름으로 알린다 · 로그인 실패는 까닭과 함께 · 평일에도 써 보고 지운다 · 운영자만
 const http = require('http');
 const { startServer, hashPw } = require('./lib/server.js');
 const { tally } = require('./lib/harness.js');
@@ -40,6 +41,12 @@ function fakeFirebase() {
         at[keys[keys.length - 1]] = JSON.parse(raw);
         puts.push({ path: keys.join('/'), body: JSON.parse(raw) });
         return res.end(raw);
+      }
+      if (req.method === 'DELETE') {
+        let at = tree;
+        for (const k of keys.slice(0, -1)) at = at && at[k];
+        if (at) delete at[keys[keys.length - 1]];
+        return res.end('null');
       }
       let at = tree;
       for (const k of keys) at = at && at[k];
@@ -93,6 +100,30 @@ function fakeFirebase() {
     check('더 나은 기록만 — 시간은 짧아질 때만, 층은 높아질 때만',
       r4.kept && r5.ok && !r5.kept && r6.kept && r7.ok && puts.length === 4,
       JSON.stringify({ r4, r6, n: puts.length }));
+
+    // 연결 시험(0.80.28) — 주말이 아니어도 로그인 · 쓰기 · 지우기를 해 본다
+    const tcalls = [];
+    const tfetch = (loginOk) => async (url, opt) => {
+      tcalls.push({ url, method: opt.method, body: opt.body });
+      if (url.includes('signInWithPassword')) {
+        return loginOk ? { ok: true, json: async () => ({ idToken: 'T', expiresIn: '3600' }) }
+          : { ok: false, status: 400, json: async () => ({ error: { message: 'INVALID_LOGIN_CREDENTIALS' } }) };
+      }
+      return { ok: true, json: async () => ({}) };
+    };
+    const tEmpty = await createPoino({ store, env: { POINO_FB_API_KEY: 'k' }, fetchImpl: tfetch(true), now: () => MON }).test();
+    const tBad = await createPoino({ store, env, fetchImpl: tfetch(false), now: () => MON }).test();
+    tcalls.length = 0;
+    const tOk = await createPoino({ store, env: { ...env, POINO_FB_EMAIL: ' e\n' }, fetchImpl: tfetch(true), now: () => MON }).test();
+    const TEST_URL = 'https://db.example/leaderboards/dragonfield_weekend/_test.json?auth=T';
+    check('연결 시험 — 빈 환경변수를 이름으로 알린다 · 로그인 실패는 까닭과 함께',
+      !tEmpty.ok && /POINO_FB_EMAIL · POINO_FB_PASSWORD · POINO_FB_DB_URL/.test(tEmpty.message)
+        && !tBad.ok && /INVALID_LOGIN_CREDENTIALS/.test(tBad.message) && /POINO_FB_EMAIL/.test(tBad.message),
+      `${tEmpty.message} / ${tBad.message}`);
+    check('연결 시험 — 평일에도 시험 칸을 썼다 지운다 · 붙여 넣다 딸려 온 빈칸은 지운다',
+      tOk.ok && JSON.parse(tcalls[0].body).email === 'e'
+        && tcalls.some((c) => c.method === 'PUT' && c.url === TEST_URL) && tcalls.some((c) => c.method === 'DELETE' && c.url === TEST_URL),
+      JSON.stringify({ tOk, calls: tcalls.map((c) => `${c.method} ${c.url}`) }));
   }
 
   // ══ 2. 서버 ══════════════════════════════════════════════
@@ -196,6 +227,12 @@ function fakeFirebase() {
     if (adm && adm.token) {
       const la = await call('/api/poino/link', { id: 'admin', token: adm.token, name: '관리자' });
       check('운영자는 포이노와 잇지 못한다', !la.ok, la.reason);
+      const pt = await call('/api/admin/poino-test', { id: 'admin', token: adm.token });
+      const ptNo = await call('/api/admin/poino-test', { id: 'pnA', token: t1 });
+      const left = ((fb.tree.leaderboards || {}).dragonfield_weekend || {})._test;
+      check('운영자 창 연결 시험 — 가짜 Firebase 에 로그인해 시험 칸을 썼다 지운다 · 운영자만',
+        pt.ok && !ptNo.ok && fb.puts.some((p) => p.path === 'leaderboards/dragonfield_weekend/_test') && left === undefined,
+        JSON.stringify({ pt, ptNo: ptNo.error || ptNo.reason, left }));
     }
   } finally {
     srv.stop();

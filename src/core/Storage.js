@@ -457,6 +457,12 @@ export class Storage {
     return this._post('/api/admin/sheet-pull', { id, token }, 30000);
   }
 
+  /** 포이노 연결 시험 (0.80.28) — 서버가 포이노 Firebase 에 로그인해 시험 칸을 썼다 지운다. */
+  async adminPoinoTest(id, token) {
+    if (!this.isServer) return { ok: false, offline: true };
+    return this._post('/api/admin/poino-test', { id, token }, 30000);
+  }
+
   /** 지금 어느 구글 문서를 보고 있나 (0.51). */
   async adminSheetInfo(id, token) {
     if (!this.isServer) return { ok: false, offline: true };

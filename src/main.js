@@ -3736,6 +3736,17 @@ async function runGame({ db, assets, bus, storage, account, save, viewport, soun
     }
   });
 
+  // 0.80.28 — 포이노 연결 시험. 주말 전에 Render 환경변수 넷이 맞는지 본다.
+  bus.on('admin:poino-test', async () => {
+    try {
+      const res = await storage.adminPoinoTest(account.id, account.token);
+      if (!res || res.offline) throw new Error('서버에 닿지 못했습니다.');
+      adminPanel.setStatus(res.message || '알 수 없는 답입니다.', res.ok ? 'good' : 'bad');
+    } catch (err) {
+      adminPanel.setStatus(err.message || '시험하지 못했습니다.', 'bad');
+    }
+  });
+
   bus.on('admin:sheet-info', async () => {
     try {
       const res = await storage.adminSheetInfo(account.id, account.token);
