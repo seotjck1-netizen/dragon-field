@@ -84,6 +84,10 @@ const NEVER_SERVE = ['server', 'node_modules', '.git', '.env'];
 
 const store = createStore();
 const world = createWorld(store);
+// 0.80.27 — 포이노 주말의 게임: 이 서버가 잰 기록을 포이노 Firebase 에 올린다(환경변수가 없으면 꺼짐 · server/poino.js)
+const { createPoino, cleanName: cleanPoino } = require('./poino');
+const poino = createPoino({ store });
+const POINO_BOSS = 'imp_captain'; // 5단계 보스(악마 정찰대장)
 
 // 서쪽 절벽의 고룡 — 서버가 체력을 들고 있다.
 // 여럿이 같은 놈을 때려야 "누가 제일 많이 때렸나"를 물을 수 있기 때문이다.
@@ -441,6 +445,8 @@ const api = {
       // 0.80.20 — 옛 판의 세이브는 주지 않는다(아래 /api/load 와 같은 까닭)
       save: acct.save && epoch.isCurrentSave(acct.save) ? acct.save : null,
       ...(notice ? { seasonNotice: notice } : {}),
+      // 0.80.27 — 이어 둔 포이노 닉네임(게임이 다시 묻지 않게)
+      poino: acct.poino || null,
     };
   },
 
@@ -480,12 +486,22 @@ const api = {
     // 속일 수 있지만 속여서 얻을 것이 없다 — 자세한 까닭은 playclock.addSkipped 참고.
     const owed = playclock.addSkipped(acct, body.skippedMs);
 
-    await store.set(id, {
+    const next = {
       ...acct,
       ...born,
       ...(owed || playclock.tick(acct)),
       save: { ...body.save, savedAt: new Date().toISOString() },
-    });
+    };
+    // 0.80.27 — 이 캐릭터가 처음 Lv.20 에 닿은 시간(접속해 있던 시간)을 적는다. 다시 도전하면 지운다(restartAccount).
+    //   레벨은 세이브의 값이다 — 랭킹의 레벨과 같은 믿음. 포이노 주말의 게임(Lv.20 도달)에 올린다.
+    const reach = acct.reach && typeof acct.reach === 'object' ? acct.reach : {};
+    const lv = Math.floor(Number(body.save.level) || 0);
+    if (lv >= 20 && !reach.lv20) {
+      const ms = Math.max(1000, Math.floor(playclock.playedMs(next) / 1000) * 1000);
+      next.reach = { ...reach, lv20: ms };
+      if (!(ADMIN_KEY && id === ADMIN_ID)) poino.fire(next, 'lv20', { ms });
+    }
+    await store.set(id, next);
     return { ok: true };
   },
 
@@ -504,7 +520,7 @@ const api = {
     // 0.80.20 — 새로 시작한 뒤에 옛 판(배포 중 잠깐 겹쳐 돈 옛 서버 등)이 써 넣은 옛 세이브는 주지 않는다.
     //   지우지는 않는다 — 다음 저장이 새 세이브로 덮는다(옛 것은 이미 보관해 두었다).
     const save = acct.save && epoch.isCurrentSave(acct.save) ? acct.save : null;
-    return { save, ...(notice ? { seasonNotice: notice } : {}) };
+    return { save, ...(notice ? { seasonNotice: notice } : {}), poino: acct.poino || null };
   },
 
   // ---- 우편함 ----
@@ -601,6 +617,10 @@ const api = {
     const played = playclock.playedMs(acct);
     if (played > 0) await store.set(id, ticked);
     const firstKill = acct.firstKill && typeof acct.firstKill === 'object' ? acct.firstKill : {};
+    // 0.80.27 — 포이노 주말의 게임(5단계 보스 타임어택). 시즌이 닫혀 있어도 이 캐릭터의 첫 처치면 올린다.
+    if (bossId === POINO_BOSS && !firstKill[bossId] && played > 0) {
+      poino.fire(ticked, 'boss5', { ms: Math.max(1000, Math.floor(played / 1000) * 1000) });
+    }
     const res = await world.submitRank(bossId, {
       id,
       // 0.66 — 랭킹에 남는 이름은 **캐릭터 이름**이다.
@@ -682,7 +702,10 @@ const api = {
   '/api/tower/clear': async (body, req) => {
     limit(req, 'towerclear', 120, 60000);
     const { id, acct } = await authed(body);
-    return tower.clear(id, acct, String(body.runId || '').slice(0, 40), body.floor);
+    const res = await tower.clear(id, acct, String(body.runId || '').slice(0, 40), body.floor);
+    // 0.80.27 — 포이노 주말의 게임(탑 최고층). 운영자는 오르지 않는다
+    if (res && res.ok && !res.admin) poino.fire(acct, 'tower', { floor: res.floor });
+    return res;
   },
   '/api/tower/end': async (body, req) => {
     limit(req, 'towerend', 60, 60000);
@@ -729,6 +752,38 @@ const api = {
   // ⚠ 되돌릴 수 없는 일이다. 그래서 **손님 말만 믿지 않는다** —
   //   토큰으로 본인임을 확인하고, 한 시간에 여섯 번으로 묶는다.
   //   (실수로 두 번 누르는 것과, 남의 열쇠를 주워 장난치는 것 둘 다 막는다)
+  // ---- 포이노 연결 (0.80.27) ----
+  //
+  // 포이노(poinolunch)가 게임 주소에 #poino=닉네임 을 붙여 보낸다. 게임은 로그인 뒤 한 번 묻고 여기로 보낸다.
+  // 포이노 이름 하나에는 드래곤필드 계정 하나만(먼저 연결한 쪽). 운영자는 잇지 않는다(순위에 안 오른다).
+  // 포이노 닉네임에는 비밀번호가 없다 — 그래서 닉네임으로 로그인하게 하지 않고, 이미 로그인한 계정에 이름표만 붙인다.
+  '/api/poino/link': async (body, req) => {
+    limit(req, 'poinolink', 20, 60000);
+    const { id, acct } = await authed(body);
+    if (ADMIN_KEY && id === ADMIN_ID) return { ok: false, reason: '운영자는 포이노 순위에 오르지 않습니다.' };
+    const name = cleanPoino(body.name);
+    if (!name) return { ok: false, reason: '포이노 이름을 알 수 없습니다.' };
+    const links = (await store.getDoc('poinolinks')) || {};
+    if (links[name] && links[name] !== id) {
+      return { ok: false, reason: `「${name}」은(는) 이미 다른 드래곤필드 계정과 연결되어 있습니다.` };
+    }
+    for (const [n, who] of Object.entries(links)) if (who === id && n !== name) delete links[n];
+    links[name] = id;
+    await store.setDoc('poinolinks', links);
+    await store.set(id, { ...acct, poino: name });
+    return { ok: true, name };
+  },
+  '/api/poino/unlink': async (body, req) => {
+    limit(req, 'poinolink', 20, 60000);
+    const { id, acct } = await authed(body);
+    const links = (await store.getDoc('poinolinks')) || {};
+    for (const [n, who] of Object.entries(links)) if (who === id) delete links[n];
+    await store.setDoc('poinolinks', links);
+    const { poino: _gone, ...rest } = acct;
+    await store.set(id, rest);
+    return { ok: true };
+  },
+
   '/api/account/restart': async (body, req) => {
     limit(req, 'restart', 6, 3600000);
     const { id } = await authed(body);

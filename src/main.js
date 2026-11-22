@@ -98,6 +98,7 @@ import { CodexPanel } from './ui/CodexPanel.js';
 import { TowerPanel } from './ui/TowerPanel.js';
 import { LootPanel } from './ui/LootPanel.js';
 import { ArenaPanel } from './ui/ArenaPanel.js';
+import { askPoino } from './ui/PoinoPrompt.js';
 import { AdminPanel, SEASON_GIFT } from './ui/AdminPanel.js';
 import { CastBar } from './ui/CastBar.js';
 import { UpdateBanner } from './ui/UpdateBanner.js';
@@ -325,6 +326,15 @@ function createInitialState(db, playerName, classId, body = null) {
 // ============================================================================
 
 export async function startGame(providedDb = null) {
+  // 0.80.27 — 포이노(poinolunch)에서 왔다: 주소 끝의 #poino=닉네임 을 받아 둔다(로그인 뒤 한 번 묻는다).
+  //   주소에서는 바로 지운다 — 새로 고침 · 즐겨찾기에 남지 않게.
+  try {
+    const m = /[#&]poino=([^&]+)/.exec(location.hash || '');
+    if (m) {
+      sessionStorage.setItem('poino_name', decodeURIComponent(m[1]).slice(0, 20));
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+  } catch { /* 주소를 못 읽어도 게임은 그대로 */ }
   const bootEl = document.getElementById('boot');
 
   // 화면 맞추기는 데이터를 받기 전에 켠다 — 로그인 화면부터 잘리지 않게.
@@ -507,7 +517,7 @@ export async function startGame(providedDb = null) {
         assets,
         bus,
         storage,
-        account: { id, token: result.token, name: nick || result.name || id, classId, body: body || null },
+        account: { id, token: result.token, name: nick || result.name || id, classId, body: body || null, poino: result.poino || null },
         bodyLook,
         save: result.save || null,
         // 시즌이 넘어간 사이에 자고 있었다면, 들어오자마자 그 사실을 알려 준다.
@@ -4715,6 +4725,34 @@ async function runGame({ db, assets, bus, storage, account, save, viewport, soun
   // 이번 시즌의 직업을 아직 안 골랐으면 여기서 묻는다.
   // (세이브가 있든 없든 물어야 한다 — 고르기 전에 껐다 켠 사람도 세이브가 생긴다)
   askClassIfNeeded();
+
+  // 0.80.27 — 포이노 주말의 게임: 포이노에서 왔으면(#poino=닉네임) 한 번 묻고 이 계정을 그 닉네임과 잇는다.
+  //   직업 고르기 · 다른 창이 떠 있으면 닫힐 때까지 기다린다. '나중에' 면 이번엔 묻지 않는다(포이노에서 다시 오면 또 묻는다).
+  (function askPoinoLink(tries = 0) {
+    let want = null;
+    try { want = sessionStorage.getItem('poino_name'); } catch { /* */ }
+    if (!want || !online()) return;
+    if (account.poino === want) { try { sessionStorage.removeItem('poino_name'); } catch { /* */ } return; }
+    if ((store.state.needClassPick || anyPanelOpen()) && tries < 60) { setTimeout(() => askPoinoLink(tries + 1), 2000); return; }
+    askPoino({
+      root: document.getElementById('ui-layer') || document.body,
+      name: want,
+      was: account.poino,
+      onAnswer: async (yes) => {
+        try { sessionStorage.removeItem('poino_name'); } catch { /* */ }
+        if (!yes) return;
+        try {
+          const res = await storage.poinoLink(account.id, account.token, want);
+          if (res && res.ok) {
+            account.poino = res.name;
+            bus.emit('toast', { text: `포이노 「${res.name}」와 연결했다 — 주말의 게임 기록이 포이노 순위에 올라간다.`, tone: 'good' });
+          } else bus.emit('toast', { text: (res && res.reason) || '연결하지 못했다.', tone: 'bad' });
+        } catch (err) {
+          bus.emit('toast', { text: `연결하지 못했다 — ${err.message}`, tone: 'bad' });
+        }
+      },
+    });
+  })();
 
   // ===================== 입력 라우팅 =====================
   bus.on('input:action', (action) => {

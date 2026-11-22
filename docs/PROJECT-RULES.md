@@ -21,7 +21,7 @@
 
 | 무엇 | 규칙 |
 |---|---|
-| zip | **30MB 이하**(0.80.27 에 약 29.9MB — 빠듯하다), `upload.bat` 꼭 포함. 목록 = `git ls-files -co --exclude-standard`(있는 파일만) − `dragon-field-tables.xlsx`. 압축 안 맨 위에 폴더 없이 |
+| zip | **30MB 이하**(0.80.27 에 28.6MB), `upload.bat` 꼭 포함. 목록 = `git ls-files -co --exclude-standard`(있는 파일만) − `dragon-field-tables.xlsx`. 압축 안 맨 위에 폴더 없이 |
 | 한 장짜리 html | **20MB 미만** — `node tools/build-single-file.js` → `dist/dragon-field.html`. base64 라 그림은 1.33배로 붙는다. 0.80.27 부터 굽는 길에 그림(몸 · 몬스터 · 옛 직업 · 마을 사람 · 타이틀)을 **품질 60 · 투명 75 로 다시 압축해 박는다**(`tools/pack-single.py` — 사용자가 고른 B안, 저장소 그림은 원본 그대로 · python3 + PIL 필요). 갑옷 한 벌 8방향(`dir8:<몸>:<등급>`)은 html 에 넣지 않는다(`SINGLE_SKIP` — 넣으면 21MB). 그래도 넘으면 `python3 tools/pack-webp.py` 로 png → webp |
 | xlsx | 표가 바뀐 판에만 — `node tools/sheets.js export && node tools/make-xlsx.js` |
 | 미리보기 | 바뀐 것을 보여 주는 그림 한두 장 |
@@ -40,6 +40,8 @@
 - `server/data-*/` 는 비밀 파일이다 — `.gitignore` · `tools/upload.js` 가 막는다.
 - 시험은 임시 폴더에서 돈다(`tests/lib/server.js` — `POINO_DATA_DIR` · `POINO_CONTENT_DIR`). 진짜 계정 폴더를 건드리는 시험을 만들지 않는다.
 
+- **포이노 주말의 게임(0.80.27)** — 포이노 Firebase 의 `leaderboards/dragonfield_weekend` 는 **이 서버만** 쓴다(포이노 규칙이 그 이메일 계정에만 연다). 값은 서버가 잰 것만(playclock · tower.clear). 포이노 닉네임으로 로그인하게 하지 않는다(비밀번호가 없다) — 로그인한 계정에 이름표만(`/api/poino/link`). 운영자는 잇지 않는다. 비밀번호 · 키는 Render 환경변수에만.
+
 ## 4. 표 · 구글 시트
 
 | 무엇 | 규칙 |
@@ -49,6 +51,7 @@
 | 서버 자동 반영 | 서버가 시트를 주기적으로 읽어 `server/content` 를 덮는다. 그래서 **시트가 옛 판이면 새 값이 옛 값으로 돌아간다** — 판을 낼 때 표가 바뀌었으면 시트도 같이 바꾼다. 트리 전 옛 skills 탭은 반영을 막아 두었다(`staleSkills`) |
 | JSON | `drops.json` · `quests.json` 을 `JSON.stringify` 로 통째로 다시 쓰지 않는다(손으로 맞춘 서식 · 주석이 깨진다). 표 서식은 `server/sheets.js` 의 `format*` 로 |
 | 고친 뒤 | `src/data/*.json` 을 고치면 `server/content/` 도 같게. `node tools/sheets.js check` |
+| 참고 칸 | 탭의 「…(참고)」 칸(예: npcs 의 첫 대사 · 보이는 이름)은 **게임이 읽지 않는다** — 사람이 보라고 붙인 것. 대사는 `npcs.json` 에서 고친다(0.80.27 — 사용자가 시트 참고 칸에서 고친 탑지기 대사를 파일로 옮겼다) |
 
 ## 5. 시험
 

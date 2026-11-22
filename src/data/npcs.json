@@ -1,8 +1,8 @@
 {
   "shopkeeper": {
-    "name": "잡화상 은쥐",
+    "name": "잡화상 금지",
     "title": "잡화상",
-    "given": "은쥐",
+    "given": "금지",
     "sprite": "npc_shopkeeper",
     "quick": true,
     "lines": [
@@ -34,9 +34,9 @@
     ]
   },
   "blacksmith": {
-    "name": "대장장이 음써니",
+    "name": "대장장이 욘써니",
     "title": "대장장이",
-    "given": "음써니",
+    "given": "욘써니",
     "sprite": "npc_blacksmith",
     "quick": true,
     "lines": [
@@ -467,15 +467,15 @@
     ]
   },
   "tower_keeper": {
-    "name": "탑지기 무영",
+    "name": "탑지기 경서",
     "title": "탑지기",
-    "given": "무영",
+    "given": "경서",
     "sprite": "npc_warden",
     "_그림": "0.80.22 — 지하감옥 간수의 그림을 잠깐 빌려 쓴다. 에셋 작업 때 새로 그린다(docs/HANDOFF-0.80.md).",
     "borrowedLook": "dungeon_warden",
     "quick": true,
     "lines": [
-      "동쪽 하늘 끝에 탑이 하나 서 있네. 꼭대기를 본 사람은 아무도 없지.",
+      "이 탑이 하늘로 서 있네. 꼭대기를 본 사람은 아무도 없지.",
       "한 층에 한 판. 다섯 층마다 그 땅의 주인이 기다리고, 그걸 넘기면 숨을 고르게 해 주지.\n그 사이에는 깎인 몸 그대로 올라가야 하네.",
       "쓰러져도 잃는 건 없네. 여기서 눈을 뜨고, 다시 오르면 그만이야.\n이번 주에 오른 곳까지는 열 층마다 끊어 두었다가 거기서 시작하게 해 주지.",
       "주가 바뀌면 탑도 처음부터일세. 가장 높이 오른 다섯에게는 내가 우편을 보내지."
@@ -486,9 +486,9 @@
     }
   },
   "arena_master": {
-    "name": "결투장 관리인 단호",
+    "name": "결투장 관리인 이경",
     "title": "결투장 관리인",
-    "given": "단호",
+    "given": "이경",
     "sprite": "npc_guard",
     "_그림": "0.80.24 — 성문 위병의 그림을 잠깐 빌려 쓴다. 에셋 작업 때 새로 그린다(docs/HANDOFF-0.80.md).",
     "borrowedLook": "gate_guard",
