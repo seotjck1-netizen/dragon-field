@@ -1093,6 +1093,13 @@ const api = {
    * 지금 어느 문서를 보고 있나 (0.51).
    * 운영자 창 표 단이 이걸 띄워 준다 — "왜 안 읽히지" 의 답이 거의 언제나 여기 있다.
    */
+  /** 0.80.28 — 포이노 연결 시험. 주말이 아니어도 환경변수 · Firebase 로그인 · DB 쓰기를 확인한다(server/poino.js test). */
+  '/api/admin/poino-test': async (body, req) => {
+    limit(req, 'adminpoino', 10, 60000);
+    await adminOnly(body);
+    return poino.test();
+  },
+
   '/api/admin/sheet-info': async (body, req) => {
     limit(req, 'adminsheet', 30, 60000);
     await adminOnly(body);

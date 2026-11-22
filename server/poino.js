@@ -50,10 +50,11 @@ const BETTER = {
  * @param {{store:object, env?:object, fetchImpl?:Function, now?:()=>number, log?:Function}} opts
  */
 function createPoino({ store, env = process.env, fetchImpl = globalThis.fetch, now = null, log = console.log } = {}) {
-  const KEY = env.POINO_FB_API_KEY || '';
-  const EMAIL = env.POINO_FB_EMAIL || '';
-  const PASS = env.POINO_FB_PASSWORD || '';
-  const DB = String(env.POINO_FB_DB_URL || '').replace(/\/+$/, '');
+  // 0.80.28 — 앞뒤 빈칸 · 줄바꿈은 지운다(Render 화면에 붙여 넣다 딸려 오면 로그인이 안 된다)
+  const KEY = String(env.POINO_FB_API_KEY || '').trim();
+  const EMAIL = String(env.POINO_FB_EMAIL || '').trim();
+  const PASS = String(env.POINO_FB_PASSWORD || '').trim();
+  const DB = String(env.POINO_FB_DB_URL || '').trim().replace(/\/+$/, '');
   const AUTH = String(env.POINO_FB_AUTH_URL || 'https://identitytoolkit.googleapis.com').replace(/\/+$/, '');
   const shift = Number(env.POINO_CLOCK_SHIFT_MS) || 0;
   const clock = now || (() => Date.now() + shift);
@@ -68,7 +69,7 @@ function createPoino({ store, env = process.env, fetchImpl = globalThis.fetch, n
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: EMAIL, password: PASS, returnSecureToken: true }),
     });
-    if (!r.ok) throw new Error(`포이노 로그인 실패 ${r.status}`);
+    if (!r.ok) throw new Error(`포이노 로그인 실패 ${r.status}${await why(r)}`);
     const j = await r.json();
     token = j.idToken;
     tokenUntil = clock() + Math.max(60, (Number(j.expiresIn) || 3600) - 120) * 1000;
@@ -98,7 +99,7 @@ function createPoino({ store, env = process.env, fetchImpl = globalThis.fetch, n
     const t = await idToken();
     const url = `${DB}/leaderboards/dragonfield_weekend/${sat}/${metric}/${encodeURIComponent(name)}.json?auth=${encodeURIComponent(t)}`;
     const r = await fetchImpl(url, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(row) });
-    if (!r.ok) throw new Error(`포이노에 못 썼습니다 ${r.status}`);
+    if (!r.ok) throw new Error(`포이노에 못 썼습니다 ${r.status}${await why(r)}`);
     doc[metric] = { ...(doc[metric] || {}), [name]: row };
     await store.setDoc(docKey, doc);
     log(`✓ 포이노 주말 기록 — ${name} ${metric} ${rec.ms != null ? `${Math.round(rec.ms / 1000)}초` : `${rec.floor}층`} (${sat})`);
@@ -111,7 +112,54 @@ function createPoino({ store, env = process.env, fetchImpl = globalThis.fetch, n
     record(acct, metric, rec).catch((err) => log(`⚠ 포이노 주말 기록 — ${err.message}`));
   }
 
-  return { enabled, record, fire, weekendSatOf, cleanName };
+  /**
+   * 운영자 창 「포이노 연결 시험」(0.80.28) — 주말이 아니어도 환경변수 · 로그인 · DB 쓰기를 확인한다.
+   * leaderboards/dragonfield_weekend/_test 에 시각 하나를 썼다가 바로 지운다(포이노는 날짜 칸만 읽는다).
+   * @returns {Promise<{ok:boolean, message:string}>}
+   */
+  async function test() {
+    const missing = Object.entries({ POINO_FB_API_KEY: KEY, POINO_FB_EMAIL: EMAIL, POINO_FB_PASSWORD: PASS, POINO_FB_DB_URL: DB })
+      .filter(([, v]) => !v).map(([k]) => k);
+    if (missing.length) return { ok: false, message: `Render 환경변수가 비어 있습니다 — ${missing.join(' · ')}` };
+    if (!fetchImpl) return { ok: false, message: '이 서버의 Node 에 fetch 가 없습니다(Node 18 이상).' };
+    token = null; // 들고 있던 열쇠 말고 지금 값으로 새로 로그인해 본다
+    try {
+      await idToken();
+    } catch (err) {
+      const m = err.message;
+      const hint = /API key|API_KEY/i.test(m) ? 'POINO_FB_API_KEY(웹 API 키)를 확인하세요.'
+        : /referer|blocked|403/i.test(m) ? 'Google Cloud 에서 이 API 키를 웹사이트 주소로 제한해 두었습니다.'
+          : /DISABLED|NOT_ALLOWED/i.test(m) ? 'Firebase Authentication 에서 이메일/비밀번호 로그인을 켜 주세요.'
+            : /fetch failed|ENOTFOUND|ECONN/i.test(m) ? '서버가 Google 로그인 주소에 닿지 못했습니다.'
+              : 'POINO_FB_EMAIL · POINO_FB_PASSWORD 가 Firebase 에 만든 사용자와 같은지 확인하세요.';
+      return { ok: false, message: `${m} — ${hint}` };
+    }
+    const url = `${DB}/leaderboards/dragonfield_weekend/_test.json?auth=${encodeURIComponent(token)}`;
+    try {
+      const w = await fetchImpl(url, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ at: clock() }) });
+      if (!w.ok) {
+        const hint = w.status === 401 || w.status === 403
+          ? `DB 규칙의 이메일이 POINO_FB_EMAIL(${EMAIL})과 같은지, 규칙을 게시했는지 확인하세요.`
+          : 'POINO_FB_DB_URL(Realtime Database 주소)을 확인하세요.';
+        return { ok: false, message: `로그인은 됐지만 DB 에 못 썼습니다 ${w.status}${await why(w)} — ${hint}` };
+      }
+      await fetchImpl(url, { method: 'DELETE' }).catch(() => null);
+    } catch (err) {
+      return { ok: false, message: `로그인은 됐지만 DB 주소에 닿지 못했습니다(${err.message}) — POINO_FB_DB_URL 을 확인하세요.` };
+    }
+    return { ok: true, message: `연결됐습니다 — ${EMAIL} 로 로그인해 포이노 DB 에 시험 기록을 썼다 지웠습니다. 주말 기록이 올라갑니다.` };
+  }
+
+  return { enabled, record, fire, test, weekendSatOf, cleanName };
+}
+
+/** Firebase 가 돌려준 실패 까닭(있으면) — 「 (INVALID_LOGIN_CREDENTIALS)」 처럼 붙인다. 비밀번호 · 열쇠는 들어 있지 않다. */
+async function why(r) {
+  try {
+    const j = await r.json();
+    const m = j && j.error && (j.error.message || j.error);
+    return m ? ` (${String(m).slice(0, 120)})` : '';
+  } catch { return ''; }
 }
 
 module.exports = { createPoino, weekendSatOf, cleanName };

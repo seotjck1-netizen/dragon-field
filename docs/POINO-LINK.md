@@ -96,3 +96,4 @@
 2. Firebase 콘솔 → Realtime Database → 규칙에 포이노 저장소의 `database.rules.json` 을 게시
 3. Render(드래곤필드 서버) 환경변수 넷: `POINO_FB_API_KEY`(포이노의 웹 API 키 — `VITE_FB_API_KEY` 와 같은 값) · `POINO_FB_EMAIL` · `POINO_FB_PASSWORD` · `POINO_FB_DB_URL`(포이노의 `VITE_FB_DATABASE_URL`)
 4. 드래곤필드 0.80.27 · 포이노 새 판을 올린다 — 순서는 상관없다(둘 다 없는 쪽을 기다리며 조용히 있는다). 11/28 전에.
+5. (0.80.28) 운영자 계정으로 접속 → 운영자 창 → **랭킹** → **「포이노 연결 시험」** — 「연결됐습니다」가 뜨면 1 ~ 3이 맞다. 틀리면 무엇을 고칠지 알려 준다.

@@ -565,6 +565,22 @@ export class AdminPanel {
             : '<p class="admin-note">이 땅에는 보스가 없습니다. 보스가 있는 땅으로 가서 누르세요.</p>'}
         </div>
 
+        ${/* ── 포이노 연결 시험 (0.80.28) ──────────────────────
+             주말의 게임 기록은 토 · 일에만 올라가서, Render 환경변수가 틀려도 주말이 와야 안다.
+             5단계 보스는 캐릭터마다 한 번뿐이라 그때 틀리면 그 기록은 다시 못 올린다. 그래서 미리 본다. */ ''}
+        <div class="admin-poinobox">
+          <div class="admin-seasonbox-head">
+            <span class="admin-seasonnow">포이노 <b>주말의 게임</b></span>
+          </div>
+          <p class="admin-note">
+            서버가 포이노 Firebase 에 로그인해 시험 기록 하나를 썼다 지웁니다. 주말이 아니어도 됩니다 —
+            Render 환경변수 넷(<code>POINO_FB_*</code>)이 맞는지 여기서 확인하세요.
+          </p>
+          <button class="primary-btn" type="button" data-poino-test ${this.busy ? 'disabled' : ''}>
+            ${this.busy ? '확인 중…' : '포이노 연결 시험'}
+          </button>
+        </div>
+
         ${/* ── 시즌 다루기 (0.45) ────────────────────────────
              시험 중인 서버에서는 초기화를 몇 번씩 하게 되는데, 그때마다 시즌이
              올라가면 "1 시즌 기록" 이 영영 안 남는다. 그래서 두 가지를 둔다:
@@ -1138,6 +1154,15 @@ export class AdminPanel {
     // busy 로 잠그지 않는다(누르면 그 프레임에 끝난다).
     const bossNow = q('[data-boss-now]');
     if (bossNow) bossNow.addEventListener('click', () => this.bus.emit('admin:boss-now'));
+
+    const poinoTest = q('[data-poino-test]');
+    if (poinoTest) {
+      poinoTest.addEventListener('click', () => {
+        this.busy = true;
+        this.render();
+        this.bus.emit('admin:poino-test');
+      });
+    }
 
     const resetAll = q('[data-reset-all]');
     if (resetAll) {
