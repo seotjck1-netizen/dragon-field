@@ -146,8 +146,8 @@
       "max": 4,
       "branch": "A",
       "tier": 1,
-      "desc": "방어력 +16.5%",
-      "effect": { "defPct": 0.165 }
+      "desc": "방어력 +12%",
+      "effect": { "defPct": 0.12 }
     },
     "unbreakable": {
       "name": "불굴의 심장",
@@ -155,9 +155,9 @@
       "max": 4,
       "branch": "A",
       "tier": 1,
-      "desc": "최대 HP +30% · 치명상 버티기 +4.5%p",
-      "long": "네 단계를 모두 찍으면 최대 HP 가 120% 늘어나고, 쓰러질 한 방을 버틸 확률(치명상 버티기)도 18%p 오른다. 오래 버티는 싸움의 핵심.",
-      "effect": { "hpMult": 0.3, "lastStandBonus": 0.045 }
+      "desc": "최대 HP +30%",
+      "long": "네 단계를 모두 찍으면 최대 HP 가 120% 늘어난다. 오래 버티는 싸움의 핵심.",
+      "effect": { "hpMult": 0.3 }
     },
     "iron_will": {
       "name": "강철 의지",
@@ -165,8 +165,8 @@
       "max": 4,
       "branch": "A",
       "tier": 2,
-      "desc": "받는 피해 -5.75% · 방어력 +3%",
-      "effect": { "dmgReduction": 0.0575, "defPct": 0.03 }
+      "desc": "방어력 +2.5% · 받는 피해 -5%",
+      "effect": { "defPct": 0.025, "dmgReduction": 0.05 }
     },
     "stout": {
       "name": "굳센 몸",
@@ -174,9 +174,9 @@
       "max": 3,
       "branch": "A",
       "tier": 3,
-      "desc": "최대 HP +19.5% · 방어력 +15%",
-      "long": "철벽 갈래 3단. 단단한 몸이 그대로 체력이 된다 — 최대 HP 와 방어력이 함께 오른다. 최대 HP 는 불굴의 심장과 곱하지 않고 더한다.",
-      "effect": { "hpPct": 0.195, "defPct": 0.15 }
+      "desc": "최대 HP +18% · 방어력 +14%",
+      "long": "철벽 갈래 3단. 단단한 몸이 그대로 체력이 된다 — 불굴의 심장과 곱하지 않고 더한다.",
+      "effect": { "hpPct": 0.18, "defPct": 0.14 }
     },
     "immortal": {
       "name": "불멸",
@@ -185,9 +185,9 @@
       "branch": "A",
       "tier": 4,
       "cap": true,
-      "desc": "치명상 버티기 +32.5%p · 방어력 +43%",
+      "desc": "치명상 버티기 +20%p · 방어력 +30%",
       "long": "철벽 갈래의 궁극. 쓰러질 피해를 버티는 확률(용사 패시브)이 오르고 방어력이 한 번 더 붙는다.",
-      "effect": { "lastStandBonus": 0.325, "defPct": 0.43 }
+      "effect": { "defPct": 0.3, "lastStandBonus": 0.2 }
     },
     "adamant": {
       "name": "금강불괴",
@@ -196,9 +196,9 @@
       "branch": "A",
       "tier": 5,
       "mastery": true,
-      "desc": "이 갈래의 모든 효과 +9%",
+      "desc": "이 갈래의 모든 효과 +7%",
       "long": "철벽 갈래의 숙련(올인 전용). 철벽을 궁극까지 다 채워야(16점) 열린다. 이 갈래에 찍어 둔 **모든 칸의 효과**가 1점마다 통째로 커진다 — 방어력 · 체력 · 받는 피해 감소 · 버티기가 한꺼번에.",
-      "effect": { "branchPower": 0.09 }
+      "effect": { "branchPower": 0.07 }
     },
     "thorn_mail": {
       "name": "가시 갑옷",
@@ -206,9 +206,9 @@
       "max": 4,
       "branch": "B",
       "tier": 1,
-      "desc": "가시 +60% · 방어력 +10%",
+      "desc": "가시 +60%",
       "long": "갑옷에 돋친 가시. 때린 쪽이 다친다. 방어력이 높을수록 아프게 되돌아간다.",
-      "effect": { "thorns": 0.6, "defPct": 0.1 }
+      "effect": { "thorns": 0.6 }
     },
     "retort": {
       "name": "맞받아치기",
@@ -216,9 +216,9 @@
       "max": 4,
       "branch": "B",
       "tier": 1,
-      "desc": "반격 확률 +5.25%p",
+      "desc": "반격 확률 +4%p",
       "long": "응징 갈래 1단. 맞으면 되받아치는 확률(용사 패시브 35%)에 더한다.",
-      "effect": { "counterBonus": 0.0525 }
+      "effect": { "counterBonus": 0.04 }
     },
     "heavy_counter": {
       "name": "묵직한 반격",
@@ -226,9 +226,9 @@
       "max": 4,
       "branch": "B",
       "tier": 2,
-      "desc": "반격 피해 +42.5%p",
-      "long": "응징 갈래 2단. 되받아치는 한 대의 피해(기본 120%)에 더한다. 4점이면 290%.",
-      "effect": { "counterPowerBonus": 0.425 }
+      "desc": "반격 피해 +35%p",
+      "long": "응징 갈래 2단. 되받아치는 한 대의 피해(기본 120%)에 더한다. 4점이면 260%.",
+      "effect": { "counterPowerBonus": 0.35 }
     },
     "spiked_will": {
       "name": "가시 돋친 의지",
@@ -236,9 +236,9 @@
       "max": 3,
       "branch": "B",
       "tier": 3,
-      "desc": "가시 +33.5% · 받는 피해 -5%",
+      "desc": "가시 +35% · 받는 피해 -5%",
       "long": "응징 갈래 3단. 가시가 더 깊어지고 받는 피해가 줄어든다.",
-      "effect": { "thorns": 0.335, "dmgReduction": 0.05 }
+      "effect": { "dmgReduction": 0.05, "thorns": 0.35 }
     },
     "raging_fort": {
       "name": "성난 성채",
@@ -247,9 +247,9 @@
       "branch": "B",
       "tier": 4,
       "cap": true,
-      "desc": "반격 확률 +14%p · 반격 피해 +71%p · 가시 +35.5%",
+      "desc": "반격 확률 +11%p · 반격 피해 +55%p · 가시 +25%",
       "long": "응징 갈래의 궁극. 맞을수록 상대가 다친다 — 반격 확률 · 반격 피해 · 가시가 한꺼번에 오른다.",
-      "effect": { "counterBonus": 0.14, "counterPowerBonus": 0.71, "thorns": 0.355 }
+      "effect": { "counterBonus": 0.11, "counterPowerBonus": 0.55, "thorns": 0.25 }
     },
     "payback": {
       "name": "되갚는 칼날",
@@ -258,9 +258,9 @@
       "branch": "B",
       "tier": 5,
       "mastery": true,
-      "desc": "이 갈래의 모든 효과 +8.25%",
+      "desc": "이 갈래의 모든 효과 +10%",
       "long": "응징 갈래의 숙련(올인 전용). 응징을 궁극까지 다 채워야(16점) 열린다. 이 갈래에 찍어 둔 **모든 칸의 효과**가 1점마다 통째로 커진다 — 가시 · 반격 확률 · 반격 피해가 한꺼번에.",
-      "effect": { "branchPower": 0.0825 }
+      "effect": { "branchPower": 0.1 }
     },
     "double_slash": {
       "name": "연격",
@@ -268,8 +268,8 @@
       "max": 4,
       "branch": "C",
       "tier": 1,
-      "desc": "2회 공격 +15% · 공격력 +8%",
-      "effect": { "doubleHit": 0.15, "atkPct": 0.08 }
+      "desc": "2회 공격 +6%",
+      "effect": { "doubleHit": 0.06 }
     },
     "executioner": {
       "name": "처형자",
@@ -277,8 +277,8 @@
       "max": 4,
       "branch": "C",
       "tier": 1,
-      "desc": "치명타 피해 +23.5% · 방어 관통 +8%",
-      "effect": { "critMult": 0.235, "pierce": 0.08 }
+      "desc": "치명타 피해 +25% · 방어 관통 +8%",
+      "effect": { "critMult": 0.25, "pierce": 0.08 }
     },
     "blood_taste": {
       "name": "피 맛",
@@ -286,9 +286,9 @@
       "max": 4,
       "branch": "C",
       "tier": 2,
-      "desc": "흡혈 +6% · 공격력 +12%",
+      "desc": "흡혈 +4% · 공격력 +10%",
       "long": "광전 갈래 2단. 준 피해의 일부를 HP 로 되돌려 받고, 공격력도 오른다.",
-      "effect": { "lifesteal": 0.06, "atkPct": 0.12 }
+      "effect": { "lifesteal": 0.04, "atkPct": 0.1 }
     },
     "bloodthirst": {
       "name": "광폭화",
@@ -296,9 +296,9 @@
       "max": 3,
       "branch": "C",
       "tier": 3,
-      "desc": "HP 50% 이하일 때 치명타 피해 +80% · 치명타 피해 +24%",
-      "long": "광전 갈래 3단. 몰릴수록 칼이 무거워진다 — 치명타 피해가 오르고, HP 가 절반 아래면 더 크게 오른다.",
-      "effect": { "lowHpCritMult": 0.8, "lowHpThreshold": 0.5, "critMult": 0.24 }
+      "desc": "HP 50% 이하일 때 치명타 피해 +100% · 치명타 피해 +30%",
+      "long": "광전 갈래 3단. 몰릴수록 칼이 무거워진다 — HP 가 절반 아래면 치명타 피해가 오른다. (0.80.02 — 예전의 받는 피해 감소는 철벽 갈래가 맡는다)",
+      "effect": { "lowHpCritMult": 1, "lowHpThreshold": 0.5, "critMult": 0.3 }
     },
     "slaughter": {
       "name": "학살",
@@ -307,9 +307,9 @@
       "branch": "C",
       "tier": 4,
       "cap": true,
-      "desc": "상대 HP 30% 이하면 피해 +190% · 2회 공격 +36% · 치명타 피해 +75%",
-      "long": "광전 갈래의 궁극. 상대 HP 가 30% 아래로 떨어지면 주는 피해가 크게 오른다. 2회 공격 · 치명타 피해도 함께 늘어난다.",
-      "effect": { "executeBonus": 1.9, "doubleHit": 0.36, "critMult": 0.75 }
+      "desc": "상대 HP 30% 이하면 피해 +70% · 2회 공격 +13%",
+      "long": "광전 갈래의 궁극. 상대 HP 가 30% 아래로 떨어지면 주는 피해가 크게 오른다. 2회 공격도 함께 늘어난다.",
+      "effect": { "doubleHit": 0.13, "executeBonus": 0.7 }
     },
     "frenzy": {
       "name": "피의 광란",
@@ -318,9 +318,9 @@
       "branch": "C",
       "tier": 5,
       "mastery": true,
-      "desc": "이 갈래의 모든 효과 +15.5%",
+      "desc": "이 갈래의 모든 효과 +17%",
       "long": "광전 갈래의 숙련(올인 전용). 광전을 궁극까지 다 채워야(16점) 열린다. 이 갈래에 찍어 둔 **모든 칸의 효과**가 1점마다 통째로 커진다 — 2회 공격 · 치명타 피해 · 관통 · 흡혈 · 처형이 한꺼번에.",
-      "effect": { "branchPower": 0.155 }
+      "effect": { "branchPower": 0.17 }
     },
 
     "_사냥꾼": "먼저 쏘고, 자주 쏘고, 맞지 않는다. 뿌리 하나 + 갈래 셋(1단 둘 · 2단 · 3단 · 궁극 · 숙련).",
@@ -341,9 +341,9 @@
       "max": 4,
       "branch": "A",
       "tier": 1,
-      "desc": "선제 사격 피해 +19%",
-      "long": "붙기 전에 쏘는 화살이 더 깊이 박힌다. 화살 수는 그대로 2발이고 한 발 한 발이 세진다. 4포인트면 +76%.",
-      "effect": { "openerPowerBonus": 0.19 }
+      "desc": "선제 사격 피해 +16% · 받는 피해 -1.5% · 받는 마법 피해 -1.5%",
+      "long": "붙기 전에 쏘는 화살이 더 깊이 박힌다. 화살 수는 그대로 2발이고 한 발 한 발이 세진다. 4포인트면 +64%.",
+      "effect": { "dmgReduction": 0.015, "magicResist": 0.015, "openerPowerBonus": 0.16 }
     },
     "hunters_mark": {
       "name": "사냥꾼의 표식",
@@ -351,8 +351,8 @@
       "max": 4,
       "branch": "A",
       "tier": 1,
-      "desc": "방어 관통 +7.25% · 치명타 피해 +9%",
-      "effect": { "pierce": 0.0725, "critMult": 0.09 }
+      "desc": "방어 관통 +5%",
+      "effect": { "pierce": 0.05 }
     },
     "deadeye": {
       "name": "죽음의 일격",
@@ -369,9 +369,9 @@
       "max": 3,
       "branch": "A",
       "tier": 3,
-      "desc": "치명타 피해 +21% · 방어 관통 +6%",
+      "desc": "치명타 피해 +45% · 방어 관통 +3%",
       "long": "저격 갈래 3단. 치명타 피해와 방어 관통이 함께 오른다.",
-      "effect": { "critMult": 0.21, "pierce": 0.06 }
+      "effect": { "critMult": 0.45, "pierce": 0.03 }
     },
     "third_arrow": {
       "name": "세 번째 화살",
@@ -380,9 +380,9 @@
       "branch": "A",
       "tier": 4,
       "cap": true,
-      "desc": "선제 사격 +1발 · 선제 사격 피해 +34.5%",
+      "desc": "선제 사격 +1발 · 선제 사격 피해 +35% · 공격력 +5%",
       "long": "저격 갈래의 궁극. 붙기 전에 쏘는 화살이 한 발 늘고, 그 화살들이 훨씬 깊이 박힌다.",
-      "effect": { "openerBonus": 1, "openerPowerBonus": 0.345 }
+      "effect": { "atkPct": 0.05, "openerBonus": 1, "openerPowerBonus": 0.35 }
     },
     "marksman": {
       "name": "명사수",
@@ -391,9 +391,9 @@
       "branch": "A",
       "tier": 5,
       "mastery": true,
-      "desc": "이 갈래의 모든 효과 +6.75%",
+      "desc": "공격력 +2% · 이 갈래의 모든 효과 +7%",
       "long": "저격 갈래의 숙련(올인 전용). 저격을 궁극까지 다 채워야(16점) 열린다. 이 갈래에 찍어 둔 **모든 칸의 효과**가 1점마다 통째로 커진다 — 선제 사격 · 치명타 피해 · 관통이 한꺼번에.",
-      "effect": { "branchPower": 0.0675 }
+      "effect": { "atkPct": 0.02, "branchPower": 0.07 }
     },
     "light_step": {
       "name": "가벼운 발",
@@ -401,8 +401,8 @@
       "max": 4,
       "branch": "B",
       "tier": 1,
-      "desc": "받는 피해 -3.75%",
-      "effect": { "dmgReduction": 0.0375 }
+      "desc": "받는 피해 -3.5%",
+      "effect": { "dmgReduction": 0.035 }
     },
     "read_wind": {
       "name": "바람 읽기",
@@ -410,9 +410,9 @@
       "max": 4,
       "branch": "B",
       "tier": 1,
-      "desc": "회피 +2%p · 받는 피해 -1.5%",
-      "long": "질풍 갈래 1단. 사냥꾼의 기본 회피에 더하고, 받는 피해도 조금 줄어든다.",
-      "effect": { "evadeBonus": 0.02, "dmgReduction": 0.015 }
+      "desc": "회피 +2.5%p · 치명타 피해 +25%",
+      "long": "질풍 갈래 1단. 사냥꾼의 기본 회피에 더하고, 치명타 피해도 오른다.",
+      "effect": { "evadeBonus": 0.025, "critMult": 0.25 }
     },
     "wind_walker": {
       "name": "바람의 걸음",
@@ -420,9 +420,9 @@
       "max": 4,
       "branch": "B",
       "tier": 2,
-      "desc": "피한 뒤 한 대 +20.5%",
-      "long": "피한 **바로 다음 한 대**의 피해가 1점마다 20.5% 오른다. 4점이면 +82%.\n쌓이지 않는다 — 두 번 연속 피해도 다음 한 대에 한 번만 얹힌다.\n사냥꾼의 기본 회피는 28%이고, 맞은 다음 한 대는 반드시 피한다(패시브). 그 둘이 다 이 스킬을 켠다.",
-      "effect": { "evadeRevenge": 0.205 }
+      "desc": "피한 뒤 한 대 +35%",
+      "long": "피한 **바로 다음 한 대**의 피해가 1점마다 35% 오른다. 4점이면 +140%.\n쌓이지 않는다 — 두 번 연속 피해도 다음 한 대에 한 번만 얹힌다.\n사냥꾼의 기본 회피는 28%이고, 맞은 다음 한 대는 반드시 피한다(패시브). 그 둘이 다 이 스킬을 켠다.",
+      "effect": { "evadeRevenge": 0.35 }
     },
     "afterimage": {
       "name": "잔상",
@@ -430,9 +430,9 @@
       "max": 3,
       "branch": "B",
       "tier": 3,
-      "desc": "최대 HP +11% · 회피 +4.25%p",
-      "long": "질풍 갈래 3단. 최대 HP 와 회피가 함께 오른다.",
-      "effect": { "hpPct": 0.11, "evadeBonus": 0.0425 }
+      "desc": "최대 HP +20%",
+      "long": "질풍 갈래 3단. 최대 HP 가 오른다.",
+      "effect": { "hpPct": 0.2 }
     },
     "one_with_wind": {
       "name": "바람과 하나",
@@ -441,9 +441,9 @@
       "branch": "B",
       "tier": 4,
       "cap": true,
-      "desc": "회피 +7%p · 피한 뒤 한 대 +44.5%",
+      "desc": "회피 +5%p · 피한 뒤 한 대 +30% · 공격력 +9% · 흡혈 +4.5%",
       "long": "질풍 갈래의 궁극. 회피가 크게 오르고, 피한 뒤 한 대가 더 세진다.",
-      "effect": { "evadeBonus": 0.07, "evadeRevenge": 0.445 }
+      "effect": { "evadeBonus": 0.05, "evadeRevenge": 0.3, "atkPct": 0.09, "lifesteal": 0.045 }
     },
     "eye_of_storm": {
       "name": "폭풍의 눈",
@@ -452,9 +452,9 @@
       "branch": "B",
       "tier": 5,
       "mastery": true,
-      "desc": "이 갈래의 모든 효과 +7.75%",
+      "desc": "이 갈래의 모든 효과 +9%",
       "long": "질풍 갈래의 숙련(올인 전용). 질풍을 궁극까지 다 채워야(16점) 열린다. 이 갈래에 찍어 둔 **모든 칸의 효과**가 1점마다 통째로 커진다 — 회피 · 피한 뒤 한 대 · 받는 피해 감소가 한꺼번에.",
-      "effect": { "branchPower": 0.0775 }
+      "effect": { "branchPower": 0.09 }
     },
     "rapid_shot": {
       "name": "속사",
@@ -462,8 +462,8 @@
       "max": 4,
       "branch": "C",
       "tier": 1,
-      "desc": "2회 공격 +15% · 공격력 +4%",
-      "effect": { "doubleHit": 0.15, "atkPct": 0.04 }
+      "desc": "2회 공격 +5%",
+      "effect": { "doubleHit": 0.05 }
     },
     "focus_hunt": {
       "name": "사냥의 집중",
@@ -471,8 +471,8 @@
       "max": 4,
       "branch": "C",
       "tier": 1,
-      "desc": "공격력 +3.5% · 최대 HP +3.5%",
-      "effect": { "atkPct": 0.035, "hpPct": 0.035 },
+      "desc": "공격력 +5% · 최대 HP +5%",
+      "effect": { "atkPct": 0.05, "hpPct": 0.05 },
       "long": "숨을 고르고 과녁만 본다. 화살이 무거워지고 몸도 덜 흔들린다."
     },
     "weak_spot": {
@@ -481,9 +481,9 @@
       "max": 4,
       "branch": "C",
       "tier": 2,
-      "desc": "치명타 피해 +25.5% · 방어 관통 +6%",
+      "desc": "치명타 피해 +25% · 방어 관통 +4%",
       "long": "연사 갈래 2단. 약한 데를 골라 쏜다 — 치명타 피해와 방어 관통이 함께 오른다.",
-      "effect": { "critMult": 0.255, "pierce": 0.06 }
+      "effect": { "critMult": 0.25, "pierce": 0.04 }
     },
     "blood_scent": {
       "name": "피 냄새",
@@ -491,9 +491,9 @@
       "max": 3,
       "branch": "C",
       "tier": 3,
-      "desc": "흡혈 +6% · 받는 피해 -2.25%",
+      "desc": "흡혈 +5% · 받는 피해 -2%",
       "long": "연사 갈래 3단. 준 피해의 일부를 HP 로 되돌려 받고, 받는 피해도 조금 줄어든다.",
-      "effect": { "lifesteal": 0.06, "dmgReduction": 0.0225 }
+      "effect": { "lifesteal": 0.05, "dmgReduction": 0.02 }
     },
     "relentless": {
       "name": "끝까지 쫓는다",
@@ -502,9 +502,9 @@
       "branch": "C",
       "tier": 4,
       "cap": true,
-      "desc": "상대 HP 30% 이하면 피해 +150% · 2회 공격 +37.5% · 치명타 피해 +67%",
-      "long": "연사 갈래의 궁극. 상대 HP 가 30% 아래면 주는 피해가 크게 오르고, 2회 공격 · 치명타 피해도 늘어난다.",
-      "effect": { "executeBonus": 1.5, "doubleHit": 0.375, "critMult": 0.67 }
+      "desc": "상대 HP 30% 이하면 피해 +150% · 공격력 +10% · 2회 공격 +10%",
+      "long": "연사 갈래의 궁극. 상대 HP 가 30% 아래면 주는 피해가 크게 오르고, 공격력 · 2회 공격도 늘어난다.",
+      "effect": { "atkPct": 0.1, "doubleHit": 0.1, "executeBonus": 1.5 }
     },
     "arrow_storm": {
       "name": "화살 폭풍",
@@ -513,9 +513,9 @@
       "branch": "C",
       "tier": 5,
       "mastery": true,
-      "desc": "이 갈래의 모든 효과 +10%",
+      "desc": "이 갈래의 모든 효과 +20%",
       "long": "연사 갈래의 숙련(올인 전용). 연사를 궁극까지 다 채워야(16점) 열린다. 이 갈래에 찍어 둔 **모든 칸의 효과**가 1점마다 통째로 커진다 — 2회 공격 · 치명타 피해 · 흡혈 · 처형이 한꺼번에.",
-      "effect": { "branchPower": 0.1 }
+      "effect": { "branchPower": 0.2 }
     },
 
     "_마법사": "한 번에 크게 터뜨리고, 죽기 직전에 가장 세진다. 뿌리 하나 + 갈래 셋(1단 둘 · 2단 · 3단 · 궁극 · 숙련).",
@@ -526,9 +526,9 @@
       "max": 5,
       "branch": "root",
       "tier": 0,
-      "desc": "공격력 +2 · 마법 피해 +16%",
-      "long": "마법사의 공격은 전부 마법 피해다. 한 점마다 공격력 +2, 최종피해가 증가한다. 5단계면 공격력 +10 · 마법 피해 +80%.",
-      "effect": { "atkFlat": 2, "magicPower": 0.16 }
+      "desc": "공격력 +4 · 마법 피해 +16%",
+      "long": "마법사의 공격은 전부 마법 피해다. 한 점마다 공격력 +4, 최종피해가 증가한다. 5단계면 공격력 +20 · 마법 피해 +80%.",
+      "effect": { "atkFlat": 4, "magicPower": 0.16 }
     },
     "chain_spark": {
       "name": "광역 확산",
@@ -536,9 +536,9 @@
       "max": 4,
       "branch": "A",
       "tier": 1,
-      "desc": "광역 여파 +33.5%p",
+      "desc": "광역 여파 +30%p · 공격력 +7%",
       "long": "주 대상에게 준 피해가 나머지에게 튀는 비율(기본 70%)이 늘어난다.",
-      "effect": { "cleaveBonus": 0.335 }
+      "effect": { "atkPct": 0.07, "cleaveBonus": 0.3 }
     },
     "flame_burst": {
       "name": "마력 충전",
@@ -546,9 +546,9 @@
       "max": 4,
       "branch": "A",
       "tier": 1,
-      "desc": "충전 폭발 +0.43배",
-      "long": "3번째 공격마다 터지는 대폭발이 더 커진다. 4점이면 +1.72배.",
-      "effect": { "chargeBonus": 0.43 }
+      "desc": "충전 폭발 +0.25배 · 공격력 +9%",
+      "long": "3번째 공격마다 터지는 대폭발이 더 커진다. 4점이면 +1배.",
+      "effect": { "atkPct": 0.09, "chargeBonus": 0.25 }
     },
     "meteor": {
       "name": "메테오",
@@ -556,8 +556,8 @@
       "max": 4,
       "branch": "A",
       "tier": 2,
-      "desc": "치명타 피해 +15.5%",
-      "effect": { "critMult": 0.155 }
+      "desc": "치명타 피해 +75%",
+      "effect": { "critMult": 0.75 }
     },
     "ember": {
       "name": "불씨",
@@ -565,9 +565,9 @@
       "max": 3,
       "branch": "A",
       "tier": 3,
-      "desc": "치명타 확률 +4.25%",
-      "long": "화염 갈래 3단. 치명타 확률이 오른다.",
-      "effect": { "crit": 0.0425 }
+      "desc": "치명타 피해 +90%",
+      "long": "화염 갈래 3단. 치명타 피해가 크게 오른다(끝 장비면 치명타 확률은 이미 거의 꽉 찬다).",
+      "effect": { "critMult": 0.9 }
     },
     "meteor_fall": {
       "name": "운석 낙하",
@@ -576,9 +576,9 @@
       "branch": "A",
       "tier": 4,
       "cap": true,
-      "desc": "충전 폭발 +1.2배 · 광역 여파 +61%p",
+      "desc": "충전 폭발 +1.2배 · 광역 여파 +60%p · 공격력 +15% · 치명타 피해 +50%",
       "long": "화염 갈래의 궁극. 3번째 공격마다 터지는 충전 폭발이 크게 커지고, 광역 여파도 오른다.",
-      "effect": { "chargeBonus": 1.2, "cleaveBonus": 0.61 }
+      "effect": { "chargeBonus": 1.2, "cleaveBonus": 0.6, "atkPct": 0.15, "critMult": 0.5 }
     },
     "conflagration": {
       "name": "대화재",
@@ -587,9 +587,9 @@
       "branch": "A",
       "tier": 5,
       "mastery": true,
-      "desc": "이 갈래의 모든 효과 +6.5%",
+      "desc": "공격력 +4% · 치명타 피해 +13% · 이 갈래의 모든 효과 +5%",
       "long": "화염 갈래의 숙련(올인 전용). 화염을 궁극까지 다 채워야(16점) 열린다. 이 갈래에 찍어 둔 **모든 칸의 효과**가 1점마다 통째로 커진다 — 광역 여파 · 충전 폭발 · 치명타가 한꺼번에.",
-      "effect": { "branchPower": 0.065 }
+      "effect": { "atkPct": 0.04, "critMult": 0.13, "branchPower": 0.05 }
     },
     "arcane_armor": {
       "name": "비전 갑주",
@@ -597,8 +597,8 @@
       "max": 4,
       "branch": "B",
       "tier": 1,
-      "desc": "받는 마법 피해 -2.25% · 받는 피해 -0.5%",
-      "effect": { "magicResist": 0.0225, "dmgReduction": 0.005 }
+      "desc": "받는 피해 -1% · 받는 마법 피해 -2%",
+      "effect": { "dmgReduction": 0.01, "magicResist": 0.02 }
     },
     "arcane_pierce": {
       "name": "마력 관통",
@@ -616,9 +616,9 @@
       "max": 4,
       "branch": "B",
       "tier": 2,
-      "desc": "최대 HP +15%",
+      "desc": "최대 HP +25%",
       "long": "마력을 생명으로 돌린다. 예전에는 흡혈이었는데 장비 흡혈과 겹쳐 끝없이 차올랐다.",
-      "effect": { "hpPct": 0.15 }
+      "effect": { "hpPct": 0.25 }
     },
     "mana_flow": {
       "name": "마력 순환",
@@ -626,9 +626,9 @@
       "max": 3,
       "branch": "B",
       "tier": 3,
-      "desc": "마법 피해 +12.5%",
+      "desc": "마법 피해 +15%",
       "long": "비전 갈래 3단. 마법 피해가 더 오른다.",
-      "effect": { "magicPower": 0.125 }
+      "effect": { "magicPower": 0.15 }
     },
     "overload": {
       "name": "마력 폭주",
@@ -637,9 +637,9 @@
       "branch": "B",
       "tier": 4,
       "cap": true,
-      "desc": "마법 피해 +17.5% · 받는 마법 피해 -6%",
+      "desc": "공격력 +10% · 받는 마법 피해 -3% · 마법 피해 +15%",
       "long": "비전 갈래의 궁극. 마법 피해가 크게 오르고 받는 마법 피해가 줄어든다.",
-      "effect": { "magicPower": 0.175, "magicResist": 0.06 }
+      "effect": { "atkPct": 0.1, "magicResist": 0.03, "magicPower": 0.15 }
     },
     "arcane_mastery": {
       "name": "비전 숙달",
@@ -648,9 +648,9 @@
       "branch": "B",
       "tier": 5,
       "mastery": true,
-      "desc": "이 갈래의 모든 효과 +8.75%",
+      "desc": "이 갈래의 모든 효과 +25%",
       "long": "비전 갈래의 숙련(올인 전용). 비전을 궁극까지 다 채워야(16점) 열린다. 이 갈래에 찍어 둔 **모든 칸의 효과**가 1점마다 통째로 커진다 — 마법 피해 · 관통 · 마법 저항 · 체력이 한꺼번에.",
-      "effect": { "branchPower": 0.0875 }
+      "effect": { "branchPower": 0.25 }
     },
     "mana_shield": {
       "name": "보호막 연장",
@@ -658,9 +658,9 @@
       "max": 4,
       "branch": "C",
       "tier": 1,
-      "desc": "보호막이 막는 횟수 1 → 2.25 → 3.25 → 4.5 → 5.5대",
-      "long": "쓰러질 피해를 막아 주는 마력 보호막이 더 오래 버틴다.\n기본 1대 · 1점 2.25대 · 2점 3.25대 · 3점 4.5대 · 4점 5.5대.\n소수는 확률이다(0.25 대 = 넷에 하나) — 그 한 대를 더 막을지는 보호막이 터질 때 한 번 굴린다.",
-      "steps": {"shieldBonusTurns":[1.25,2.25,3.5,4.5]}
+      "desc": "보호막이 막는 횟수 1 → 2 → 3 → 4 → 5대",
+      "long": "쓰러질 피해를 막아 주는 마력 보호막이 더 오래 버틴다.\n기본 1대 · 1점 2대 · 2점 3대 · 3점 4대 · 4점 5대.",
+      "steps": {"shieldBonusTurns":[1,2,3,4]}
     },
     "last_ember": {
       "name": "최후의 불꽃",
@@ -668,9 +668,9 @@
       "max": 4,
       "branch": "C",
       "tier": 1,
-      "desc": "HP 40% 이하일 때 치명타 피해 +58.5%",
+      "desc": "HP 40% 이하일 때 치명타 피해 +100%",
       "long": "몰릴수록 치명타가 크게 터진다. 보호막과 함께 쓰면 죽기 직전이 가장 무섭다.",
-      "effect": { "lowHpCritMult": 0.585, "lowHpThreshold": 0.4 }
+      "effect": { "lowHpCritMult": 1, "lowHpThreshold": 0.4 }
     },
     "absorb": {
       "name": "마력 흡수",
@@ -678,9 +678,9 @@
       "max": 4,
       "branch": "C",
       "tier": 2,
-      "desc": "마력 흡수 +4%p · 최대 HP +10.5%",
+      "desc": "마력 흡수 +5%p · 최대 HP +15%",
       "long": "불사 갈래 2단. 맞은 만큼 되돌려 받을 확률(마법사 패시브)에 더하고, 최대 HP 도 오른다.",
-      "effect": { "absorbChance": 0.04, "hpPct": 0.105 }
+      "effect": { "absorbChance": 0.05, "hpPct": 0.15 }
     },
     "stubborn": {
       "name": "질긴 마력",
@@ -688,9 +688,9 @@
       "max": 3,
       "branch": "C",
       "tier": 3,
-      "desc": "받는 피해 -3.5%",
+      "desc": "받는 피해 -5%",
       "long": "불사 갈래 3단. 받는 피해가 줄어든다.",
-      "effect": { "dmgReduction": 0.035 }
+      "effect": { "dmgReduction": 0.05 }
     },
     "phoenix": {
       "name": "불사조",
@@ -699,9 +699,9 @@
       "branch": "C",
       "tier": 4,
       "cap": true,
-      "desc": "HP 40% 이하면 모든 공격이 치명타 · 보호막 +3대",
-      "long": "불사 갈래의 궁극. HP 가 40% 아래면 모든 공격이 치명타로 터진다. 보호막도 세 대 더 막는다.",
-      "effect": { "lowHpCrit": 1, "shieldBonusTurns": 3 }
+      "desc": "HP 40% 이하면 모든 공격이 치명타 · 보호막 +2대 · 최대 HP +30%",
+      "long": "불사 갈래의 궁극. HP 가 40% 아래면 모든 공격이 치명타로 터진다. 보호막도 두 대 더 막고, 최대 HP 가 오른다.",
+      "effect": { "lowHpCrit": 1, "shieldBonusTurns": 2, "hpPct": 0.3 }
     },
     "from_ashes": {
       "name": "재에서",
@@ -710,9 +710,9 @@
       "branch": "C",
       "tier": 5,
       "mastery": true,
-      "desc": "이 갈래의 모든 효과 +9.75%",
+      "desc": "공격력 +3% · 흡혈 +2% · 받는 피해 -2% · 이 갈래의 모든 효과 +10%",
       "long": "불사 갈래의 숙련(올인 전용). 불사를 궁극까지 다 채워야(16점) 열린다. 이 갈래에 찍어 둔 **모든 칸의 효과**가 1점마다 통째로 커진다 — 보호막 · 위기의 치명타 · 마력 흡수 · 받는 피해 감소가 한꺼번에.",
-      "effect": { "branchPower": 0.0975 }
+      "effect": { "branchPower": 0.1, "atkPct": 0.03, "dmgReduction": 0.02, "lifesteal": 0.02 }
     }
   }
 }
