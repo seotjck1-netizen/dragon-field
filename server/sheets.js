@@ -851,13 +851,13 @@ function skillsToRows(originals) {
   for (const [id, d] of Object.entries(skills.tree || {})) {
     if (id.startsWith('_') || !d || typeof d !== 'object') continue; // '_용사' 같은 구분선은 건너뛴다
     const { cells, overflow } = effectToCells(d.effect, labels, SKILL_SLOTS);
-    const extra = packExtra(d, SKILL_KNOWN);
-    const spill = Object.keys(overflow).length ? JSON.stringify({ effect: overflow }) : '';
+    // 효과가 칸(3개)보다 많으면 남는 것은 '기타' 칸의 effect 로 — 갈래 · 단과 함께 둔다(0.80.30: 넷인 칸이 생겼다)
+    const rest = { ...JSON.parse(packExtra(d, SKILL_KNOWN) || '{}'), ...(Object.keys(overflow).length ? { effect: overflow } : {}) };
     rows.push([
       id, d.name || '', d.icon || '', (owners.get(id) || []).join(' | '), d.max ?? 1,
       ...cells,
       escNl(d.desc || ''), escNl(d.long || ''),
-      extra || spill,
+      Object.keys(rest).length ? JSON.stringify(rest) : '',
     ]);
   }
   return rows;

@@ -20,6 +20,7 @@ import { computePlayerStats } from '../entities/StatBlock.js';
 import { expProgress, expNeeded } from '../systems/ProgressionSystem.js';
 import { currentQuest, progressOf } from '../systems/QuestSystem.js';
 import { setHtml } from './keepScroll.js';
+import { fillNpcNames } from '../core/NpcNames.js';
 
 /** 오른쪽 세로줄에 세울 버튼들. 아이콘 하나와 설명만 있으면 된다. */
 const TOOLS = [
@@ -383,7 +384,7 @@ export class HUD {
       .join('');
     setHtml(this.el.questCard, `
       <div class="hqc-title">${quest.title}</div>
-      <p class="hqc-desc">${quest.desc || ''}</p>
+      <p class="hqc-desc">${fillNpcNames(quest.desc || '', (state.db || {}).npcs)}</p>
       <div class="hqc-bar"><i style="width:${Math.min(100, (p.have / Math.max(1, p.need)) * 100)}%"></i></div>
       ${parts}
       <div class="hqc-foot">
