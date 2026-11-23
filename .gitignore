@@ -35,3 +35,6 @@ __pycache__/
 
 # 0.80.20 — 세이브를 새로 시작하며 보관해 둔 옛 계정 · 세이브(server/epoch.js). 절대 올리지 마세요.
 server/data-*/
+
+# 0.80.30 — npm run sheets 가 만드는 통합문서(배포 파일은 release 에 따로 둔다)
+/dragon-field-tables.xlsx
