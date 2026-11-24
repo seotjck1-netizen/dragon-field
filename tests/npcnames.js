@@ -115,6 +115,20 @@ const read = (p) => JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8'));
   } finally {
     global.fetch = realFetch;
   }
+  // 0.80.31 — 서식만 남은 빈 칸(<c r="B1" s="2"/>)이 다음 칸을 삼키지 않는다(skills 「'603' 은 알 수 없는 효과 이름」)
+  {
+    const { makeZip } = require('../tools/make-xlsx.js');
+    const { readWorkbook } = require('../server/xlsxread.js');
+    const ns = 'xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"';
+    const book = makeZip(Object.entries({
+      'xl/workbook.xml': `<workbook ${ns} xmlns:r="r"><sheets><sheet name="t" sheetId="1" r:id="rId1"/></sheets></workbook>`,
+      'xl/_rels/workbook.xml.rels': '<Relationships><Relationship Id="rId1" Target="worksheets/sheet1.xml"/></Relationships>',
+      'xl/sharedStrings.xml': `<sst ${ns}><si><t>가</t></si><si><t>나</t></si></sst>`,
+      'xl/worksheets/sheet1.xml': `<worksheet ${ns}><sheetData><row r="1"><c r="A1" t="s"><v>0</v></c><c r="B1" s="2"/><c r="C1" s="2"/><c r="D1" t="s"><v>1</v></c></row></sheetData></worksheet>`,
+    }).map(([name, x]) => ({ name, data: Buffer.from(x, 'utf8') })));
+    const got = readWorkbook(book).t[0];
+    check('엑셀 읽기 — 서식만 남은 빈 칸 뒤의 칸이 제자리(값이 옆으로 밀리지 않는다)', JSON.stringify(got) === JSON.stringify(['가', '', '', '나']), JSON.stringify(got));
+  }
   check('진짜 server/content 는 그대로(시험은 임시 폴더에서)', read('server/content/npcs.json').witch.name === npcs.witch.name);
 
   // ── ⑥ 게임 안 ──────────────────────────────────────────

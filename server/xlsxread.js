@@ -135,7 +135,9 @@ function readSheet(xml, shared) {
   const rows = [];
   for (const rm of xml.matchAll(/<row\b[^>]*>([\s\S]*?)<\/row>/g)) {
     const cells = [];
-    for (const cm of rm[1].matchAll(/<c\b([^>]*)(?:\/>|>([\s\S]*?)<\/c>)/g)) {
+    // 0.80.31 — 서식만 남은 빈 칸(<c r="H4" s="2"/>)을 끝까지 탐욕으로 읽으면 '/' 를 속성에 삼키고
+    // 다음 칸의 </c> 까지 내용으로 먹어 값이 옆 칸으로 밀렸다(skills 「'603' 은 알 수 없는 효과 이름」). 속성은 짧게 끊는다.
+    for (const cm of rm[1].matchAll(/<c\b([^>]*?)(?:\/>|>([\s\S]*?)<\/c>)/g)) {
       const attrs = cm[1];
       const inner = cm[2] || '';
       const ref = /r="([A-Z]+)\d+"/.exec(attrs);

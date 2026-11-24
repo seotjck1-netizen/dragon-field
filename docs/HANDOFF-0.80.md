@@ -133,6 +133,11 @@
 - 포이노 1.21(주말의 게임 화면)은 사용자 「지금 배포」로 **11/22 에 올렸다**(예약은 지웠다) — [seotjck1-netizen/poinolunch#1](https://github.com/seotjck1-netizen/poinolunch/pull/1).
   이어서 1.21 대규모 공지(1.20 주간 증강 두 줄 함께 · [#2](https://github.com/seotjck1-netizen/poinolunch/pull/2)) · 드래곤필드 카드의 「주말의 게임」 표시를 늘([#3](https://github.com/seotjck1-netizen/poinolunch/pull/3)).
 
+## 0.80.31 에 넣은 것 (2026-11-24)
+
+- **시트 읽기 — 서식만 남은 빈 칸** — 사용자: 퀘스트 보상을 고쳤는데 「'skills' 탭 — '618' 는 알 수 없는 효과 이름」으로 반영이 멈춤. README 「0.80.31」.
+  게임 시트를 API 로 고쳐 쓸 때 빈 값('')으로 덮은 칸은 서식이 남는다 — 이제 서버가 읽지만, 옛 서버를 생각해 그런 칸은 서식까지 지운다(`updateCells` · `userEnteredValue,userEnteredFormat`).
+
 ## 0.80.30 에 넣은 것 (2026-11-23)
 
 - **스킬 숫자 마무리** — 사용자가 계산기 시트(「드래곤필드 전투력 계산기」 `1ubDlvXZzo3lsK1z8xa-8ddq7rsRKPgZggmqe--3snuY` 스킬 탭)에서 고친 값 → 「네가 마무리해」. README 「0.80.30」.
